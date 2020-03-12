@@ -39,8 +39,6 @@ public class SysRoleinfoController {
 
     @Resource
     private CommonUtil<SysRoleinfo> commonUtil;
-
-
     /**
      * 根据角色ID查询角色详情
      * @param sysRoleinfo
