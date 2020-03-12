@@ -39,7 +39,6 @@ public class SysResourceinfoController {
     @Resource
     private ISysResourceinfoService resourceinfoService;
 
-
     /**
      * 根据资源ID查询资源详情
      * @param sysResourceinfo
