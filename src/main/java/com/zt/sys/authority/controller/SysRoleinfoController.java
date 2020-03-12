@@ -5,7 +5,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zt.sys.authority.core.RetResponse;
 import com.zt.sys.authority.core.RetResult;
-import com.zt.sys.authority.entity.SysOrginfo;
 import com.zt.sys.authority.entity.SysResourceinfo;
 import com.zt.sys.authority.entity.SysRoleinfo;
 import com.zt.sys.authority.entity.SysUsers;
@@ -14,7 +13,6 @@ import com.zt.sys.authority.utils.*;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.annotation.processing.RoundEnvironment;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
