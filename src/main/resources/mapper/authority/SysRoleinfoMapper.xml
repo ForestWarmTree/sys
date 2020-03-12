@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zt.sys.authority.mapper.SysRoleinfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.zt.sys.authority.entity.SysRoleinfo">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="roleId" property="roleId" jdbcType="VARCHAR" />
+        <result column="roleName" property="roleName" jdbcType="VARCHAR" />
+        <result column="startDate" property="startDate" jdbcType="DATE" />
+        <result column="endDate" property="endDate" jdbcType="DATE" />
+        <result column="orgId" property="orgId" jdbcType="VARCHAR" />
+        <result column="createUser" property="createUser" jdbcType="VARCHAR" />
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="updateUser" property="updateUser" jdbcType="VARCHAR" />
+        <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <!--根据角色编码查询角色基础信息-->
+    <select id="selectRoleInfoByRoleId" parameterType="com.zt.sys.authority.entity.SysRoleinfo"
+            resultMap="BaseResultMap">
+        select * from sys_roleinfo where roleId = #{roleId}
+    </select>
+
+    <!--删除角色信息-->
+    <delete id="deleteRoles" parameterType="java.lang.String">
+        delete from sys_roleinfo where roleId = #{roleId}
+    </delete>
+
+    <!--验证角色编码是否存在-->
+    <select id="validataRoleId" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(0) from sys_roleinfo where roleId = #{roleId}
+    </select>
+
+    <!--新增角色信息-->
+    <insert id="saveRole" parameterType="com.zt.sys.authority.entity.SysRoleinfo">
+        insert into sys_roleinfo(
+          roleId,roleName,startDate,endDate,
+          orgId,createUser,createTime,updateUser,updateTime
+        ) values (
+          #{roleId},#{roleName},#{startDate},#{endDate},
+          #{orgId},#{createUser},#{createTime},
+          #{updateUser},#{updateTime}
+        )
+    </insert>
+
+    <!--编辑角色信息-->
+    <update id="editRole" parameterType="com.zt.sys.authority.entity.SysRoleinfo">
+        update sys_roleinfo
+        <set>
+            <trim suffixOverrides=",">
+                <if test="roleName!=null and roleName!=''">roleName = #{roleName},</if>
+                <if test="startDate!=null">startDate = #{startDate},</if>
+                <if test="endDate!=null">endDate = #{endDate},</if>
+                <if test="orgId!=null and orgId!=''">orgId = #{orgId},</if>
+                <if test="updateUser!=null and updateUser!=''">updateUser = #{updateUser},</if>
+                <if test="updateTime!=null">updateTime = #{updateTime},</if>
+            </trim>
+        </set>
+        where roleId = #{roleId}
+    </update>
+
+    <!--根据 用户权限 查询所有 符合有效期的 可用角色-->
+    <select id="selectRoleByUserId" parameterType="java.util.Map"
+            resultMap="BaseResultMap">
+        select b.* from sys_user_role a,
+        sys_roleinfo b
+        WHERE a.roleId = b.roleId
+        AND a.userId = #{userId}
+        AND b.orgId = #{orgId}
+        AND b.startDate &lt;= CURDATE() AND b.endDate &gt; CURDATE()
+        order by createTime desc
+    </select>
+
+    <!--查询所有角色-->
+    <select id="selectAll" resultMap="BaseResultMap">
+        select * from sys_roleinfo order by createTime desc
+    </select>
+
+    <!--根据组织编码查询所属角色-->
+    <select id="selectRoleByOrgId" parameterType="com.zt.sys.authority.entity.SysRoleinfo"
+            resultMap="BaseResultMap">
+        select * from sys_roleinfo where orgId = #{orgId}
+        <if test="roleId != null and roleId !=''"> and roleId = #{roleId}</if>
+        <if test="roleName != null and roleName !=''">and roleName = #{roleName}</if>
+        <if test="startDate != null">and startDate &gt;= #{startDate}</if>
+        <if test="endDate != null">and endDate &lt;= #{endDate}</if>
+        order by createTime desc
+    </select>
+
+    <select id="selectRoleByResourceId" parameterType="java.lang.String"
+            resultMap="BaseResultMap">
+        select * from sys_roleinfo WHERE roleId in (
+          SELECT roleId from sys_role_resource WHERE resourceId = #{resourceId}
+        ) order by createTime desc
+    </select>
+</mapper>

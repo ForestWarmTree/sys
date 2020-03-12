@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zt.sys.authority.mapper.SysUsersMapper">
+
+    <resultMap id="BaseResultMap" type="com.zt.sys.authority.entity.SysUsers">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="userId" property="userId" jdbcType="VARCHAR" />
+        <result column="username" property="username" jdbcType="VARCHAR" />
+        <result column="password" property="password" jdbcType="VARCHAR" />
+        <result column="isSupper" property="isSupper" jdbcType="VARCHAR" />
+        <result column="indate" property="indate" jdbcType="DATE" />
+        <result column="type" property="type" jdbcType="INTEGER" />
+        <result column="createUser" property="createUser" jdbcType="VARCHAR" />
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+        <association property="sysUserinfo" resultMap="UserInfoResultMap"></association>
+        <association property="sysOrginfo" resultMap="OrgResultMap"></association>
+        <association property="sysDeptinfo" resultMap="DeptResultMap"></association>
+    </resultMap>
+
+    <resultMap id="UserInfoResultMap" type="com.zt.sys.authority.entity.SysUserinfo">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="userId" property="userId" jdbcType="VARCHAR" />
+        <result column="userCardNo" property="userCardNo" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="position" property="position" jdbcType="VARCHAR" />
+        <result column="org_id" property="orgId" jdbcType="VARCHAR" />
+        <result column="deptId" property="deptId" jdbcType="VARCHAR" />
+        <result column="native_place" property="nativePlace" jdbcType="VARCHAR" />
+        <result column="bank" property="bank" jdbcType="VARCHAR" />
+        <result column="card_nums" property="cardNums" jdbcType="VARCHAR" />
+        <result column="entry_time" property="entryTime" jdbcType="TIMESTAMP" />
+        <result column="assumption_flag" property="assumptionFlag" jdbcType="INTEGER" />
+        <result column="identity_card" property="identityCard" jdbcType="VARCHAR" />
+        <result column="phone" property="phone" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <resultMap id="OrgResultMap" type="com.zt.sys.authority.entity.SysOrginfo">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="orgId" property="orgId" jdbcType="VARCHAR" />
+        <result column="orgName" property="orgName" jdbcType="VARCHAR" />
+        <result column="parentId" property="parentId" jdbcType="VARCHAR" />
+        <result column="orgType" property="orgType" jdbcType="VARCHAR" />
+        <result column="ry1" property="ry1" jdbcType="VARCHAR" />
+        <result column="ry2" property="ry2" jdbcType="VARCHAR" />
+        <result column="ry3" property="ry3" jdbcType="VARCHAR" />
+        <result column="ry4" property="ry4" jdbcType="VARCHAR" />
+        <result column="ry5" property="ry5" jdbcType="VARCHAR" />
+        <result column="ry6" property="ry6" jdbcType="VARCHAR" />
+        <result column="ry7" property="ry7" jdbcType="VARCHAR" />
+        <result column="ry8" property="ry8" jdbcType="VARCHAR" />
+        <result column="ry9" property="ry9" jdbcType="VARCHAR" />
+        <result column="ry10" property="ry10" jdbcType="VARCHAR" />
+        <result column="createUser" property="createUser" jdbcType="VARCHAR" />
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="updateUser" property="updateUser" jdbcType="VARCHAR" />
+        <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <resultMap id="DeptResultMap" type="com.zt.sys.authority.entity.SysDeptinfo">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="deptId" property="deptId" jdbcType="VARCHAR" />
+        <result column="deptName" property="deptName" jdbcType="VARCHAR" />
+        <result column="orgId" property="orgId" jdbcType="VARCHAR" />
+        <result column="ry1" property="ry1" jdbcType="VARCHAR" />
+        <result column="ry2" property="ry2" jdbcType="VARCHAR" />
+        <result column="ry3" property="ry3" jdbcType="VARCHAR" />
+        <result column="ry4" property="ry4" jdbcType="VARCHAR" />
+        <result column="ry5" property="ry5" jdbcType="VARCHAR" />
+        <result column="createUser" property="createUser" jdbcType="VARCHAR" />
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="updateUser" property="updateUser" jdbcType="VARCHAR" />
+        <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <!--验证用户名是否重复-->
+    <select id="validataUserName" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(0) from sys_users where username = #{userName}
+    </select>
+
+    <!--新增用户-->
+    <insert id="saveUser" parameterType="com.zt.sys.authority.entity.SysUsers">
+        insert into sys_users (
+          userId,username,password,indate,createUser,createTime,`type`,isSupper
+        ) values (
+          #{userId,jdbcType=VARCHAR},#{username,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},
+          #{indate,jdbcType=DATE},#{createUser,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{type},
+          #{isSupper}
+        )
+    </insert>
+
+    <!--根据组织编码查询用户-->
+    <select id="selectUserByOrgId" parameterType="java.lang.String"
+            resultMap="BaseResultMap">
+        select
+          a.userId,
+          a.username,
+          a.password,
+          a.indate,
+          a.type,
+          a.createUser,
+          a.createTime,
+          a.isSupper,
+          b.*
+        FROM sys_users a,
+        sys_userinfo b
+        WHERE a.userId = b.userId
+        AND b.org_id = #{orgId}
+    </select>
+
+    <!--根据组织编码查询用户-->
+    <select id="selectUserByDeptId" parameterType="java.lang.String"
+            resultMap="BaseResultMap">
+        select
+          a.userId,
+          a.username,
+          a.password,
+          a.indate,
+          a.type,
+          a.createUser,
+          a.createTime,
+          a.isSupper,
+          b.*
+        FROM sys_users a,
+        sys_userinfo b
+        WHERE a.userId = b.userId
+        AND b.org_id = (
+        select orgId FROM sys_deptInfo
+        WHERE deptId = #{deptId}
+        ) AND b.deptId = #{deptId}
+    </select>
+
+    <!--根据角色编码查询用户-->
+    <select id="selectUserByRoleId" parameterType="java.lang.String"
+            resultMap="BaseResultMap">
+        select
+          a.userId,
+          a.username,
+          a.password,
+          a.indate,
+          a.type,
+          a.createUser,
+          a.createTime,
+          a.isSupper,
+          b.*
+        FROM sys_users a,
+        sys_userinfo b
+        WHERE a.userId = b.userId
+        AND a.userId in (
+            SELECT userId FROM sys_user_role WHERE roleId = #{roleId}
+        )
+    </select>
+
+    <!--根据资源ID查询用户-->
+    <select id="selectUserByResourceId" parameterType="java.lang.String"
+            resultMap="BaseResultMap">
+        select
+          a.userId,
+          a.username,
+          a.password,
+          a.indate,
+          a.type,
+          a.createUser,
+          a.createTime,
+          a.isSupper,
+          b.*
+        FROM sys_users a,
+        sys_userinfo b
+        WHERE a.userId = b.userId
+        AND a.userId in (
+            SELECT userId FROM sys_user_role WHERE roleId in (
+                select roleId FROM sys_role_resource WHERE resourceId = #{resourceId}
+            )
+        )
+    </select>
+
+    <!--根据用户名获取密码-->
+    <select id="selectPassWordByUserName" parameterType="java.lang.String"
+            resultMap="BaseResultMap">
+        select * from sys_users WHERE username = #{userName}
+    </select>
+
+    <!--获取用户组织信息与部门信息-->
+    <select id="selectUsersResource" parameterType="com.zt.sys.authority.entity.SysUsers"
+            resultMap="BaseResultMap">
+        SELECT * FROM sys_users a,
+        sys_userinfo b,
+        sys_orginfo c,
+        sys_deptinfo d
+        WHERE a.userId = b.userId
+        AND b.org_id = c.orgId
+        AND b.deptId = d.deptId
+        AND a.userId = #{userId}
+    </select>
+</mapper>

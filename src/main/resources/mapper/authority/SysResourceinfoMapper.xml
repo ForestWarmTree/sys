@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zt.sys.authority.mapper.SysResourceinfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.zt.sys.authority.entity.SysResourceinfo">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="resourceId" property="resourceId" jdbcType="VARCHAR" />
+        <result column="resourceName" property="permissionName" jdbcType="VARCHAR" />
+        <result column="parentId" property="parentId" jdbcType="VARCHAR" />
+        <result column="level" property="level" jdbcType="VARCHAR" />
+        <result column="resourceType" property="resourceType" jdbcType="VARCHAR" />
+        <result column="resourceUrl" property="resourceUrl" jdbcType="VARCHAR" />
+        <result column="btnType" property="permissionId" jdbcType="VARCHAR" />
+        <result column="createUser" property="createUser" jdbcType="VARCHAR" />
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="updateUser" property="updateUser" jdbcType="VARCHAR" />
+        <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <select id="selectResourceInfoByResourceId" parameterType="com.zt.sys.authority.entity.SysResourceinfo"
+            resultMap="BaseResultMap">
+        select * from sys_resourceinfo where resourceId = #{resourceId}
+    </select>
+
+    <!--验证资源编码-->
+    <select id="validataResourceId" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(0) from sys_resourceinfo where resourceId = #{resourceId}
+    </select>
+
+    <delete id="deleteResources" parameterType="com.zt.sys.authority.entity.SysResourceinfo">
+        delete from sys_resourceinfo where resourceId = #{resourceId}
+    </delete>
+
+    <!--列表查询-->
+    <select id="selectAll" parameterType="com.zt.sys.authority.entity.SysResourceinfo"
+            resultMap="BaseResultMap">
+        select * from sys_resourceinfo
+        <where>
+            <if test="resourceId != null and resourceId!=''">
+                and resourceId = #{resourceId}
+            </if>
+            <if test="permissionName != null and permissionName!=''">
+                and resourceName = #{permissionName}
+            </if>
+            <if test="parentId != null and parentId!=''">
+                and parentId = #{parentId}
+            </if>
+            <if test="resourceType != null and resourceType!=''">
+                and resourceType = #{resourceType}
+            </if>
+        </where>
+        ORDER BY `level`,id
+    </select>
+
+    <insert id="saveResource" parameterType="com.zt.sys.authority.entity.SysResourceinfo">
+        insert into sys_resourceinfo(
+          resourceId,resourceName,parentId,level,resourceType,resourceUrl,
+          btnType,createUser,createTime
+        ) values (
+          #{resourceId},#{permissionName},#{parentId},#{level},#{resourceType},#{resourceUrl},
+          #{permissionId},#{createUser},#{createTime}
+        )
+    </insert>
+
+    <update id="editResource" parameterType="com.zt.sys.authority.entity.SysResourceinfo">
+        update sys_resourceinfo
+        <set>
+            <trim suffixOverrides=",">
+                <if test="permissionName!=null and permissionName!=''">
+                    resourceName = #{permissionName},
+                </if>
+                <if test="parentId!=null and parentId!=''">
+                    parentId = #{parentId},
+                </if>
+                <if test="level!=null and level!=''">
+                    level = #{level},
+                </if>
+                <if test="resourceType!=null and resourceType!=''">
+                    resourceType = #{resourceType},
+                </if>
+                <if test="resourceUrl!=null and resourceUrl!=''">
+                    resourceUrl = #{resourceUrl}
+                </if>
+            </trim>
+        </set>
+        where resourceId = #{resourceId}
+    </update>
+
+
+    <!--根据用户ID获取所有资源菜单-->
+    <select id="selectResourceByUserId" parameterType="com.zt.sys.authority.entity.SysUsers"
+            resultMap="BaseResultMap">
+        select
+         a.resourceId,a.resourceName,a.parentId,a.`level`,
+         a.resourceType,a.resourceUrl,a.btnType,
+         'user' as roleId
+        FROM sys_resourceinfo a,
+        (SELECT resourceId,roleId FROM sys_role_resource WHERE roleId in (
+        select ur.roleId FROM sys_user_role ur,sys_roleinfo r WHERE ur.userId = #{userId}
+        and ur.roleId=r.roleId
+        and ur.startDate &lt;= CURDATE() AND ur.endDate &gt; CURDATE()
+        and r.startDate &lt;= CURDATE() AND r.endDate &gt; CURDATE()
+        ))b
+        WHERE a.resourceId = b.resourceId
+        and resourceType = 'menu'
+        <if test="resourceId != null and resourceId!=''">
+            and a.resourceId = #{resourceId}
+        </if>
+        <if test="permissionName != null and permissionName!=''">
+            and a.resourceName = #{permissionName}
+        </if>
+        GROUP BY a.resourceId,
+        a.resourceName,
+        a.parentId,
+        a.`level`,
+        a.resourceType,
+        a.resourceUrl,
+        a.btnType
+    </select>
+
+
+    <select id="selectResourceList" parameterType="com.zt.sys.authority.entity.SysResourceinfo"
+            resultMap="BaseResultMap">
+        select
+         a.resourceId,a.resourceName,a.parentId,a.`level`,
+         a.resourceType,a.resourceUrl,a.btnType,
+         'user' as roleId
+        FROM sys_resourceinfo a,
+        (SELECT resourceId,roleId FROM sys_role_resource WHERE roleId in (
+        select ur.roleId FROM sys_user_role ur,sys_roleinfo r WHERE ur.userId = #{userId}
+        and ur.roleId=r.roleId
+        and ur.startDate &lt;= CURDATE() AND ur.endDate &gt; CURDATE()
+        and r.startDate &lt;= CURDATE() AND r.endDate &gt; CURDATE()
+        ))b
+        WHERE a.resourceId = b.resourceId
+        <if test="resourceId != null and resourceId!=''">
+            and resourceId = #{resourceId}
+        </if>
+        <if test="permissionName != null and permissionName!=''">
+            and resourceName = #{permissionName}
+        </if>
+        <if test="parentId != null and parentId!=''">
+            and parentId = #{parentId}
+        </if>
+        <if test="resourceType != null and resourceType!=''">
+            and resourceType = #{resourceType}
+        </if>
+        GROUP BY a.resourceId,
+        a.resourceName,
+        a.parentId,
+        a.`level`,
+        a.resourceType,
+        a.resourceUrl,
+        a.btnType
+        ORDER BY `level`,id
+    </select>
+
+    <!--根据资源ID获取按钮信息-->
+    <select id="selectBtn" parameterType="java.util.List"
+            resultType="com.zt.sys.authority.entity.SysResourceinfo">
+        select
+            resourceId,
+            resourceName as `describe`,
+            parentId,
+            `level`,
+            resourceType,
+            resourceUrl,
+            btnType as `action`
+        from sys_resourceinfo WHERE parentId in  (
+        <foreach collection="list" item="item" index="index" separator=",">
+           #{item}
+        </foreach>
+        ) and resourceType = 'btn'
+    </select>
+
+    <!--根据角色ID返回资源信息-->
+    <select id="selectResourceByRoleId" parameterType="com.zt.sys.authority.entity.SysRoleinfo"
+            resultMap="BaseResultMap">
+        select * FROM sys_resourceinfo WHERE resourceId in (
+            SELECT resourceId FROM sys_role_resource WHERE roleId = #{roleId}
+        ) and resourceType = 'menu'
+    </select>
+</mapper>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zt.sys.authority.mapper.SysRoleResourceMapper">
+
+    <resultMap id="BaseResultMap" type="com.zt.sys.authority.entity.SysRoleResource">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="roleId" property="roleId" jdbcType="VARCHAR" />
+        <result column="resourceId" property="resourceId" jdbcType="VARCHAR" />
+        <result column="createUser" property="createUser" jdbcType="VARCHAR" />
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <!--根据角色编码删除 角色资源对应关系-->
+    <delete id="deleteByRoleId" parameterType="java.lang.String">
+        delete from sys_role_resource where roleId = #{roleId}
+    </delete>
+
+    <!--新增角色资源对应关系 - 按角色分配-->
+    <insert id="saveRoleResource" parameterType="java.util.Map">
+        insert into sys_role_resource (
+          roleId,resourceId,createUser,createTime
+        ) values
+        <foreach collection="resourceIds" item="item" index="index" separator=",">
+            (#{sysRoleResource.roleId},#{item},
+            #{sysRoleResource.createUser},#{sysRoleResource.createTime})
+        </foreach>
+    </insert>
+
+    <!--根据资源编码删除 角色资源对应关系-->
+    <delete id="deleteByResourceId" parameterType="java.lang.String">
+        delete from sys_role_resource where resourceId = #{resourceId}
+    </delete>
+
+    <!--新增角色资源对应关系 - 按资源分配-->
+    <insert id="saveResourceRole" parameterType="java.util.Map">
+        insert into sys_role_resource (
+          resourceId,roleId,createUser,createTime
+        ) values
+        <foreach collection="roleIds" item="item" index="index" separator=",">
+            (#{sysRoleResource.resourceId},#{item},
+            #{sysRoleResource.createUser},#{sysRoleResource.createTime})
+        </foreach>
+    </insert>
+
+    <select id="selectResourceIdByRoleIds" parameterType="java.util.List"
+            resultMap="BaseResultMap">
+        select roleId,resourceId from sys_role_resource
+        WHERE
+        <if test="list!=null and list.size()>0">
+            roleId in
+            <foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+                (#{item})
+            </foreach>
+        </if>
+    </select>
+
+
+    <select id="selectRoleIdByResourceId" parameterType="java.lang.String"
+            resultType="java.lang.String">
+        select roleId from sys_role_resource WHERE resourceId = #{resourceId}
+    </select>
+
+    <select id="selectResourceIdByRoleId" parameterType="java.lang.String"
+            resultType="java.lang.String">
+        select resourceId from sys_role_resource WHERE roleId = #{roleId}
+    </select>
+</mapper>

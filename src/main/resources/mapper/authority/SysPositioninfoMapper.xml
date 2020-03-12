@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zt.sys.authority.mapper.SysPositioninfoMapper">
+    <resultMap id="BaseResultMap" type="com.zt.sys.authority.entity.SysPositioninfo">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="positionNo" property="positionNo" jdbcType="VARCHAR" />
+        <result column="positionName" property="positionName" jdbcType="VARCHAR" />
+        <result column="createUser" property="createUser" jdbcType="VARCHAR" />
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="updateUser" property="updateUser" jdbcType="VARCHAR" />
+        <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <!--验证岗位编码是否存在-->
+    <select id="validataPositionId" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(0) from sys_positioninfo where positionNo = #{positionNo}
+    </select>
+
+    <!--新增岗位信息-->
+    <insert id="savePositionInfo" parameterType="com.zt.sys.authority.entity.SysPositioninfo">
+        insert into sys_positioninfo (
+          positionNo,positionName,createUser,createTime
+        ) values (
+          #{positionNo},#{positionName},#{createUser},#{createTime}
+        )
+    </insert>
+
+    <!--修改岗位信息-->
+    <update id="editPositionInfo" parameterType="com.zt.sys.authority.entity.SysPositioninfo">
+        update sys_positioninfo
+        <set>
+            <trim suffixOverrides=",">
+                <if test="positionName!=null and positionName!=''">positionName = #{positionName},</if>
+                <if test="updateUser!=null and updateUser!=''">updateUser = #{updateUser},</if>
+                <if test="updateTime!=null">updateTime = #{updateTime},</if>
+            </trim>
+        </set>
+        where positionNo = #{positionNo}
+    </update>
+</mapper>

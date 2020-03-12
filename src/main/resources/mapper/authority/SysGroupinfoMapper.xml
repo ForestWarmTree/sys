@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zt.sys.authority.mapper.SysGroupinfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.zt.sys.authority.entity.SysGroupinfo">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="groupId" property="groupId" jdbcType="VARCHAR" />
+        <result column="groupName" property="groupName" jdbcType="VARCHAR" />
+        <result column="orgId" property="orgId" jdbcType="VARCHAR" />
+        <result column="deptId" property="deptId" jdbcType="DATE" />
+        <result column="createUser" property="createUser" jdbcType="VARCHAR" />
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="updateUser" property="updateUser" jdbcType="VARCHAR" />
+        <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <!--新增/编辑用户基础信息-->
+    <update id="editGroupInfo" parameterType="com.zt.sys.authority.entity.SysGroupinfo">
+        update sys_groupinfo
+        <set>
+            <trim suffixOverrides=",">
+                <if test="groupName!=null and groupName!=''">
+                    groupName = #{groupName},
+                </if>
+                <if test="orgId!=null and orgId!=''">
+                    orgId = #{orgId},
+                </if>
+                <if test="deptId!=null and deptId!=''">
+                    deptId = #{deptId},
+                </if>
+                <if test="updateUser!=null and updateUser!=''">
+                    native_place = #{nativePlace},
+                </if>
+                <if test="updateTime!=null">
+                    updateTime = #{updateTime},
+                </if>
+            </trim>
+        </set>
+        where groupId = #{groupId}
+    </update>
+
+    <select id="validataGroupId" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(0) from sys_groupinfo where groupId = #{groupId}
+    </select>
+
+    <insert id="saveGroupInfo" parameterType="com.zt.sys.authority.entity.SysGroupinfo">
+        insert into sys_groupinfo (
+        groupId,groupName,orgId,deptId,createUser,createTime,
+        updateUser,updateTime
+        ) values (
+        #{groupId},#{groupName},#{orgId},#{deptId},#{createUser},#{createTime},
+        #{updateUser},#{updateTime}
+        )
+    </insert>
+</mapper>

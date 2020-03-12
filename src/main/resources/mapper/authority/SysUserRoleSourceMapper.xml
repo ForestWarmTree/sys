@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zt.sys.authority.mapper.SysUserRoleSourceMapper">
+
+    <resultMap id="BaseResultMap" type="com.zt.sys.authority.entity.SysUserRoleSource">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="userId" property="userId" jdbcType="VARCHAR" />
+        <result column="roleId" property="roleId" jdbcType="VARCHAR" />
+        <result column="resourceId" property="resourceId" jdbcType="VARCHAR" />
+        <result column="createUser" property="createUser" jdbcType="VARCHAR" />
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <insert id="saveUserRoleResource" parameterType="java.util.Map">
+        insert into sys_user_role_source(
+          userId,roleId,resourceId,createUser,createTime
+        ) values
+        <foreach collection="roleResourceList" item="item" index="index" separator=",">
+            (#{sysUserRoleSource.userId},#{item.roleId},#{item.resourceId},
+            #{sysUserRoleSource.createUser},#{sysUserRoleSource.createTime})
+        </foreach>
+    </insert>
+</mapper>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zt.sys.authority.mapper.SysOrginfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.zt.sys.authority.entity.SysOrginfo">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="orgId" property="orgId" jdbcType="VARCHAR" />
+        <result column="orgName" property="orgName" jdbcType="VARCHAR" />
+        <result column="parentId" property="parentId" jdbcType="VARCHAR" />
+        <result column="orgType" property="orgType" jdbcType="VARCHAR" />
+        <result column="ry1" property="ry1" jdbcType="VARCHAR" />
+        <result column="ry2" property="ry2" jdbcType="VARCHAR" />
+        <result column="ry3" property="ry3" jdbcType="VARCHAR" />
+        <result column="ry4" property="ry4" jdbcType="VARCHAR" />
+        <result column="ry5" property="ry5" jdbcType="VARCHAR" />
+        <result column="ry6" property="ry6" jdbcType="VARCHAR" />
+        <result column="ry7" property="ry7" jdbcType="VARCHAR" />
+        <result column="ry8" property="ry8" jdbcType="VARCHAR" />
+        <result column="ry9" property="ry9" jdbcType="VARCHAR" />
+        <result column="ry10" property="ry10" jdbcType="VARCHAR" />
+        <result column="createUser" property="createUser" jdbcType="VARCHAR" />
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="updateUser" property="updateUser" jdbcType="VARCHAR" />
+        <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <!--验证组织编码是否存在-->
+    <select id="validataOrgId" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(0) from sys_orginfo where orgId = #{orgId}
+    </select>
+
+    <!--新增组织信息-->
+    <insert id="saveOrgInfo" parameterType="com.zt.sys.authority.entity.SysOrginfo">
+        insert into sys_orginfo(
+          orgId,orgName,parentId,orgType,
+          ry1,ry2,ry3,ry4,ry5,ry6,ry7,ry8,ry9,ry10,
+          createUser,createTime,updateUser,updateTime
+        ) values (
+          #{orgId},#{orgName},#{parentId},#{orgType},
+          #{ry1},#{ry2},#{ry3},#{ry4},#{ry5},#{ry6},
+          #{ry7},#{ry8},#{ry9},#{ry10},#{createUser},#{createTime},
+          #{updateUser},#{updateTime}
+        )
+    </insert>
+
+    <!--编辑组织信息-->
+    <update id="editOrgInfo" parameterType="com.zt.sys.authority.entity.SysOrginfo">
+        update sys_orginfo
+        <set>
+            <trim suffixOverrides=",">
+                <if test="orgName!=null and orgName!=''">orgName = #{orgName},</if>
+                <if test="parentId!=null and parentId!=''">parentId = #{parentId},</if>
+                <if test="orgType!=null and orgType!=''">orgType = #{orgType},</if>
+                <if test="ry1!=null and ry1!=''">ry1 = #{ry1},</if>
+                <if test="ry2!=null and ry2!=''">ry2 = #{ry2},</if>
+                <if test="ry3!=null and ry3!=''">ry3 = #{ry3},</if>
+                <if test="ry4!=null and ry4!=''">ry4 = #{ry4},</if>
+                <if test="ry5!=null and ry5!=''">ry5 = #{ry5},</if>
+                <if test="ry6!=null and ry6!=''">ry6 = #{ry6},</if>
+                <if test="ry7!=null and ry7!=''">ry7 = #{ry7},</if>
+                <if test="ry8!=null and ry8!=''">ry8 = #{ry8},</if>
+                <if test="ry9!=null and ry9!=''">ry9 = #{ry9},</if>
+                <if test="ry10!=null and ry10!=''">ry10 = #{ry10},</if>
+                <if test="updateUser!=null and updateUser!=''">updateUser = #{updateUser},</if>
+                <if test="updateTime!=null">updateTime = #{updateTime}</if>
+            </trim>
+        </set>
+        where orgId = #{orgId}
+    </update>
+</mapper>

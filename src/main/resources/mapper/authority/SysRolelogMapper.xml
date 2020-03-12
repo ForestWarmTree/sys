@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zt.sys.authority.mapper.SysRolelogMapper">
+
+    <resultMap id="BaseResultMap" type="com.zt.sys.authority.entity.SysRolelog">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="userId" property="userId" jdbcType="VARCHAR" />
+        <result column="userName" property="userName" jdbcType="VARCHAR" />
+        <result column="resourceId" property="resourceId" jdbcType="VARCHAR" />
+        <result column="sourceName" property="sourceName" jdbcType="VARCHAR" />
+        <result column="roleId" property="roleId" jdbcType="VARCHAR" />
+        <result column="roleName" property="roleName" jdbcType="VARCHAR" />
+        <result column="updateType" property="updateType" jdbcType="VARCHAR" />
+        <result column="updateTypeTips" property="updateTypeTips" jdbcType="VARCHAR" />
+        <result column="sysUser" property="sysUser" jdbcType="VARCHAR" />
+        <result column="sysUserName" property="sysUserName" jdbcType="VARCHAR" />
+        <result column="sysTime" property="sysTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+
+    <!--根据用户ID查询角色ID-->
+    <select id="getRoleIdByUserId" parameterType="java.lang.String" resultType="java.lang.String">
+        select roleId from sys_rolelog WHERE userId = #{userId}
+        AND roleId is NOT NULL
+    </select>
+
+    <!--根据角色ID查询用户ID-->
+    <select id="getUserIdByRoleId" parameterType="java.lang.String" resultType="java.lang.String">
+        select userId from sys_rolelog WHERE roleId = #{roleId}
+        AND userId is NOT NULL
+    </select>
+
+    <!--根据资源ID查询角色ID-->
+    <select id="getRoleIdByResourceId" parameterType="java.lang.String" resultType="java.lang.String">
+        select resourceId from sys_rolelog WHERE roleId = #{roleId}
+        AND resourceId is NOT NULL
+    </select>
+
+    <!--根据角色ID查询资源ID-->
+    <select id="getResourceIdByRoleId" parameterType="java.lang.String" resultType="java.lang.String">
+        select roleId from sys_rolelog WHERE resourceId = #{resourceId}
+        AND roleId is NOT NULL
+    </select>
+
+    <!--新增-->
+    <insert id="saveLogList" parameterType="java.util.List">
+        insert into sys_rolelog (
+          userId,userName,resourceId,sourceName,roleId,
+          roleName,updateType,updateTypeTips,sysUser,sysUserName,sysTime
+        ) values
+          <foreach collection="list" item="item" index="index" separator=",">
+              (#{item.userId},#{item.userName},#{item.resourceId},#{item.sourceName},#{item.roleId},
+              #{item.roleName},#{item.updateType},#{item.updateTypeTips},#{item.sysUser},#{item.sysUserName},#{item.sysTime}
+              )
+          </foreach>
+    </insert>
+
+    <insert id="saveLog" parameterType="com.zt.sys.authority.entity.SysRolelog">
+        insert into sys_rolelog (
+        userId,userName,resourceId,sourceName,roleId,
+        roleName,updateType,updateTypeTips,sysUser,sysUserName,sysTime
+        ) values (
+            #{userId},#{userName},#{resourceId},#{sourceName},#{roleId},
+            #{roleName},#{updateType},#{updateTypeTips},#{sysUser},#{sysUserName},#{sysTime}
+            )
+    </insert>
+</mapper>

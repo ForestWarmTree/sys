@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zt.sys.authority.mapper.SysUserinfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.zt.sys.authority.entity.SysUserinfo">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="userId" property="userId" jdbcType="VARCHAR" />
+        <result column="userCardNo" property="userCardNo" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="position" property="position" jdbcType="VARCHAR" />
+        <result column="org_id" property="orgId" jdbcType="VARCHAR" />
+        <result column="deptId" property="deptId" jdbcType="VARCHAR" />
+        <result column="native_place" property="nativePlace" jdbcType="VARCHAR" />
+        <result column="bank" property="bank" jdbcType="VARCHAR" />
+        <result column="card_nums" property="cardNums" jdbcType="VARCHAR" />
+        <result column="entry_time" property="entryTime" jdbcType="TIMESTAMP" />
+        <result column="assumption_flag" property="assumptionFlag" jdbcType="INTEGER" />
+        <result column="identity_card" property="identityCard" jdbcType="VARCHAR" />
+        <result column="phone" property="phone" jdbcType="VARCHAR" />
+        <result column="createUser" property="createUser" jdbcType="VARCHAR" />
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="updateUser" property="updateUser" jdbcType="VARCHAR" />
+        <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <!--根据用户ID查询用户基础信息-->
+    <select id="getUserInfoByUserId" parameterType="com.zt.sys.authority.entity.SysUserinfo"
+            resultMap="BaseResultMap">
+        select * from sys_userinfo where userId = #{userId}
+    </select>
+
+    <!--新增用户基础信息-->
+    <insert id="saveUserInfo" parameterType="com.zt.sys.authority.entity.SysUserinfo">
+        insert into sys_userinfo (
+          userId,userCardNo,name,position,org_id,deptId,native_place,
+          bank,card_nums,entry_time,assumption_flag,identity_card,phone,
+          createUser,createTime,updateUser,updateTime
+        ) values (
+          #{userId},#{userCardNo},#{name},#{position},#{orgId},#{deptId},#{nativePlace},
+          #{bank},#{cardNums},#{entryTime},#{assumptionFlag},#{identityCard},#{phone},
+          #{createUser},#{createTime},#{updateUser},#{updateTime}
+        )
+    </insert>
+
+    <!--编辑用户基础信息-->
+    <update id="updateUserInfo" parameterType="com.zt.sys.authority.entity.SysUserinfo">
+        update sys_userinfo
+        <set>
+            <trim suffixOverrides=",">
+                <if test="userCardNo!=null and userCardNo!=''">
+                    userCardNo = #{userCardNo},
+                </if>
+                <if test="name!=null and name!=''">
+                    name = #{name},
+                </if>
+                <if test="position!=null and position!=''">
+                    position = #{position},
+                </if>
+                <if test="orgId!=null and orgId!=''">
+                    org_id = #{orgId},
+                </if>
+                <if test="deptId!=null and deptId!=''">
+                    deptId = #{deptId},
+                </if>
+                <if test="nativePlace!=null and nativePlace!=''">
+                    native_place = #{nativePlace},
+                </if>
+                <if test="bank!=null and bank!=''">
+                    bank = #{bank},
+                </if>
+                <if test="cardNums!=null and cardNums!=''">
+                    card_nums = #{cardNums},
+                </if>
+                <if test="entryTime!=null">
+                    entry_time = #{entryTime},
+                </if>
+                <if test="assumptionFlag!=null and assumptionFlag!=''">
+                    assumption_flag = #{assumptionFlag},
+                </if>
+                <if test="identityCard!=null and identityCard!=''">
+                    identity_card = #{identityCard},
+                </if>
+                <if test="phone!=null and phone!=''">
+                    phone = #{phone},
+                </if>
+                <if test="updateUser!=null and updateUser!=''">
+                    updateUser = #{updateUser},
+                </if>
+                <if test="updateTime!=null">
+                    updateTime = #{updateTime},
+                </if>
+            </trim>
+        </set>
+        where userId = #{userId}
+    </update>
+</mapper>

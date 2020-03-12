@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zt.sys.authority.mapper.SysUserRoleMapper">
+
+    <resultMap id="BaseResultMap" type="com.zt.sys.authority.entity.SysUserRole">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="userId" property="userId" jdbcType="VARCHAR" />
+        <result column="roleId" property="roleId" jdbcType="VARCHAR" />
+        <result column="startDate" property="startDate" jdbcType="DATE" />
+        <result column="endDate" property="endDate" jdbcType="DATE" />
+        <result column="createUser" property="createUser" jdbcType="VARCHAR" />
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+
+    <delete id="deleteUserRoleByUserId" parameterType="java.lang.String">
+        delete from sys_user_role where userId = #{userId}
+    </delete>
+
+    <insert id="saveUserRole" parameterType="java.util.Map">
+        insert into sys_user_role (
+          userId,roleId,startDate,endDate,createUser,createTime
+        ) values
+        <foreach collection="roleIds" item="item" index="index" separator=",">
+            (#{sysUserRole.userId},#{item},#{sysUserRole.startDate},#{sysUserRole.endDate},
+            #{sysUserRole.createUser},#{sysUserRole.createTime})
+        </foreach>
+    </insert>
+
+    <delete id="deleteUserRoleByRoleId" parameterType="java.lang.String">
+        delete from sys_user_role where roleId = #{roleId}
+    </delete>
+
+    <insert id="saveRoleUser" parameterType="java.util.Map">
+        insert into sys_user_role (
+        roleId,userId,startDate,endDate,createUser,createTime
+        ) values
+        <foreach collection="userIds" item="item" index="index" separator=",">
+            (#{sysUserRole.roleId},#{item},#{sysUserRole.startDate},#{sysUserRole.endDate},
+            #{sysUserRole.createUser},#{sysUserRole.createTime})
+        </foreach>
+    </insert>
+
+    <select id="selectAllByUserId" parameterType="java.lang.String"
+            resultMap="BaseResultMap">
+        select * from sys_user_role WHERE userId = #{userId}
+    </select>
+
+    <select id="selectAllByRoleId" parameterType="java.lang.String"
+            resultMap="BaseResultMap">
+        select * from sys_user_role WHERE roleId = #{roleId}
+    </select>
+
+    <insert id="saveUserRoleByAB" parameterType="java.util.List">
+        insert into sys_user_role (
+          roleId,userId,startDate,endDate,createUser,createTime
+        ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.roleId},#{item.userId},#{item.startDate},#{item.endDate},
+            #{item.createUser},#{item.createTime})
+        </foreach>
+    </insert>
+</mapper>

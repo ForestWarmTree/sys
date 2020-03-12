@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zt.sys.authority.mapper.SysDeptPositionMapper">
+
+    <resultMap id="BaseResultMap" type="com.zt.sys.authority.entity.SysDeptPosition">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="deptId" property="deptId" jdbcType="VARCHAR" />
+        <result column="positionNo" property="positionNo" jdbcType="VARCHAR" />
+        <result column="createUser" property="createUser" jdbcType="VARCHAR" />
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <!--删除用户组与用户对应关系-->
+    <delete id="deleteDeptPosition" parameterType="java.lang.String">
+        delete from sys_dept_position where deptId = #{deptId}
+    </delete>
+
+    <!--新增用户组与用户对应关系-->
+    <insert id="saveDeptPosition" parameterType="java.util.Map">
+        insert into sys_dept_position (
+        deptId,positionNo,createUser,createTime
+        ) values
+        <foreach collection="positionIds" item="item" index="index" separator=",">
+            (#{sysDeptPosition.deptId},#{item},#{sysDeptPosition.createUser},#{sysDeptPosition.createTime})
+        </foreach>
+    </insert>
+
+    <!--根据部门编码查询岗位编码-->
+    <select id="selectPositionIdByDeptId" parameterType="java.lang.String"
+            resultType="java.lang.String">
+        select positionNo from sys_dept_position where deptId = #{deptId}
+    </select>
+</mapper>

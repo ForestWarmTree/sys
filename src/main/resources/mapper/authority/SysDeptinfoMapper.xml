@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zt.sys.authority.mapper.SysDeptinfoMapper">
+    <resultMap id="BaseResultMap" type="com.zt.sys.authority.entity.SysDeptinfo">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="deptId" property="deptId" jdbcType="VARCHAR" />
+        <result column="deptName" property="deptName" jdbcType="VARCHAR" />
+        <result column="orgId" property="orgId" jdbcType="VARCHAR" />
+        <result column="ry1" property="ry1" jdbcType="VARCHAR" />
+        <result column="ry2" property="ry2" jdbcType="VARCHAR" />
+        <result column="ry3" property="ry3" jdbcType="VARCHAR" />
+        <result column="ry4" property="ry4" jdbcType="VARCHAR" />
+        <result column="ry5" property="ry5" jdbcType="VARCHAR" />
+        <result column="createUser" property="createUser" jdbcType="VARCHAR" />
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="updateUser" property="updateUser" jdbcType="VARCHAR" />
+        <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <!--验证部门编码是否存在-->
+    <select id="validataDeptId" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(0) from sys_deptinfo where deptId = #{deptId}
+    </select>
+
+    <!--新增部门信息-->
+    <insert id="saveDeptInfo" parameterType="com.zt.sys.authority.entity.SysDeptinfo">
+        insert into sys_deptinfo(
+          deptId,deptName,orgId,
+          ry1,ry2,ry3,ry4,ry5,
+          createUser,createTime,updateUser,updateTime
+        ) values (
+          #{deptId},#{deptName},#{orgId},
+          #{ry1},#{ry2},#{ry3},#{ry4},#{ry5},
+          #{createUser},#{createTime},#{updateUser},#{updateTime}
+        )
+    </insert>
+
+    <!--编辑部门信息-->
+    <update id="editDeptInfo" parameterType="com.zt.sys.authority.entity.SysDeptinfo">
+        update sys_deptinfo
+        <set>
+            <trim suffixOverrides=",">
+                <if test="deptName!=null and deptName!=''">deptName = #{deptName},</if>
+                <if test="orgId!=null and orgId!=''">orgId = #{orgId},</if>
+                <if test="ry1!=null and ry1!=''">ry1 = #{ry1},</if>
+                <if test="ry2!=null and ry2!=''">ry2 = #{ry2},</if>
+                <if test="ry3!=null and ry3!=''">ry3 = #{ry3},</if>
+                <if test="ry4!=null and ry4!=''">ry4 = #{ry4},</if>
+                <if test="ry5!=null and ry5!=''">ry5 = #{ry5},</if>
+                <if test="updateUser!=null and updateUser!=''">updateUser = #{updateUser},</if>
+                <if test="updateTime!=null">updateTime = #{updateTime},</if>
+            </trim>
+        </set>
+        where deptId = #{deptId}
+    </update>
+</mapper>
