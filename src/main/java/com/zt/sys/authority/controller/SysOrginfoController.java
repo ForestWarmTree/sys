@@ -1,10 +1,12 @@
 package com.zt.sys.authority.controller;
 
 
+import com.github.pagehelper.PageInfo;
 import com.zt.sys.authority.core.RetResponse;
 import com.zt.sys.authority.core.RetResult;
 import com.zt.sys.authority.entity.SysGroupinfo;
 import com.zt.sys.authority.entity.SysOrginfo;
+import com.zt.sys.authority.entity.SysRoleinfo;
 import com.zt.sys.authority.entity.SysUsers;
 import com.zt.sys.authority.service.ISysGroupinfoService;
 import com.zt.sys.authority.service.ISysOrginfoService;
@@ -16,6 +18,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -98,4 +101,74 @@ public class SysOrginfoController {
         }
         return RetResponse.makeOKRsp(result);
     }
+
+
+    /**
+     * 组织列表查询
+     * @param orginfo
+     * @param request
+     * @return
+     */
+    @PostMapping("/selectOrgList")
+    @ResponseBody
+    public Map<String, Object> selectOrgList(@RequestBody SysOrginfo orginfo, HttpServletRequest request) {
+        Map<String, Object> result = new HashMap<>();
+        List<SysOrginfo> orginfoList = null;
+        try {
+            // 获取当前登陆人信息
+            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            if(sessionUser!=null && sessionUser.getUserId() != null &&
+                    !sessionUser.getUserId().equals("")) {
+                // 是超级管理员
+                if(sessionUser.getIsSupper().equals("1")) {
+                    orginfoList = orginfoService.selectAll(orginfo);
+                } else {
+                    orginfo.setUserId(sessionUser.getUserId());
+                    orginfoList = orginfoService.selectByUserOrgId(orginfo);
+                }
+                //返回结果集
+                PageInfo<SysOrginfo> pageInfo = new PageInfo<>(orginfoList);
+                result.put("size",orginfo.getPageSize());
+                result.put("current",orginfo.getCurrent());
+                result.put("total",pageInfo.getTotal());
+                result.put("pages",pageInfo.getPages());
+                result.put("records",orginfoList);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+
+
+    /**
+     * 删除组织信息-物理删除
+     * @param orgIds
+     * @param request
+     * @return
+     */
+    @PostMapping("/deleteOrg")
+    @ResponseBody
+    public RetResult<Map> deleteOrg(@RequestBody List<String> orgIds, HttpServletRequest request) {
+        try {
+            // 获取当前登陆人信息
+            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            if(sessionUser!=null && sessionUser.getUserId()!=null && !sessionUser.getUserId().equals("")) {
+                SysOrginfo sysOrginfo = new SysOrginfo();
+                sysOrginfo.setCreateUser(sessionUser.getUserId());//操作人
+                sysOrginfo.setCreateTime(new Date());//操作时间
+                sysOrginfo.setCreateUserName(sessionUser.getName());//操作人姓名
+                sysOrginfo.setOrgIds(orgIds);
+                orginfoService.deleteOrgs(sysOrginfo);
+            } else {
+                return RetResponse.makeErrRsp("登陆已过期!请重新登陆");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return  RetResponse.makeSysErrRsp();
+        }
+        return RetResponse.makeRsp(200,"操作成功!");
+    }
+
 }

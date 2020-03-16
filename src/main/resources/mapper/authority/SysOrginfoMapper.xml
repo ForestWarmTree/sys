@@ -7,6 +7,7 @@
         <result column="orgId" property="orgId" jdbcType="VARCHAR" />
         <result column="orgName" property="orgName" jdbcType="VARCHAR" />
         <result column="parentId" property="parentId" jdbcType="VARCHAR" />
+        <result column="parendName" property="parendName" jdbcType="VARCHAR" />
         <result column="orgType" property="orgType" jdbcType="VARCHAR" />
         <result column="ry1" property="ry1" jdbcType="VARCHAR" />
         <result column="ry2" property="ry2" jdbcType="VARCHAR" />
@@ -32,11 +33,11 @@
     <!--新增组织信息-->
     <insert id="saveOrgInfo" parameterType="com.zt.sys.authority.entity.SysOrginfo">
         insert into sys_orginfo(
-          orgId,orgName,parentId,orgType,
+          orgId,orgName,parentId,parendName,orgType,
           ry1,ry2,ry3,ry4,ry5,ry6,ry7,ry8,ry9,ry10,
           createUser,createTime,updateUser,updateTime
         ) values (
-          #{orgId},#{orgName},#{parentId},#{orgType},
+          #{orgId},#{orgName},#{parentId},#{parendName},#{orgType},
           #{ry1},#{ry2},#{ry3},#{ry4},#{ry5},#{ry6},
           #{ry7},#{ry8},#{ry9},#{ry10},#{createUser},#{createTime},
           #{updateUser},#{updateTime}
@@ -50,6 +51,7 @@
             <trim suffixOverrides=",">
                 <if test="orgName!=null and orgName!=''">orgName = #{orgName},</if>
                 <if test="parentId!=null and parentId!=''">parentId = #{parentId},</if>
+                <if test="parendName!=null and parendName!=''">parendName = #{parendName},</if>
                 <if test="orgType!=null and orgType!=''">orgType = #{orgType},</if>
                 <if test="ry1!=null and ry1!=''">ry1 = #{ry1},</if>
                 <if test="ry2!=null and ry2!=''">ry2 = #{ry2},</if>
@@ -67,4 +69,36 @@
         </set>
         where orgId = #{orgId}
     </update>
+
+
+    <select id="selectAll" parameterType="com.zt.sys.authority.entity.SysOrginfo"
+            resultMap="BaseResultMap">
+        select * from sys_orginfo
+        <where>
+            1=1
+            <if test="orgId!=null and orgId!=''">and orgId = #{orgId}</if>
+            <if test="orgName!=null and orgName!=''">and orgName = #{orgName}</if>
+            <if test="parentId!=null and parentId!=''">and parentId = #{parentId}</if>
+            <if test="parendName!=null and parendName!=''">and parendName = #{parendName}</if>
+            <if test="orgType!=null and orgType!=''">and orgType = #{orgType}</if>
+        </where>
+    </select>
+
+    <select id="selectByUserOrgId" parameterType="com.zt.sys.authority.entity.SysOrginfo"
+            resultMap="BaseResultMap">
+        select * FROM (
+            select * FROM sys_orginfo WHERE orgId = #{orgId}
+            UNION ALL
+            SELECT * FROM sys_orginfo WHERE parentId = #{orgId}
+        ) a
+        WHERE  1=1
+        <if test="orgName!=null and orgName!=''">and orgName = #{orgName}</if>
+        <if test="parentId!=null and parentId!=''">and parentId = #{parentId}</if>
+        <if test="parendName!=null and parendName!=''">and parendName = #{parendName}</if>
+        <if test="orgType!=null and orgType!=''">and orgType = #{orgType}</if>
+    </select>
+
+    <delete id="deleteOrgs" parameterType="java.lang.String">
+        delete from sys_orginfo WHERE orgId = #{orgId}
+    </delete>
 </mapper>

@@ -4,6 +4,7 @@ package com.zt.sys.authority.entity;
     import com.baomidou.mybatisplus.annotation.TableField;
     import java.io.Serializable;
     import java.util.Date;
+    import java.util.List;
 
     import lombok.Data;
     import lombok.EqualsAndHashCode;
@@ -35,6 +36,9 @@ package com.zt.sys.authority.entity;
     //父级组织编码
     @TableField("parentId")
     private String parentId;
+    //父级组织编码
+    @TableField("parendName")
+    private String parendName;
     // 组织类型
     @TableField("orgType")
     private String orgType;
@@ -73,4 +77,8 @@ package com.zt.sys.authority.entity;
     @TableField("updateTime")
     private Date updateTime;
 
+    //当前登陆人ID，非DB字段
+    private String userId;
+    //组织ID集合
+    private List<String> orgIds;
 }

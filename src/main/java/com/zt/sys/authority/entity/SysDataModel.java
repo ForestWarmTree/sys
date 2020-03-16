@@ -20,7 +20,7 @@ package com.zt.sys.authority.entity;
     @Data
         @EqualsAndHashCode(callSuper = false)
     @Accessors(chain = true)
-    public class SysDatacontroller extends BaseModel implements Serializable {
+    public class SysDataModel extends BaseModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

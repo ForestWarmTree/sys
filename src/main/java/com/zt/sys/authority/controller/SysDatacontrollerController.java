@@ -3,8 +3,7 @@ package com.zt.sys.authority.controller;
 
 import com.zt.sys.authority.core.RetResponse;
 import com.zt.sys.authority.core.RetResult;
-import com.zt.sys.authority.entity.SysColumnscontroller;
-import com.zt.sys.authority.entity.SysDatacontroller;
+import com.zt.sys.authority.entity.SysDataModel;
 import com.zt.sys.authority.entity.SysUsers;
 import com.zt.sys.authority.service.ISysDatacontrollerService;
 import com.zt.sys.authority.utils.HttpSessionValue;
@@ -41,7 +40,7 @@ public class SysDatacontrollerController {
      */
     @PostMapping("/saveData")
     @ResponseBody
-    public RetResult<Map> saveData(@RequestBody SysDatacontroller datacontroller,
+    public RetResult<Map> saveData(@RequestBody SysDataModel datacontroller,
                                      HttpServletRequest request) {
         try {
             // 获取当前登陆人信息
@@ -57,4 +56,10 @@ public class SysDatacontrollerController {
         }
         return RetResponse.makeOKRsp();
     }
+
+
+
+
+
+
 }

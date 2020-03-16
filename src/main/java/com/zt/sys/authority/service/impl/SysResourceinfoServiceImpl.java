@@ -6,11 +6,13 @@ import com.zt.sys.authority.mapper.SysRoleinfoMapper;
 import com.zt.sys.authority.mapper.SysRolelogMapper;
 import com.zt.sys.authority.service.ISysResourceinfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.zt.sys.authority.utils.CommonUtil;
 import com.zt.sys.authority.utils.ParamUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -158,6 +160,5 @@ public class SysResourceinfoServiceImpl extends ServiceImpl<SysResourceinfoMappe
         resInfo.setRoleinfos(roles);
         return resInfo;
     }
-
 
 }

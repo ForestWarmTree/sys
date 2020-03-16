@@ -3,22 +3,18 @@ package com.zt.sys.authority.controller;
 
 import com.zt.sys.authority.core.RetResponse;
 import com.zt.sys.authority.core.RetResult;
-import com.zt.sys.authority.entity.SysColumnscontroller;
-import com.zt.sys.authority.entity.SysUserinfo;
+import com.zt.sys.authority.entity.SysColumnsModel;
 import com.zt.sys.authority.entity.SysUsers;
 import com.zt.sys.authority.service.ISysColumnscontrollerService;
 
 import com.zt.sys.authority.utils.HttpSessionValue;
-import com.zt.sys.authority.utils.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.transform.Source;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -46,7 +42,7 @@ public class SysColumnscontrollerController {
      */
     @PostMapping("/saveColumn")
     @ResponseBody
-    public RetResult<Map> saveColumn(@RequestBody SysColumnscontroller sysColumnscontroller, HttpServletRequest request) {
+    public RetResult<Map> saveColumn(@RequestBody SysColumnsModel sysColumnscontroller, HttpServletRequest request) {
         try {
             // 获取当前登陆人信息
             SysUsers sessionUser = sessionValue.getSessionUser(request);

@@ -8,16 +8,15 @@ import com.zt.sys.authority.core.RetResult;
 import com.zt.sys.authority.entity.SysResourceinfo;
 import com.zt.sys.authority.entity.SysRoleinfo;
 import com.zt.sys.authority.entity.SysUsers;
+import com.zt.sys.authority.entity.TreeModel;
+import com.zt.sys.authority.service.ISysResourceinfoService;
 import com.zt.sys.authority.service.ISysRoleinfoService;
 import com.zt.sys.authority.utils.*;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>
@@ -36,6 +35,9 @@ public class SysRoleinfoController {
 
     @Resource
     private ISysRoleinfoService roleinfoService;
+
+    @Resource
+    private ISysResourceinfoService sysResourceinfoService;
 
     @Resource
     private CommonUtil<SysRoleinfo> commonUtil;
@@ -62,6 +64,41 @@ public class SysRoleinfoController {
         return result;
     }
 
+
+    /**
+     * 初始化编辑页面数据
+     * @param roleinfo
+     * @return
+     */
+    @PostMapping("/editInit")
+    @ResponseBody
+    public Map<String, Object> editInit(@RequestBody SysRoleinfo roleinfo, HttpServletRequest request){
+        Map<String, Object> result = new HashMap<>();
+        try {
+            // 获取当前登陆人信息
+            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysResourceinfo sysResourceinfo = new SysResourceinfo();
+            sysResourceinfo.setUserId(sessionUser.getUserId());
+            //根据用户ID获取当前用户可操作的权限树
+            List<TreeModel> treeModelList = commonUtil.editInitTree(sysResourceinfo);
+            //根据当前编辑的角色编码，查询出该角色已有的资源信息
+            List<SysResourceinfo> resList = sysResourceinfoService.selectResourceByRoleId(roleinfo);
+            List<String> selectKeys = new ArrayList<>();
+            for(SysResourceinfo info:resList) {
+                selectKeys.add(info.getResourceId());
+            }
+            roleinfo.setTreeData(treeModelList);
+            roleinfo.setSelectKeys(selectKeys);
+
+            result.put("code",200);
+            result.put("message", "");
+            result.put("timestemp", "");
+            result.put("result",roleinfo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 
 
     /**

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zt.sys.authority.mapper.SysDatacontrollerMapper">
 
-    <resultMap id="BaseResultMap" type="com.zt.sys.authority.entity.SysDatacontroller">
+    <resultMap id="BaseResultMap" type="com.zt.sys.authority.entity.SysDataModel">
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="roleId" property="roleId" jdbcType="VARCHAR" />
         <result column="resourceId" property="resourceId" jdbcType="VARCHAR" />
@@ -14,11 +14,16 @@
     </resultMap>
 
 
-    <insert id="saveData" parameterType="com.zt.sys.authority.entity.SysDatacontroller">
+    <insert id="saveData" parameterType="com.zt.sys.authority.entity.SysDataModel">
         insert into sys_datacontroller (
           roleId,resourceId,dataValue,dataType,name,createUser,createTime
         ) values (
           #{roleId},#{resourceId},#{dataValue},#{dataType},#{name},#{createUser},#{createTime}
         )
     </insert>
+
+    <select id="selectByRoleIdAndResourceId" parameterType="java.util.Map"
+            resultMap="BaseResultMap">
+        select * from sys_datacontroller where roleId = #{roleId} and resourceId = #{resourceId}
+    </select>
 </mapper>

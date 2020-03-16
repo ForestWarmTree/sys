@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -29,6 +30,10 @@ public class SysOrginfoServiceImpl extends ServiceImpl<SysOrginfoMapper, SysOrgi
 
     @Resource
     private SysRolelogMapper logMapper;
+
+
+    @Resource
+    private SysRolelogMapper sysRolelogMapper;
 
     /**
      * 编辑部门信息
@@ -80,5 +85,48 @@ public class SysOrginfoServiceImpl extends ServiceImpl<SysOrginfoMapper, SysOrgi
     @Override
     public int validataOrgId(String orgId) {
         return orginfoMapper.validataOrgId(orgId);
+    }
+
+    /**
+     * 根据检索条件查询所有组织信息
+     * @param sysOrginfo
+     * @return
+     */
+    @Override
+    public List<SysOrginfo> selectAll(SysOrginfo sysOrginfo) {
+        return orginfoMapper.selectAll(sysOrginfo);
+    }
+
+    /**
+     * 根据当前登陆人的组织，查询该组织与该组织下的子级组织
+     * @param sysOrginfo
+     * @return
+     */
+    @Override
+    public List<SysOrginfo> selectByUserOrgId(SysOrginfo sysOrginfo) {
+        return orginfoMapper.selectByUserOrgId(sysOrginfo);
+    }
+
+    /**
+     * 删除组织信息
+     * @param sysOrginfo
+     */
+    @Transactional
+    @Override
+    public void deleteOrgs(SysOrginfo sysOrginfo) {
+        for(String orgId:sysOrginfo.getOrgIds()) {
+            //记录log日志
+            SysRolelog sysRolelog = new SysRolelog();
+            sysRolelog.setResourceId(orgId);//组织ID
+            sysRolelog.setUpdateType(ParamUtil.DELETE);//变更类型
+            sysRolelog.setUpdateTypeTips(ParamUtil.LogSaveOrg);//变更类型业务描述
+            sysRolelog.setSysTime(sysOrginfo.getCreateTime());//创建时间
+            sysRolelog.setSysUser(sysOrginfo.getCreateUser());//创建人id
+            sysRolelog.setSysUserName(sysOrginfo.getCreateUserName());//创建人姓名
+            //保存日志
+            sysRolelogMapper.saveLog(sysRolelog);
+            //删除组织基础信息
+            orginfoMapper.deleteOrgs(orgId);
+        }
     }
 }

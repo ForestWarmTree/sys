@@ -66,12 +66,11 @@ public interface ISysRoleinfoService extends IService<SysRoleinfo> {
      * @return
      */
     List<SysRoleinfo> selectRoleByResourceId(String resourceId);
-
-
     /**
      * 根据角色ID查询角色详情
      * @param roleinfo
      * @return
      */
     SysRoleinfo selectRoleInfoByRoleId(SysRoleinfo roleinfo);
+
 }

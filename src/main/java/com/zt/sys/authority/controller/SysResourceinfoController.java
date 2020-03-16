@@ -63,8 +63,6 @@ public class SysResourceinfoController {
     }
 
 
-
-
     /**
      * 删除资源信息
      * @param resourceinfos

@@ -1,8 +1,8 @@
 package com.zt.sys.authority.service;
 
-import com.zt.sys.authority.entity.SysColumnscontroller;
+import com.zt.sys.authority.entity.SysColumnsModel;
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.springframework.stereotype.Service;
+import com.zt.sys.authority.entity.SysRoleinfo;
 
 import java.util.List;
 
@@ -14,10 +14,17 @@ import java.util.List;
  * @author jobob
  * @since 2020-02-14
  */
-public interface ISysColumnscontrollerService extends IService<SysColumnscontroller> {
+public interface ISysColumnscontrollerService extends IService<SysColumnsModel> {
     /**
      * 保存
      * @param sysColumnscontroller
      */
-    void saveColumn(SysColumnscontroller sysColumnscontroller);
+    void saveColumn(SysColumnsModel sysColumnscontroller);
+
+    /**
+     * 根据角色编码与资源编码查询对应的字段权限信息
+     * @param sysRoleinfo
+     * @return
+     */
+    List<SysColumnsModel> selectByRoleIdAndResourceId(SysRoleinfo sysRoleinfo);
 }

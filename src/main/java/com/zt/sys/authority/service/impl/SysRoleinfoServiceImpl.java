@@ -197,5 +197,4 @@ public class SysRoleinfoServiceImpl extends ServiceImpl<SysRoleinfoMapper, SysRo
         return sysRoleinfo;
     }
 
-
 }

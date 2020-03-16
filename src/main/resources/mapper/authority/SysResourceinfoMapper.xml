@@ -27,6 +27,7 @@
         select count(0) from sys_resourceinfo where resourceId = #{resourceId}
     </select>
 
+    <!--删除资源信息-->
     <delete id="deleteResources" parameterType="com.zt.sys.authority.entity.SysResourceinfo">
         delete from sys_resourceinfo where resourceId = #{resourceId}
     </delete>
@@ -87,7 +88,7 @@
     </update>
 
 
-    <!--根据用户ID获取所有资源菜单-->
+    <!--根据用户ID获取所有资源-->
     <select id="selectResourceByUserId" parameterType="com.zt.sys.authority.entity.SysUsers"
             resultMap="BaseResultMap">
         select
@@ -119,6 +120,7 @@
     </select>
 
 
+    <!--根据用户ID获取所有资源，应用场景：编辑角色时，返回当前登陆人可赋权的权限-->
     <select id="selectResourceList" parameterType="com.zt.sys.authority.entity.SysResourceinfo"
             resultMap="BaseResultMap">
         select
@@ -178,6 +180,6 @@
             resultMap="BaseResultMap">
         select * FROM sys_resourceinfo WHERE resourceId in (
             SELECT resourceId FROM sys_role_resource WHERE roleId = #{roleId}
-        ) and resourceType = 'menu'
+        )
     </select>
 </mapper>

@@ -1,7 +1,10 @@
 package com.zt.sys.authority.service;
 
-import com.zt.sys.authority.entity.SysDatacontroller;
+import com.zt.sys.authority.entity.SysDataModel;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.zt.sys.authority.entity.SysRoleinfo;
+
+import java.util.List;
 
 /**
  * <p>
@@ -11,11 +14,18 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author jobob
  * @since 2020-02-17
  */
-public interface ISysDatacontrollerService extends IService<SysDatacontroller> {
+public interface ISysDatacontrollerService extends IService<SysDataModel> {
 
     /**
      * 保存
      * @param sysDatacontroller
      */
-    void saveData(SysDatacontroller sysDatacontroller);
+    void saveData(SysDataModel sysDatacontroller);
+
+    /**
+     * 根据角色编码与资源编码查询数据权限信息
+     * @param sysRoleinfo
+     * @return
+     */
+    List<SysDataModel> selectByRoleIdAndResourceId(SysRoleinfo sysRoleinfo);
 }

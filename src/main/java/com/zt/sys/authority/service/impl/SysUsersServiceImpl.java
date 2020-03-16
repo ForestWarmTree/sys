@@ -32,9 +32,6 @@ public class SysUsersServiceImpl extends ServiceImpl<SysUsersMapper, SysUsers> i
     private SysUsersMapper sysUsersMapper;
 
     @Resource
-    private SysRoleinfoMapper sysRoleinfoMapper;
-
-    @Resource
     private SysResourceinfoMapper resourceinfoMapper;
 
     @Resource
@@ -130,12 +127,7 @@ public class SysUsersServiceImpl extends ServiceImpl<SysUsersMapper, SysUsers> i
         //获取用户组织、部门基础信息
         SysUsers users = sysUsersMapper.selectUsersResource(sysUsers);
         users.setName(users.getSysUserinfo().getName());
-//        Map<String, Object> map = new HashMap<>();
-//        map.put("userId",users.getUserId());
-//        map.put("orgId",users.getSysUserinfo().getOrgId());
-//        // 获取用户可用角色基础信息
-//        List<SysRoleinfo> roleinfoList = sysRoleinfoMapper.selectRoleByUserId(map);
-        //users.setRole(roleinfoList);
+
         Map<String, Object> role = new HashMap<String, Object>();
         role.put("id", "user");
         role.put("name", "用户");
@@ -147,27 +139,13 @@ public class SysUsersServiceImpl extends ServiceImpl<SysUsersMapper, SysUsers> i
 
         //获取用户可用资源菜单
         List<SysResourceinfo> menus = resourceinfoMapper.selectResourceByUserId(users);
-        //users.setPermissions(menus);
-
-        //循环用户角色，同步循环用户资源，将该角色下的对应资源，放入角色中的Permissions集合里
-//        for(SysRoleinfo role:roleinfoList) {
-//            List<SysResourceinfo> permissions = new ArrayList<>();
-//            for(SysResourceinfo resourceinfo:menus) {
-//                if(resourceinfo.getRoleId().equals(role.getRoleId())) {
-//                    permissions.add(resourceinfo);
-//                }
-//            }
-//            role.setPermissions(permissions);
-//        }
 
         List<String> menuIds = new ArrayList<>();
         for(SysResourceinfo resourceinfo:menus) {
             menuIds.add(resourceinfo.getResourceId());
         }
-
         // 根据菜单ID查询所有按钮
         List<SysResourceinfo> btnList = resourceinfoMapper.selectBtn(menuIds);
-
         /**
          * 循环菜单与按钮，将当前循环的菜单下的按钮找出来。
          * 放进actions集合中
