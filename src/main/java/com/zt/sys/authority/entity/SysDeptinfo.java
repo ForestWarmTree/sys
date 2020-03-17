@@ -38,6 +38,9 @@ package com.zt.sys.authority.entity;
     //所属组织
     @TableField("orgId")
     private String orgId;
+    //所属组织名称
+    @TableField("orgName")
+    private String orgName;
 
     //创建人
     @TableField("createUser")

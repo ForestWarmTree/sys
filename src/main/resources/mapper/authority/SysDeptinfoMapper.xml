@@ -6,6 +6,7 @@
         <result column="deptId" property="deptId" jdbcType="VARCHAR" />
         <result column="deptName" property="deptName" jdbcType="VARCHAR" />
         <result column="orgId" property="orgId" jdbcType="VARCHAR" />
+        <result column="orgName" property="orgName" jdbcType="VARCHAR" />
         <result column="ry1" property="ry1" jdbcType="VARCHAR" />
         <result column="ry2" property="ry2" jdbcType="VARCHAR" />
         <result column="ry3" property="ry3" jdbcType="VARCHAR" />
@@ -25,11 +26,11 @@
     <!--新增部门信息-->
     <insert id="saveDeptInfo" parameterType="com.zt.sys.authority.entity.SysDeptinfo">
         insert into sys_deptinfo(
-          deptId,deptName,orgId,
+          deptId,deptName,orgId,orgName,
           ry1,ry2,ry3,ry4,ry5,
           createUser,createTime,updateUser,updateTime
         ) values (
-          #{deptId},#{deptName},#{orgId},
+          #{deptId},#{deptName},#{orgId},#{orgName},
           #{ry1},#{ry2},#{ry3},#{ry4},#{ry5},
           #{createUser},#{createTime},#{updateUser},#{updateTime}
         )
@@ -42,6 +43,7 @@
             <trim suffixOverrides=",">
                 <if test="deptName!=null and deptName!=''">deptName = #{deptName},</if>
                 <if test="orgId!=null and orgId!=''">orgId = #{orgId},</if>
+                <if test="orgName!=null and orgName!=''">orgName = #{orgName},</if>
                 <if test="ry1!=null and ry1!=''">ry1 = #{ry1},</if>
                 <if test="ry2!=null and ry2!=''">ry2 = #{ry2},</if>
                 <if test="ry3!=null and ry3!=''">ry3 = #{ry3},</if>

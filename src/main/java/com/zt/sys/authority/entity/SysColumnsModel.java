@@ -54,5 +54,4 @@ package com.zt.sys.authority.entity;
     //创建时间
     @TableField("createTime")
     private Date createTime;
-
 }
