@@ -2,6 +2,9 @@ package com.zt.sys.authority.mapper;
 
 import com.zt.sys.authority.entity.SysUserinfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.zt.sys.authority.entity.SysUsers;
+
+import java.util.List;
 
 /**
  * <p>
@@ -29,5 +32,17 @@ public interface SysUserinfoMapper extends BaseMapper<SysUserinfo> {
      * @param userinfo
      */
     void updateUserInfo(SysUserinfo userinfo);
+    /**
+     * 人员列表查询
+     * @param sysUserinfo
+     * @return
+     */
+    List<SysUserinfo> selectUserInfoList(SysUserinfo sysUserinfo);
+
+    /**
+     * 删除用户信息
+     * @param sysUserinfo
+     */
+    void deleteUserInfo(SysUserinfo sysUserinfo);
 
 }

@@ -12,6 +12,12 @@
         <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
     </resultMap>
 
+
+    <delete id="deleteColumn" parameterType="com.zt.sys.authority.entity.DataCommonModel">
+        delete from sys_columnscontroller where roleId = #{roleId}
+        and sourceId = #{resourceId}
+    </delete>
+
     <!--保存-->
     <insert id="saveColumn" parameterType="com.zt.sys.authority.entity.SysColumnsModel">
         insert into sys_columnscontroller(

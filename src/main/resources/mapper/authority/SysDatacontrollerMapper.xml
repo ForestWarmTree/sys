@@ -13,6 +13,10 @@
         <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
     </resultMap>
 
+    <delete id="deleteData" parameterType="com.zt.sys.authority.entity.DataCommonModel">
+        delete from sys_datacontroller where roleId = #{roleId}
+        and resourceId = #{resourceId}
+    </delete>
 
     <insert id="saveData" parameterType="com.zt.sys.authority.entity.SysDataModel">
         insert into sys_datacontroller (

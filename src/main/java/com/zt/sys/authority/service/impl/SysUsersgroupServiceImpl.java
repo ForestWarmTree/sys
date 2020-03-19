@@ -98,8 +98,10 @@ public class SysUsersgroupServiceImpl extends ServiceImpl<SysUsersgroupMapper, S
                 sysRolelogList.add(sysRolelog);
             }
         }
-        //保存log记录
-        logMapper.saveLogList(sysRolelogList);
+        if(sysRolelogList!=null && sysRolelogList.size()>0) {
+            //保存log记录
+            logMapper.saveLogList(sysRolelogList);
+        }
         //根据组ID删除对应关系
         sysUsersgroupMapper.delete(sysUsersgroup);
         //保存

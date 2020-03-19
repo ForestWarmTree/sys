@@ -166,5 +166,15 @@ public class SysUsersServiceImpl extends ServiceImpl<SysUsersMapper, SysUsers> i
         return users;
     }
 
+    /**
+     * 根据用户ID 查询用户名密码
+     * @param sysUsers
+     * @return
+     */
+    @Override
+    public SysUsers selectUserNameAndPassword(SysUsers sysUsers) {
+        return sysUsersMapper.selectUserNameAndPassword(sysUsers);
+    }
+
 
 }

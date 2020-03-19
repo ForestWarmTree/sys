@@ -23,6 +23,23 @@
         <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
     </resultMap>
 
+
+    <!--用户列表查询-->
+    <select id="selectUserInfoList" parameterType="com.zt.sys.authority.entity.SysUserinfo"
+            resultMap="BaseResultMap">
+        select * from sys_userinfo
+        <where>
+            org_id = #{orgId}
+            <if test="userCardNo!=null and userCardNo!=''">and userCardNo = #{userCardNo}</if>
+            <if test="name!=null and name!=''">and name = #{name}</if>
+        </where>
+    </select>
+
+    <!--删除用户基础信息-->
+    <delete id="deleteUserInfo" parameterType="com.zt.sys.authority.entity.SysUserinfo">
+        delete from sys_userinfo where userId = #{userId}
+    </delete>
+
     <!--根据用户ID查询用户基础信息-->
     <select id="getUserInfoByUserId" parameterType="com.zt.sys.authority.entity.SysUserinfo"
             resultMap="BaseResultMap">

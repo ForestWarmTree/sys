@@ -1,5 +1,6 @@
 package com.zt.sys.authority.mapper;
 
+import com.zt.sys.authority.entity.DataCommonModel;
 import com.zt.sys.authority.entity.SysDataModel;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.zt.sys.authority.entity.SysRoleinfo;
@@ -21,6 +22,9 @@ public interface SysDatacontrollerMapper extends BaseMapper<SysDataModel> {
      * @param sysDatacontroller
      */
     void saveData(SysDataModel sysDatacontroller);
+
+    //删除
+    void deleteData(DataCommonModel dataCommonModel);
 
     /**
      * 根据角色编码与资源编码查询数据权限信息

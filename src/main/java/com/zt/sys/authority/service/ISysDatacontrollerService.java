@@ -1,5 +1,6 @@
 package com.zt.sys.authority.service;
 
+import com.zt.sys.authority.entity.DataCommonModel;
 import com.zt.sys.authority.entity.SysDataModel;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.zt.sys.authority.entity.SysRoleinfo;
@@ -18,9 +19,9 @@ public interface ISysDatacontrollerService extends IService<SysDataModel> {
 
     /**
      * 保存
-     * @param sysDatacontroller
+     * @param dataCommonModel
      */
-    void saveData(SysDataModel sysDatacontroller);
+    void saveData(DataCommonModel dataCommonModel);
 
     /**
      * 根据角色编码与资源编码查询数据权限信息

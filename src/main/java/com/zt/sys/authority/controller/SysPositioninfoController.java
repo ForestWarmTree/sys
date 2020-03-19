@@ -1,8 +1,10 @@
 package com.zt.sys.authority.controller;
 
 
+import com.github.pagehelper.PageInfo;
 import com.zt.sys.authority.core.RetResponse;
 import com.zt.sys.authority.core.RetResult;
+import com.zt.sys.authority.entity.SysDeptinfo;
 import com.zt.sys.authority.entity.SysOrginfo;
 import com.zt.sys.authority.entity.SysPositioninfo;
 import com.zt.sys.authority.entity.SysUsers;
@@ -16,6 +18,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,7 +30,7 @@ import java.util.Map;
  * @since 2020-02-17
  */
 @RestController
-@RequestMapping("/authority/sys-positioninfo")
+@RequestMapping("/position")
 public class SysPositioninfoController {
 
     @Resource
@@ -100,6 +103,69 @@ public class SysPositioninfoController {
             return RetResponse.makeSysErrRsp();
         }
         return RetResponse.makeOKRsp(result);
+    }
+
+
+
+    /**
+     * 岗位列表查询
+     * @param sysPositioninfo
+     * @param request
+     * @return
+     */
+    @PostMapping("/selectPositionList")
+    @ResponseBody
+    public Map<String, Object> selectPositionList(@RequestBody SysPositioninfo sysPositioninfo,
+                                              HttpServletRequest request) {
+        Map<String, Object> result = new HashMap<>();
+        List<SysPositioninfo> positioninfoList = null;
+        try {
+            // 获取当前登陆人信息
+            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            if(sessionUser!=null && sessionUser.getUserId() != null &&
+                    !sessionUser.getUserId().equals("")) {
+
+                //列表查询
+                sysPositioninfoService.selectPositionList(sysPositioninfo);
+
+                //返回结果集
+                PageInfo<SysPositioninfo> pageInfo = new PageInfo<>(positioninfoList);
+                result.put("size",sysPositioninfo.getPageSize());
+                result.put("current",sysPositioninfo.getCurrent());
+                result.put("total",pageInfo.getTotal());
+                result.put("pages",pageInfo.getPages());
+                result.put("records",positioninfoList);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    /**
+     * 删除岗位信息
+     * @param positioninfos
+     * @param request
+     * @return
+     */
+    @PostMapping("/deletePosition")
+    @ResponseBody
+    public RetResult<Map> deletePosition(@RequestBody List<SysPositioninfo> positioninfos,
+                                     HttpServletRequest request) {
+        try {
+            // 获取当前登陆人信息
+            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            if(sessionUser!=null && sessionUser.getUserId()!=null && !sessionUser.getUserId().equals("")) {
+                //删除
+                sysPositioninfoService.deletePosition(positioninfos, sessionUser);
+            } else {
+                return RetResponse.makeErrRsp("登陆已过期!请重新登陆");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return  RetResponse.makeSysErrRsp();
+        }
+        return RetResponse.makeRsp(200,"操作成功!");
     }
 
 }

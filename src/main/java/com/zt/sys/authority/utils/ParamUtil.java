@@ -33,4 +33,6 @@ public class ParamUtil {
     public static final String LogSaveDept = "部门基础信息"; //记录log 变更类型字段所用信息
     public static final String LogSavePosition = "岗位基础信息"; //记录log 变更类型字段所用信息
     public static final String LogSaveDeptPosition = "部门岗位关系"; //记录log 变更类型字段所用信息
+    public static final String LogColunm = "字段权限信息"; //记录log 变更类型字段所用信息
+    public static final String LogData = "数据权限信息"; //记录log 变更类型字段所用信息
 }

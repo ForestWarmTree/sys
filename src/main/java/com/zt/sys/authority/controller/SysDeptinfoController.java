@@ -1,10 +1,12 @@
 package com.zt.sys.authority.controller;
 
 
+import com.github.pagehelper.PageInfo;
 import com.zt.sys.authority.core.RetResponse;
 import com.zt.sys.authority.core.RetResult;
 import com.zt.sys.authority.entity.SysDeptinfo;
 import com.zt.sys.authority.entity.SysOrginfo;
+import com.zt.sys.authority.entity.SysRoleinfo;
 import com.zt.sys.authority.entity.SysUsers;
 import com.zt.sys.authority.service.ISysDeptinfoService;
 import com.zt.sys.authority.service.ISysOrginfoService;
@@ -16,6 +18,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,7 +30,7 @@ import java.util.Map;
  * @since 2020-02-17
  */
 @RestController
-@RequestMapping("/authority/sys-deptinfo")
+@RequestMapping("/dept")
 public class SysDeptinfoController {
 
     @Resource
@@ -101,5 +104,75 @@ public class SysDeptinfoController {
         }
         return RetResponse.makeOKRsp(result);
     }
+
+
+    /**
+     * 部门列表查询
+     * @param sysDeptinfo
+     * @param request
+     * @return
+     */
+    @PostMapping("/selectDeptList")
+    @ResponseBody
+    public Map<String, Object> selectDeptList(@RequestBody SysDeptinfo sysDeptinfo,
+                                                  HttpServletRequest request) {
+        Map<String, Object> result = new HashMap<>();
+        List<SysDeptinfo> deptinfoList = null;
+        try {
+            // 获取当前登陆人信息
+            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            if(sessionUser!=null && sessionUser.getUserId() != null &&
+                    !sessionUser.getUserId().equals("")) {
+
+                //是超级管理员
+                if(sessionUser.getIsSupper().equals("1")) {
+                    deptinfoList = sysDeptinfoService.selectDept(sysDeptinfo);
+                } else {
+                    // 根据当前登陆人的所属组织，查询部门信息
+                    sysDeptinfo.setOrgId(sessionUser.getSysUserinfo().getOrgId());
+                    deptinfoList = sysDeptinfoService.selectDept(sysDeptinfo);
+                }
+                //返回结果集
+                PageInfo<SysDeptinfo> pageInfo = new PageInfo<>(deptinfoList);
+                result.put("size",sysDeptinfo.getPageSize());
+                result.put("current",sysDeptinfo.getCurrent());
+                result.put("total",pageInfo.getTotal());
+                result.put("pages",pageInfo.getPages());
+                result.put("records",deptinfoList);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+
+
+    /**
+     * 删除部门信息
+     * @param sysDeptinfos
+     * @param request
+     * @return
+     */
+    @PostMapping("/deleteDept")
+    @ResponseBody
+    public RetResult<Map> deleteDept(@RequestBody List<SysDeptinfo> sysDeptinfos,
+                                      HttpServletRequest request) {
+        try {
+            // 获取当前登陆人信息
+            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            if(sessionUser!=null && sessionUser.getUserId()!=null && !sessionUser.getUserId().equals("")) {
+                //删除
+                sysDeptinfoService.deleteByDeptId(sysDeptinfos, sessionUser);
+            } else {
+                return RetResponse.makeErrRsp("登陆已过期!请重新登陆");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return  RetResponse.makeSysErrRsp();
+        }
+        return RetResponse.makeRsp(200,"操作成功!");
+    }
+
 
 }

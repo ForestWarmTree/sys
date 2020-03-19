@@ -104,8 +104,10 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUs
             }
         }
 
-        //保存log记录
-        logMapper.saveLogList(sysRolelogList);
+        if(sysRolelogList!=null && sysRolelogList.size()>0) {
+            //保存log记录
+            logMapper.saveLogList(sysRolelogList);
+        }
         // 根据用户ID 删除对应关系
         sysUserRoleMapper.deleteUserRoleByUserId(sysUserRole.getUserId());
         // 保存
@@ -176,8 +178,10 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUs
             }
         }
 
-        //保存log记录
-        logMapper.saveLogList(sysRolelogList);
+        if(sysRolelogList!=null && sysRolelogList.size()>0) {
+            //保存log记录
+            logMapper.saveLogList(sysRolelogList);
+        }
         // 根据角色ID 删除对应关系
         sysUserRoleMapper.deleteUserRoleByRoleId(sysUserRole.getRoleId());
         // 保存

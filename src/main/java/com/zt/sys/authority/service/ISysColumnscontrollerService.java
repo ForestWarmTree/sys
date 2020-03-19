@@ -1,5 +1,6 @@
 package com.zt.sys.authority.service;
 
+import com.zt.sys.authority.entity.DataCommonModel;
 import com.zt.sys.authority.entity.SysColumnsModel;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.zt.sys.authority.entity.SysRoleinfo;
@@ -17,9 +18,9 @@ import java.util.List;
 public interface ISysColumnscontrollerService extends IService<SysColumnsModel> {
     /**
      * 保存
-     * @param sysColumnscontroller
+     * @param dataCommonModel
      */
-    void saveColumn(SysColumnsModel sysColumnscontroller);
+    void saveColumn(DataCommonModel dataCommonModel);
 
     /**
      * 根据角色编码与资源编码查询对应的字段权限信息

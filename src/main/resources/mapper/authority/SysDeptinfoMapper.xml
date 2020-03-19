@@ -55,4 +55,23 @@
         </set>
         where deptId = #{deptId}
     </update>
+
+
+    <!--部门列表查询-->
+    <select id="selectDept" parameterType="com.zt.sys.authority.entity.SysDeptinfo"
+            resultMap="BaseResultMap">
+        select * from sys_deptinfo
+        <where>
+            <if test="deptId!=null and deptId!=''">and deptId = #{deptId}</if>
+            <if test="deptName!=null and deptName!=''">and deptName = #{deptName}</if>
+            <if test="orgId!=null and orgId!=''">and orgId = #{orgId}</if>
+            <if test="orgName!=null and orgName!=''">and orgName = #{orgName}</if>
+        </where>
+    </select>
+
+    <!--删除部门信息-->
+    <delete id="deleteByDeptId" parameterType="com.zt.sys.authority.entity.SysDeptinfo">
+        delete from sys_deptinfo
+        where deptId = #{deptId}
+    </delete>
 </mapper>

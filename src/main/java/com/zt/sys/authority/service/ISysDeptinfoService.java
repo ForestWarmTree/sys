@@ -2,6 +2,9 @@ package com.zt.sys.authority.service;
 
 import com.zt.sys.authority.entity.SysDeptinfo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.zt.sys.authority.entity.SysUsers;
+
+import java.util.List;
 
 /**
  * <p>
@@ -31,4 +34,16 @@ public interface ISysDeptinfoService extends IService<SysDeptinfo> {
      * @param sysDeptinfo
      */
     void editDeptInfo(SysDeptinfo sysDeptinfo);
+
+    /**
+     * 部门列表查询
+     * @param sysDeptinfo
+     * @return
+     */
+    List<SysDeptinfo> selectDept(SysDeptinfo sysDeptinfo);
+    /**
+     * 根据部门ID删除部门信息
+     * @param sysDeptinfos
+     */
+    void deleteByDeptId(List<SysDeptinfo> sysDeptinfos, SysUsers sysUsers);
 }

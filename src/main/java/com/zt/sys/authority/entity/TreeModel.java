@@ -19,6 +19,8 @@ public class TreeModel extends BaseModel {
     private String key;
     //层级
     private String level;
+    //资源类型
+    private String resourceType;
     //子节点集合
     private List<TreeModel> children;
 }

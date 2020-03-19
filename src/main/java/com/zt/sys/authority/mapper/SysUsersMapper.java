@@ -17,6 +17,9 @@ public interface SysUsersMapper extends BaseMapper<SysUsers> {
     // 验证用户名是否重复
     int validataUserName(String userName);
 
+    //删除账号
+    void deleteByUserId(String userId);
+
     // 新增用户
     void saveUser(SysUsers sysUsers);
 
@@ -37,4 +40,6 @@ public interface SysUsersMapper extends BaseMapper<SysUsers> {
 
     // 根据用户ID获取用户权限
     SysUsers selectUsersResource(SysUsers sysUsers);
+    // 根据用户ID获取用户账号密码
+    SysUsers selectUserNameAndPassword(SysUsers sysUsers);
 }

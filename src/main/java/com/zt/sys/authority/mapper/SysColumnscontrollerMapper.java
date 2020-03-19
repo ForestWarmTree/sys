@@ -1,5 +1,6 @@
 package com.zt.sys.authority.mapper;
 
+import com.zt.sys.authority.entity.DataCommonModel;
 import com.zt.sys.authority.entity.SysColumnsModel;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.zt.sys.authority.entity.SysRoleinfo;
@@ -23,6 +24,8 @@ public interface SysColumnscontrollerMapper extends BaseMapper<SysColumnsModel> 
      * @param sysColumnscontroller
      */
     void saveColumn(SysColumnsModel sysColumnscontroller);
+
+    void deleteColumn(DataCommonModel dataCommonModel);
 
     /**
      * 根据角色编码与资源编码查询对应的字段权限信息

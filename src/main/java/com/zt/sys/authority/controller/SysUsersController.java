@@ -7,6 +7,7 @@ import com.zt.sys.authority.core.RetResponse;
 import com.zt.sys.authority.core.RetResult;
 import com.zt.sys.authority.entity.SysResourceinfo;
 import com.zt.sys.authority.entity.SysRoleinfo;
+import com.zt.sys.authority.entity.SysUserinfo;
 import com.zt.sys.authority.entity.SysUsers;
 import com.zt.sys.authority.service.ISysUsersService;
 import com.zt.sys.authority.utils.HttpSessionValue;
@@ -177,13 +178,13 @@ public class SysUsersController {
                     // 获取当前登陆人信息
                     SysUsers sessionUser = sessionValue.getSessionUser(request);
 
-                    if(sessionUser!=null && sessionUser.getUserId()!=null && !sessionUser.getUserId().equals("")) {
+                    if(sessionUser!=null && sessionUser.getUserId()!=null &&
+                            !sessionUser.getUserId().equals("")) {
                         //加密密码
                         String pwd = MD5Util.getEncryptedPwd(sysUsers.getPassword());
                         sysUsers.setPassword(pwd);
 
                         //新增用户
-                        //sysUsers.setUserId(UUID.UU32()); //用户ID
                         sysUsers.setCreateUser(sessionUser.getUserId());// 创建人
                         sysUsers.setCreateTime(new Date());// 创建时间
                         sysUsers.setName(sessionUser.getName());// 创建人姓名
@@ -203,6 +204,36 @@ public class SysUsersController {
         }
         return RetResponse.makeRsp(200,"操作成功!");
     }
+
+    /**
+     * 根据用户编码 查询用户账号
+     * @param sysUsers
+     * @param request
+     * @return
+     */
+    @PostMapping("/user/selectUserNameAndPassword")
+    @ResponseBody
+    public RetResult<Map> getUserInfoByUserId(@RequestBody SysUsers sysUsers,
+                                              HttpServletRequest request) {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            // 获取当前登陆人信息
+            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            if(sessionUser!=null && sessionUser.getUserId() != null &&
+                    !sessionUser.getUserId().equals("")) {
+                SysUsers user = sysUsersService.selectUserNameAndPassword(sysUsers);
+
+                result.put("data",user);
+            } else {
+                return RetResponse.makeErrRsp("登陆时间过期!请重新登陆");
+            }
+        } catch (Exception e) {
+            logger.error(e.toString());
+            return RetResponse.makeSysErrRsp();
+        }
+        return RetResponse.makeOKRsp(result);
+    }
+
 
 
     /**

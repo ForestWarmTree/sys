@@ -98,9 +98,10 @@ public class SysRoleResourceServiceImpl extends ServiceImpl<SysRoleResourceMappe
                 sysResourcelogList.add(sysRolelog);
             }
         }
-
-        //保存log记录
-        logMapper.saveLogList(sysResourcelogList);
+        if(sysResourcelogList!=null && sysResourcelogList.size()>0) {
+            //保存log记录
+            logMapper.saveLogList(sysResourcelogList);
+        }
         //删除原有关系
         sysRoleResourceMapper.deleteByResourceId(sysRoleResource.getRoleId());
         //新增

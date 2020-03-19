@@ -36,4 +36,7 @@ public interface ISysUsersService extends IService<SysUsers> {
 
     // 根据用户ID获取用户权限
     SysUsers selectUsersResource(SysUsers sysUsers);
+
+    // 根据用户ID获取用户账号密码
+    SysUsers selectUserNameAndPassword(SysUsers sysUsers);
 }

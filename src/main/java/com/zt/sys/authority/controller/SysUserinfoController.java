@@ -1,8 +1,10 @@
 package com.zt.sys.authority.controller;
 
 
+import com.github.pagehelper.PageInfo;
 import com.zt.sys.authority.core.RetResponse;
 import com.zt.sys.authority.core.RetResult;
+import com.zt.sys.authority.entity.SysOrginfo;
 import com.zt.sys.authority.entity.SysUserinfo;
 import com.zt.sys.authority.entity.SysUsers;
 import com.zt.sys.authority.service.ISysUserinfoService;
@@ -16,6 +18,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,7 +30,7 @@ import java.util.Map;
  * @since 2020-02-17
  */
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/userInfo")
 public class SysUserinfoController {
     private final Logger logger=LoggerFactory.getLogger(SysUserinfoController.class);
 
@@ -90,14 +93,15 @@ public class SysUserinfoController {
      */
     @PostMapping("/getUserInfo")
     @ResponseBody
-    public RetResult<Map> getUserInfoByUserId(HttpServletRequest request) {
+    public RetResult<Map> getUserInfoByUserId(@RequestBody SysUserinfo userinfo,
+                                              HttpServletRequest request) {
         Map<String, Object> result = new HashMap<>();
         try {
             // 获取当前登陆人信息
             SysUsers sessionUser = sessionValue.getSessionUser(request);
             if(sessionUser!=null && sessionUser.getUserId() != null &&
                     !sessionUser.getUserId().equals("")) {
-                SysUserinfo sysUserinfo = sysUserinfoService.getUserInfoByUserId(sessionUser.getUserId());
+                SysUserinfo sysUserinfo = sysUserinfoService.getUserInfoByUserId(userinfo.getUserId());
 
                 result.put("data",sysUserinfo);
             } else {
@@ -109,5 +113,76 @@ public class SysUserinfoController {
         }
         return RetResponse.makeOKRsp(result);
     }
+
+
+
+
+    /**
+     * 人员列表查询
+     * @param sysUserinfo
+     * @param request
+     * @return
+     */
+    @PostMapping("/selectUserList")
+    @ResponseBody
+    public Map<String, Object> selectOrgList(@RequestBody SysUserinfo sysUserinfo,
+                                             HttpServletRequest request) {
+        Map<String, Object> result = new HashMap<>();
+        List<SysUserinfo> sysUserinfoList = null;
+        try {
+            // 获取当前登陆人信息
+            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            if(sessionUser!=null && sessionUser.getUserId() != null &&
+                    !sessionUser.getUserId().equals("")) {
+
+                //获取当前登陆人所属组织
+                sysUserinfo.setOrgId(sessionUser.getSysUserinfo().getOrgId());
+                //查询列表
+                sysUserinfoList = sysUserinfoService.selectUserInfoList(sysUserinfo);
+
+                //返回结果集
+                PageInfo<SysUserinfo> pageInfo = new PageInfo<>(sysUserinfoList);
+                result.put("size",sysUserinfo.getPageSize());
+                result.put("current",sysUserinfo.getCurrent());
+                result.put("total",pageInfo.getTotal());
+                result.put("pages",pageInfo.getPages());
+                result.put("records",sysUserinfoList);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+
+    /**
+     * 删除人员信息
+     * @param userinfoList
+     * @param request
+     * @return
+     */
+    @PostMapping("/deleteUser")
+    @ResponseBody
+    public RetResult<Map> deleteUser(@RequestBody List<SysUserinfo> userinfoList,
+                                     HttpServletRequest request) {
+        try {
+            // 获取当前登陆人信息
+            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            if(sessionUser!=null && sessionUser.getUserId()!=null &&
+                    !sessionUser.getUserId().equals("")) {
+
+                //删除
+                sysUserinfoService.deleteUserInfo(userinfoList, sessionUser);
+            } else {
+                return RetResponse.makeErrRsp("登陆已过期!请重新登陆");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return  RetResponse.makeSysErrRsp();
+        }
+        return RetResponse.makeRsp(200,"操作成功!");
+    }
+
+
 
 }

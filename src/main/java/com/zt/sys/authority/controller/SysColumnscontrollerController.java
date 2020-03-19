@@ -3,6 +3,7 @@ package com.zt.sys.authority.controller;
 
 import com.zt.sys.authority.core.RetResponse;
 import com.zt.sys.authority.core.RetResult;
+import com.zt.sys.authority.entity.DataCommonModel;
 import com.zt.sys.authority.entity.SysColumnsModel;
 import com.zt.sys.authority.entity.SysUsers;
 import com.zt.sys.authority.service.ISysColumnscontrollerService;
@@ -50,7 +51,7 @@ public class SysColumnscontrollerController {
             sysColumnscontroller.setCreateTime(new Date());// 创建时间
             sysColumnscontroller.setCreateUserName(sessionUser.getName());
             // 保存
-            sysColumnscontrollerService.saveColumn(sysColumnscontroller);
+            sysColumnscontrollerService.saveColumn(new DataCommonModel());
         } catch (Exception e) {
             logger.error(e.toString());
             return RetResponse.makeSysErrRsp();

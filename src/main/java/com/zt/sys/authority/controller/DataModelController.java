@@ -1,14 +1,16 @@
 package com.zt.sys.authority.controller;
 
-import com.zt.sys.authority.entity.DataCommonModel;
-import com.zt.sys.authority.entity.SysColumnsModel;
-import com.zt.sys.authority.entity.SysDataModel;
-import com.zt.sys.authority.entity.SysRoleinfo;
+import com.zt.sys.authority.core.RetResponse;
+import com.zt.sys.authority.core.RetResult;
+import com.zt.sys.authority.entity.*;
 import com.zt.sys.authority.service.ISysColumnscontrollerService;
 import com.zt.sys.authority.service.ISysDatacontrollerService;
+import com.zt.sys.authority.utils.HttpSessionValue;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +30,9 @@ public class DataModelController {
 
     @Resource
     private ISysDatacontrollerService sysDatacontrollerService;
+
+    @Resource
+    private HttpSessionValue sessionValue;
 
     /**
      * 根据角色ID、资源ID查询数据权限与字段权限
@@ -58,4 +63,34 @@ public class DataModelController {
         }
         return result;
     }
+
+
+    /**
+     * 保存数据及字段权限
+     * @param dataCommonModel
+     * @param request
+     * @return
+     */
+    @PostMapping("/save")
+    @ResponseBody
+    public RetResult<Map> save(@RequestBody DataCommonModel dataCommonModel,
+                               HttpServletRequest request) {
+        try {
+            // 获取当前登陆人信息
+            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            dataCommonModel.setCreateUser(sessionUser.getUserId());//创建人
+            dataCommonModel.setCreateTime(new Date());// 创建时间
+            dataCommonModel.setCreateUserName(sessionUser.getName());
+            //数据权限
+            sysDatacontrollerService.saveData(dataCommonModel);
+            //字段权限
+            sysColumnscontrollerService.saveColumn(dataCommonModel);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return RetResponse.makeOKRsp();
+    }
+
+
 }

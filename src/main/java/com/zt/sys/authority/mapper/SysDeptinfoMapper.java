@@ -3,6 +3,8 @@ package com.zt.sys.authority.mapper;
 import com.zt.sys.authority.entity.SysDeptinfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
+import java.util.List;
+
 /**
  * <p>
  *  Mapper 接口
@@ -30,4 +32,16 @@ public interface SysDeptinfoMapper extends BaseMapper<SysDeptinfo> {
      * @param sysDeptinfo
      */
     void editDeptInfo(SysDeptinfo sysDeptinfo);
+    /**
+     * 部门列表查询
+     * @param sysDeptinfo
+     * @return
+     */
+    List<SysDeptinfo> selectDept(SysDeptinfo sysDeptinfo);
+
+    /**
+     * 根据部门ID删除部门信息
+     * @param sysDeptinfo
+     */
+    void deleteByDeptId(SysDeptinfo sysDeptinfo);
 }

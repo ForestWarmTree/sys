@@ -2,8 +2,10 @@ package com.zt.sys.authority.service.impl;
 
 import com.zt.sys.authority.entity.SysRolelog;
 import com.zt.sys.authority.entity.SysUserinfo;
+import com.zt.sys.authority.entity.SysUsers;
 import com.zt.sys.authority.mapper.SysRolelogMapper;
 import com.zt.sys.authority.mapper.SysUserinfoMapper;
+import com.zt.sys.authority.mapper.SysUsersMapper;
 import com.zt.sys.authority.service.ISysUserinfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zt.sys.authority.utils.ParamUtil;
@@ -12,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -29,6 +32,9 @@ public class SysUserinfoServiceImpl extends ServiceImpl<SysUserinfoMapper, SysUs
 
     @Resource
     private SysRolelogMapper sysRolelogMapper;
+
+    @Resource
+    private SysUsersMapper sysUsersMapper;
 
     /**
      * 新增用户基础信息
@@ -82,5 +88,44 @@ public class SysUserinfoServiceImpl extends ServiceImpl<SysUserinfoMapper, SysUs
     @Override
     public SysUserinfo getUserInfoByUserId(String userId) {
         return sysUserinfoMapper.getUserInfoByUserId(userId);
+    }
+
+    /**
+     * 用户列表查询
+     * @param sysUserinfo
+     * @return
+     */
+    @Override
+    public List<SysUserinfo> selectUserInfoList(SysUserinfo sysUserinfo) {
+        return sysUserinfoMapper.selectUserInfoList(sysUserinfo);
+    }
+
+    /**
+     * 删除人员信息
+     * @param sysUserinfos
+     * @param sessionUser
+     */
+    @Transactional
+    @Override
+    public void deleteUserInfo(List<SysUserinfo> sysUserinfos, SysUsers sessionUser) {
+        if(sysUserinfos!=null && sysUserinfos.size()>0) {
+            for(SysUserinfo userinfo:sysUserinfos) {
+                //创建日志信息
+                SysRolelog sysRolelog = new SysRolelog();
+                sysRolelog.setUserId(userinfo.getUserId());//被操作人
+                sysRolelog.setUpdateType(ParamUtil.DELETE);//变更类型
+                sysRolelog.setUpdateTypeTips(ParamUtil.LogSaveUserInfo);//变更类型业务描述
+                sysRolelog.setSysUser(sessionUser.getCreateUser());//创建人id
+                sysRolelog.setSysUserName(sessionUser.getName());//创建人姓名
+                sysRolelog.setSysTime(new Date());//创建时间
+
+                //保存日志信息
+                sysRolelogMapper.saveLog(sysRolelog);
+                //删除人员基础信息
+                sysUserinfoMapper.deleteUserInfo(userinfo);
+                //删除账号
+                sysUsersMapper.deleteByUserId(userinfo.getUserId());
+            }
+        }
     }
 }

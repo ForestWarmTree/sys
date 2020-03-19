@@ -96,8 +96,10 @@ public class SysDeptPositionServiceImpl extends ServiceImpl<SysDeptPositionMappe
             }
         }
 
-        //保存log记录
-        logMapper.saveLogList(sysRolelogList);
+        if(sysRolelogList!=null && sysRolelogList.size()>0) {
+            //保存log记录
+            logMapper.saveLogList(sysRolelogList);
+        }
         //删除部门岗位对应关系
         deptPositionMapper.deleteDeptPosition(sysDeptPosition.getDeptId());
         //保存

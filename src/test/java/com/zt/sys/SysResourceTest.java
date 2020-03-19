@@ -2,6 +2,8 @@ package com.zt.sys;
 
 import com.zt.sys.authority.entity.SysResourceinfo;
 import com.zt.sys.authority.entity.SysRoleResource;
+import com.zt.sys.authority.entity.TreeModel;
+import com.zt.sys.authority.mapper.SysResourceinfoMapper;
 import com.zt.sys.authority.service.ISysResourceinfoService;
 import com.zt.sys.authority.service.ISysRoleResourceService;
 import org.junit.Test;
@@ -28,6 +30,9 @@ public class SysResourceTest {
 
     @Resource
     private ISysRoleResourceService sysRoleResourceService;
+
+    @Resource
+    private SysResourceinfoMapper sysResourceinfoMapper;
 
     @Test
     public void saveResource() {
@@ -104,5 +109,71 @@ public class SysResourceTest {
         sysRoleResource2.setCreateUser("12345");
         sysRoleResource2.setCreateTime(new Date());
         sysRoleResourceService.saveRoleResource(sysRoleResource2);
+    }
+
+
+    List<SysResourceinfo> menus = null;
+
+    @Test
+    public void testInit() {
+        menus = sysResourceinfoMapper.selectAll(new SysResourceinfo());
+        List<TreeModel> modelList = forList();
+    }
+
+    private List<TreeModel> forList() {
+        List<TreeModel> list = new ArrayList<TreeModel>();
+        if (menus!=null && menus.size()>0){
+            for(SysResourceinfo resource : menus){
+                if(resource.getLevel().equals("1")) {
+                    List<TreeModel> children = getChildren(resource.getResourceId());
+                    if (children == null || children.size() == 0) {
+                        TreeModel treeModel = new TreeModel();
+                        treeModel.setKey(resource.getResourceId());
+                        treeModel.setTitle(resource.getPermissionName());
+                        treeModel.setLevel(resource.getLevel());
+                        list.add(treeModel);
+                    } else {
+                        TreeModel treeModel = new TreeModel();
+                        treeModel.setKey(resource.getResourceId());
+                        treeModel.setTitle(resource.getPermissionName());
+                        treeModel.setLevel(resource.getLevel());
+                        treeModel.setChildren(children);
+                        list.add(treeModel);
+                    }
+                }
+            }
+        }
+        return list;
+    }
+
+    /**
+     * 获取子节点信息
+     * @param pid
+     * @return
+     */
+    private List<TreeModel> getChildren(String pid){
+        List<TreeModel> list = new ArrayList<>();
+        if (menus!=null){
+            for(SysResourceinfo resource : menus){
+                if(pid!=null && pid.equals(resource.getParentId())){
+                    List<TreeModel> children = getChildren(resource.getResourceId());
+                    if(children == null || children.size() == 0){
+                        TreeModel tree = new TreeModel();
+                        tree.setKey(resource.getResourceId());
+                        tree.setTitle(resource.getPermissionName());
+                        tree.setLevel(resource.getLevel());
+                        list.add(tree);
+                    }else {
+                        TreeModel tree = new TreeModel();
+                        tree.setKey(resource.getResourceId());
+                        tree.setTitle(resource.getPermissionName());
+                        tree.setChildren(children);
+                        tree.setLevel(resource.getLevel());
+                        list.add(tree);
+                    }
+                }
+            }
+        }
+        return list;
     }
 }

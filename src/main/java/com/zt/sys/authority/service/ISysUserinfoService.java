@@ -2,6 +2,9 @@ package com.zt.sys.authority.service;
 
 import com.zt.sys.authority.entity.SysUserinfo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.zt.sys.authority.entity.SysUsers;
+
+import java.util.List;
 
 /**
  * <p>
@@ -31,4 +34,18 @@ public interface ISysUserinfoService extends IService<SysUserinfo> {
      * @return
      */
     SysUserinfo getUserInfoByUserId(String userId);
+
+    /**
+     * 人员列表查询
+     * @param sysUserinfo
+     * @return
+     */
+    List<SysUserinfo> selectUserInfoList(SysUserinfo sysUserinfo);
+
+    /**
+     * 删除用户信息
+     * @param sysUserinfos
+     * @param sessionUser
+     */
+    void deleteUserInfo(List<SysUserinfo> sysUserinfos, SysUsers sessionUser);
 }

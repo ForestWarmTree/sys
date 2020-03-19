@@ -67,7 +67,7 @@ package com.zt.sys.authority.entity;
 
     private Map<String, Object> role;
 
-    // 非DB字段
+    //当前登陆人姓名 非DB字段
     private String name;
     //资源ID 非DB字段
     private String resourceId;

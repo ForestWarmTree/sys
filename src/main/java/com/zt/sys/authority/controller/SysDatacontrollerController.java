@@ -3,6 +3,7 @@ package com.zt.sys.authority.controller;
 
 import com.zt.sys.authority.core.RetResponse;
 import com.zt.sys.authority.core.RetResult;
+import com.zt.sys.authority.entity.DataCommonModel;
 import com.zt.sys.authority.entity.SysDataModel;
 import com.zt.sys.authority.entity.SysUsers;
 import com.zt.sys.authority.service.ISysDatacontrollerService;
@@ -49,7 +50,7 @@ public class SysDatacontrollerController {
             datacontroller.setCreateTime(new Date());// 创建时间
             datacontroller.setCreateUserName(sessionUser.getName());
             // 保存
-            sysDatacontrollerService.saveData(datacontroller);
+            sysDatacontrollerService.saveData(new DataCommonModel());
         } catch (Exception e) {
             logger.error(e.toString());
             return RetResponse.makeSysErrRsp();

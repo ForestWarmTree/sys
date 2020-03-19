@@ -37,4 +37,19 @@
         </set>
         where positionNo = #{positionNo}
     </update>
+
+    <!--岗位信息查询-->
+    <select id="selectPositionList" parameterType="com.zt.sys.authority.entity.SysPositioninfo"
+            resultMap="BaseResultMap">
+        select * from sys_positioninfo
+        <where>
+            <if test="positionNo!=null and positionNo!=''">and positionNo = #{positionNo}</if>
+            <if test="positionName!=null and positionName!=''">and positionName = #{positionName}</if>
+        </where>
+    </select>
+
+    <!--删除岗位信息-->
+    <delete id="deletePosition" parameterType="com.zt.sys.authority.entity.SysPositioninfo">
+        delete from sys_positioninfo where positionNo = #{positionNo}
+    </delete>
 </mapper>

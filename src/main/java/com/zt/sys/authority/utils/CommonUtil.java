@@ -53,12 +53,14 @@ public class CommonUtil<T extends BaseModel> {
                         treeModel.setKey(resource.getResourceId());
                         treeModel.setTitle(resource.getPermissionName());
                         treeModel.setLevel(resource.getLevel());
+                        treeModel.setResourceType(resource.getResourceType());
                         list.add(treeModel);
                     } else {
                         TreeModel treeModel = new TreeModel();
                         treeModel.setKey(resource.getResourceId());
                         treeModel.setTitle(resource.getPermissionName());
                         treeModel.setLevel(resource.getLevel());
+                        treeModel.setResourceType(resource.getResourceType());
                         treeModel.setChildren(children);
                         list.add(treeModel);
                     }
@@ -84,6 +86,7 @@ public class CommonUtil<T extends BaseModel> {
                         tree.setKey(resource.getResourceId());
                         tree.setTitle(resource.getPermissionName());
                         tree.setLevel(resource.getLevel());
+                        tree.setResourceType(resource.getResourceType());
                         list.add(tree);
                     }else {
                         TreeModel tree = new TreeModel();
@@ -91,6 +94,7 @@ public class CommonUtil<T extends BaseModel> {
                         tree.setTitle(resource.getPermissionName());
                         tree.setChildren(children);
                         tree.setLevel(resource.getLevel());
+                        tree.setResourceType(resource.getResourceType());
                         list.add(tree);
                     }
                 }

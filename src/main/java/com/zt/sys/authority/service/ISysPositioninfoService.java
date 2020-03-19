@@ -2,6 +2,9 @@ package com.zt.sys.authority.service;
 
 import com.zt.sys.authority.entity.SysPositioninfo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.zt.sys.authority.entity.SysUsers;
+
+import java.util.List;
 
 /**
  * <p>
@@ -31,4 +34,17 @@ public interface ISysPositioninfoService extends IService<SysPositioninfo> {
      * @param sysPositioninfo
      */
     void editPositionInfo(SysPositioninfo sysPositioninfo);
+
+    /**
+     * 岗位列表查询
+     * @param sysPositioninfo
+     * @return
+     */
+    List<SysPositioninfo> selectPositionList(SysPositioninfo sysPositioninfo);
+
+    /**
+     * 删除岗位信息
+     * @param sysPositioninfo
+     */
+    void deletePosition(List<SysPositioninfo> sysPositioninfo, SysUsers sysUsers);
 }

@@ -30,7 +30,7 @@ import java.util.Map;
  * @since 2020-02-17
  */
 @RestController
-@RequestMapping("/authority/sys-orginfo")
+@RequestMapping("/orgInfo")
 public class SysOrginfoController {
 
     @Resource
@@ -154,7 +154,8 @@ public class SysOrginfoController {
         try {
             // 获取当前登陆人信息
             SysUsers sessionUser = sessionValue.getSessionUser(request);
-            if(sessionUser!=null && sessionUser.getUserId()!=null && !sessionUser.getUserId().equals("")) {
+            if(sessionUser!=null && sessionUser.getUserId()!=null &&
+                    !sessionUser.getUserId().equals("")) {
                 SysOrginfo sysOrginfo = new SysOrginfo();
                 sysOrginfo.setCreateUser(sessionUser.getUserId());//操作人
                 sysOrginfo.setCreateTime(new Date());//操作时间

@@ -72,6 +72,11 @@
         <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
     </resultMap>
 
+    <!--删除账号信息-->
+    <delete id="deleteByUserId" parameterType="java.lang.String">
+        delete from sys_users where userId = #{userId}
+    </delete>
+
     <!--验证用户名是否重复-->
     <select id="validataUserName" parameterType="java.lang.String" resultType="java.lang.Integer">
         select count(0) from sys_users where username = #{userName}
@@ -85,7 +90,30 @@
           #{userId,jdbcType=VARCHAR},#{username,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},
           #{indate,jdbcType=DATE},#{createUser,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{type},
           #{isSupper}
-        )
+        ) on DUPLICATE KEY UPDATE
+        <trim suffixOverrides=",">
+            <if test="username!=null and username!=''">
+                username = #{username},
+            </if>
+            <if test="password!=null and password!=''">
+                password = #{password},
+            </if>
+            <if test="indate!=null">
+                indate = #{indate},
+            </if>
+            <if test="createUser!=null and createUser!=''">
+                createUser = #{createUser},
+            </if>
+            <if test="createTime!=null">
+                createTime = #{createTime},
+            </if>
+            <if test="type!=null and type!=''">
+                type = #{type},
+            </if>
+            <if test="isSupper!=null and isSupper!=''">
+                isSupper = #{isSupper},
+            </if>
+        </trim>
     </insert>
 
     <!--根据组织编码查询用户-->
@@ -190,5 +218,11 @@
         AND b.org_id = c.orgId
         AND b.deptId = d.deptId
         AND a.userId = #{userId}
+    </select>
+
+    <!--根据用户ID 获取账号信息-->
+    <select id="selectUserNameAndPassword" parameterType="com.zt.sys.authority.entity.SysUsers"
+            resultMap="BaseResultMap">
+        select * from sys_users where userId = #{userId}
     </select>
 </mapper>
