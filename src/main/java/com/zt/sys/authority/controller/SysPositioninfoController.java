@@ -126,7 +126,7 @@ public class SysPositioninfoController {
                     !sessionUser.getUserId().equals("")) {
 
                 //列表查询
-                sysPositioninfoService.selectPositionList(sysPositioninfo);
+                positioninfoList = sysPositioninfoService.selectPositionList(sysPositioninfo);
 
                 //返回结果集
                 PageInfo<SysPositioninfo> pageInfo = new PageInfo<>(positioninfoList);
