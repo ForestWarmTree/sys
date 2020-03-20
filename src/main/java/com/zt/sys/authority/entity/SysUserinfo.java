@@ -60,7 +60,7 @@ package com.zt.sys.authority.entity;
     private String cardNums;
 
     // 入职日期
-    private LocalDate entryTime;
+    private Date entryTime;
 
     // 就职状态
     private Integer assumptionFlag;
