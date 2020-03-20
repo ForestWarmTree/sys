@@ -3,6 +3,8 @@ package com.zt.sys.authority.mapper;
 import com.zt.sys.authority.entity.SysGroupinfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
+import java.util.List;
+
 /**
  * <p>
  *  Mapper 接口
@@ -30,4 +32,15 @@ public interface SysGroupinfoMapper extends BaseMapper<SysGroupinfo> {
      * @param groupId
      */
     int validataGroupId(String groupId);
+    /**
+     * 用户组列表查询
+     * @param sysGroupinfo
+     * @return
+     */
+    List<SysGroupinfo> selectGroupList(SysGroupinfo sysGroupinfo);
+    /**
+     * 删除用户组
+     * @param sysGroupinfo
+     */
+    void deleteGroupInfo(SysGroupinfo sysGroupinfo);
 }

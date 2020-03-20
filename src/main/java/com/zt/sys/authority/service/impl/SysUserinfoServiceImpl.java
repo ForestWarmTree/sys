@@ -101,6 +101,16 @@ public class SysUserinfoServiceImpl extends ServiceImpl<SysUserinfoMapper, SysUs
     }
 
     /**
+     * 根据用户组ID查询用户
+     * @param groupId
+     * @return
+     */
+    @Override
+    public List<SysUserinfo> selectUserInfoListByGroupId(String groupId) {
+        return sysUserinfoMapper.selectUserInfoListByGroupId(groupId);
+    }
+
+    /**
      * 删除人员信息
      * @param sysUserinfos
      * @param sessionUser

@@ -79,4 +79,7 @@ package com.zt.sys.authority.entity;
     //修改时间
     @TableField("updateTime")
     private Date updateTime;
+
+    //是否已被分配用户组 0/1，非DB字段。仅供前台组件使用
+    private String isChoose;
 }

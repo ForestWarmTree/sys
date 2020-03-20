@@ -44,5 +44,11 @@ public interface SysUserinfoMapper extends BaseMapper<SysUserinfo> {
      * @param sysUserinfo
      */
     void deleteUserInfo(SysUserinfo sysUserinfo);
+    /**
+     * 根据组ID查询用户
+     * @param groupId
+     * @return
+     */
+    List<SysUserinfo> selectUserInfoListByGroupId(String groupId);
 
 }

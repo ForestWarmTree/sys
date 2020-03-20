@@ -43,6 +43,14 @@ public interface ISysUserinfoService extends IService<SysUserinfo> {
     List<SysUserinfo> selectUserInfoList(SysUserinfo sysUserinfo);
 
     /**
+     * 根据组ID查询用户
+     * @param groupId
+     * @return
+     */
+    List<SysUserinfo> selectUserInfoListByGroupId(String groupId);
+
+
+    /**
      * 删除用户信息
      * @param sysUserinfos
      * @param sessionUser

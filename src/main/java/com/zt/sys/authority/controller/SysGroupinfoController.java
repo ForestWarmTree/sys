@@ -1,6 +1,7 @@
 package com.zt.sys.authority.controller;
 
 
+import com.github.pagehelper.PageInfo;
 import com.zt.sys.authority.core.RetResponse;
 import com.zt.sys.authority.core.RetResult;
 import com.zt.sys.authority.entity.SysGroupinfo;
@@ -16,6 +17,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -96,4 +98,74 @@ public class SysGroupinfoController {
         }
         return RetResponse.makeOKRsp();
     }
+
+
+
+    /**
+     * 用户组列表查询
+     * @param sysGroupinfo
+     * @param request
+     * @return
+     */
+    @PostMapping("/selectGroupList")
+    @ResponseBody
+    public Map<String, Object> selectGroupList(@RequestBody SysGroupinfo sysGroupinfo,
+                                             HttpServletRequest request) {
+        Map<String, Object> result = new HashMap<>();
+        List<SysGroupinfo> groupinfoList = null;
+        try {
+            // 获取当前登陆人信息
+            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            if(sessionUser!=null && sessionUser.getUserId() != null &&
+                    !sessionUser.getUserId().equals("")) {
+
+                //获取当前登陆人所属组织
+                sysGroupinfo.setOrgId(sessionUser.getSysUserinfo().getOrgId());
+                //查询列表
+                groupinfoList = groupinfoService.selectGroupList(sysGroupinfo);
+
+                //返回结果集
+                PageInfo<SysGroupinfo> pageInfo = new PageInfo<>(groupinfoList);
+                result.put("size",sysGroupinfo.getPageSize());
+                result.put("current",sysGroupinfo.getCurrent());
+                result.put("total",pageInfo.getTotal());
+                result.put("pages",pageInfo.getPages());
+                result.put("records",groupinfoList);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+
+    /**
+     * 删除用户组信息
+     * @param groupinfos
+     * @param request
+     * @return
+     */
+    @PostMapping("/deleteGroupInfo")
+    @ResponseBody
+    public RetResult<Map> deleteGroupInfo(@RequestBody List<SysGroupinfo> groupinfos,
+                                     HttpServletRequest request) {
+        try {
+            // 获取当前登陆人信息
+            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            if(sessionUser!=null && sessionUser.getUserId()!=null &&
+                    !sessionUser.getUserId().equals("")) {
+                //删除
+                groupinfoService.deleteGroupInfo(groupinfos, sessionUser);
+            } else {
+                return RetResponse.makeErrRsp("登陆已过期!请重新登陆");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return  RetResponse.makeSysErrRsp();
+        }
+        return RetResponse.makeRsp(200,"操作成功!");
+    }
+
+
+
 }

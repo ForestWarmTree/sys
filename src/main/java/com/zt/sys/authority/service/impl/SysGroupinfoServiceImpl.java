@@ -2,6 +2,7 @@ package com.zt.sys.authority.service.impl;
 
 import com.zt.sys.authority.entity.SysGroupinfo;
 import com.zt.sys.authority.entity.SysRolelog;
+import com.zt.sys.authority.entity.SysUsers;
 import com.zt.sys.authority.mapper.SysGroupinfoMapper;
 import com.zt.sys.authority.mapper.SysRolelogMapper;
 import com.zt.sys.authority.service.ISysGroupinfoService;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -80,5 +82,40 @@ public class SysGroupinfoServiceImpl extends ServiceImpl<SysGroupinfoMapper, Sys
     @Override
     public int validataGroupId(String groupId) {
         return sysGroupinfoMapper.validataGroupId(groupId);
+    }
+
+    /**
+     * 用户组列表查询
+     * @param sysGroupinfo
+     * @return
+     */
+    @Override
+    public List<SysGroupinfo> selectGroupList(SysGroupinfo sysGroupinfo) {
+        return sysGroupinfoMapper.selectGroupList(sysGroupinfo);
+    }
+
+    /**
+     * 删除用户组
+     * @param sysGroupinfos
+     * @param sessionUser
+     */
+    @Transactional
+    @Override
+    public void deleteGroupInfo(List<SysGroupinfo> sysGroupinfos, SysUsers sessionUser) {
+        if(sysGroupinfos!=null && sysGroupinfos.size()>0) {
+            for(SysGroupinfo groupinfo:sysGroupinfos) {
+                SysRolelog sysRolelog = new SysRolelog();
+                sysRolelog.setResourceId(groupinfo.getGroupId());//被操作组编码
+                sysRolelog.setUpdateType(ParamUtil.DELETE);//变更类型
+                sysRolelog.setUpdateTypeTips(ParamUtil.LogSaveGroup);//变更类型业务描述
+                sysRolelog.setSysUser(sessionUser.getCreateUser());//创建人
+                sysRolelog.setSysTime(new Date());//创建时间
+                sysRolelog.setSysUserName(sessionUser.getName());//创建人姓名
+                //保存日志
+                sysRolelogMapper.saveLog(sysRolelog);
+                //删除
+                sysGroupinfoMapper.deleteGroupInfo(groupinfo);
+            }
+        }
     }
 }

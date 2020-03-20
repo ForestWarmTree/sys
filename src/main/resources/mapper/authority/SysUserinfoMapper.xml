@@ -24,6 +24,14 @@
     </resultMap>
 
 
+    <!--根据用户组ID查询用户信息-->
+    <select id="selectUserInfoListByGroupId" parameterType="java.lang.String"
+            resultMap="BaseResultMap">
+        SELECT userId,userCardNo,`name`,org_id FROM sys_userinfo WHERE userId in (
+          SELECT userId FROM sys_usersgroup WHERE groupId = #{groupId}
+        )
+    </select>
+
     <!--用户列表查询-->
     <select id="selectUserInfoList" parameterType="com.zt.sys.authority.entity.SysUserinfo"
             resultMap="BaseResultMap">

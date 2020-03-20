@@ -135,7 +135,7 @@
         AND b.org_id = #{orgId}
     </select>
 
-    <!--根据组织编码查询用户-->
+    <!--根据部门编码查询用户-->
     <select id="selectUserByDeptId" parameterType="java.lang.String"
             resultMap="BaseResultMap">
         select

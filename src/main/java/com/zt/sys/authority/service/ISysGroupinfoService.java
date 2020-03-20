@@ -2,6 +2,9 @@ package com.zt.sys.authority.service;
 
 import com.zt.sys.authority.entity.SysGroupinfo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.zt.sys.authority.entity.SysUsers;
+
+import java.util.List;
 
 /**
  * <p>
@@ -29,5 +32,18 @@ public interface ISysGroupinfoService extends IService<SysGroupinfo> {
      * @param groupId
      */
     int validataGroupId(String groupId);
+
+    /**
+     * 用户组列表查询
+     * @param sysGroupinfo
+     * @return
+     */
+    List<SysGroupinfo> selectGroupList(SysGroupinfo sysGroupinfo);
+
+    /**
+     * 批量删除用户组
+     * @param sysGroupinfos
+     */
+    void deleteGroupInfo(List<SysGroupinfo> sysGroupinfos, SysUsers sessionUser);
 
 }

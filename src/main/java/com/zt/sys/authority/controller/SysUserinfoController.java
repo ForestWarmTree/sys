@@ -4,6 +4,7 @@ package com.zt.sys.authority.controller;
 import com.github.pagehelper.PageInfo;
 import com.zt.sys.authority.core.RetResponse;
 import com.zt.sys.authority.core.RetResult;
+import com.zt.sys.authority.entity.SysGroupinfo;
 import com.zt.sys.authority.entity.SysOrginfo;
 import com.zt.sys.authority.entity.SysUserinfo;
 import com.zt.sys.authority.entity.SysUsers;
@@ -16,10 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>
@@ -181,6 +179,58 @@ public class SysUserinfoController {
             return  RetResponse.makeSysErrRsp();
         }
         return RetResponse.makeRsp(200,"操作成功!");
+    }
+
+
+
+    /**
+     * 根据组ID查询该组下所有用户
+     * @param sysGroupinfo
+     * @param request
+     * @return
+     */
+    @PostMapping("/selectUserByGroupId")
+    @ResponseBody
+    public Map<String, Object> selectUserByGroupId(@RequestBody SysGroupinfo sysGroupinfo,
+                                                   HttpServletRequest request) {
+        Map<String, Object> result = new HashMap<>();
+        List<SysUserinfo> resultUserList = new ArrayList<>();
+        try {
+            // 获取当前登陆人信息
+            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            if(sessionUser!=null && sessionUser.getSysUserinfo()!=null ) {
+                if(sessionUser.getSysUserinfo().getOrgId()!=null &&
+                        !"".equals(sessionUser.getSysUserinfo().getOrgId())) {
+
+                    SysUserinfo userinfo = new SysUserinfo();
+                    userinfo.setOrgId(sessionUser.getSysUserinfo().getOrgId());
+                    //根据当前登陆人的组织编码，查询该组织下所有用户
+                    List<SysUserinfo> userinfoList = sysUserinfoService.selectUserInfoList(userinfo);
+                    for(SysUserinfo usr:userinfoList) {
+                        usr.setIsChoose("0");
+                        resultUserList.add(usr);
+                    }
+
+                    //根据用户组ID查询该用户组下的人员
+                    List<SysUserinfo> groupUserList = sysUserinfoService.selectUserInfoListByGroupId(sysGroupinfo.getGroupId());
+                    for(SysUserinfo usr:groupUserList) {
+                        usr.setIsChoose("1");
+                        resultUserList.add(usr);
+                    }
+
+                    //返回结果集
+                    PageInfo<SysUserinfo> pageInfo = new PageInfo<>(resultUserList);
+                    result.put("size",sysGroupinfo.getPageSize());
+                    result.put("current",sysGroupinfo.getCurrent());
+                    result.put("total",pageInfo.getTotal());
+                    result.put("pages",pageInfo.getPages());
+                    result.put("records",resultUserList);
+                }
+            }
+        } catch (Exception e) {
+            logger.error(e.toString());
+        }
+        return result;
     }
 
 
