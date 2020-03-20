@@ -51,4 +51,11 @@ public interface SysUserinfoMapper extends BaseMapper<SysUserinfo> {
      */
     List<SysUserinfo> selectUserInfoListByGroupId(String groupId);
 
+    /**
+     * 根据角色编码查询用户
+     * @param roleId
+     * @return
+     */
+    List<SysUserinfo> selectUserInfoListByRoleId(String roleId);
+
 }

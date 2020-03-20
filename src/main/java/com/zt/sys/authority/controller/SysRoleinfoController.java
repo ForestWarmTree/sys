@@ -131,8 +131,6 @@ public class SysRoleinfoController {
     }
 
 
-
-
     /**
      * 新增角色基础信息
      * @param roleinfo

@@ -120,7 +120,7 @@ public class SysGroupinfoController {
                     !sessionUser.getUserId().equals("")) {
 
                 //获取当前登陆人所属组织
-                sysGroupinfo.setOrgId(sessionUser.getSysUserinfo().getOrgId());
+                //sysGroupinfo.setOrgId(sessionUser.getSysUserinfo().getOrgId());
                 //查询列表
                 groupinfoList = groupinfoService.selectGroupList(sysGroupinfo);
 

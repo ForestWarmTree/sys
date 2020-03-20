@@ -111,6 +111,16 @@ public class SysUserinfoServiceImpl extends ServiceImpl<SysUserinfoMapper, SysUs
     }
 
     /**
+     * 根据角色编码查询用户
+     * @param roleId
+     * @return
+     */
+    @Override
+    public List<SysUserinfo> selectUserInfoListByRoleId(String roleId) {
+        return sysUserinfoMapper.selectUserInfoListByRoleId(roleId);
+    }
+
+    /**
      * 删除人员信息
      * @param sysUserinfos
      * @param sessionUser

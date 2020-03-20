@@ -37,12 +37,18 @@ package com.zt.sys.authority.entity;
 
     // 岗位
     private String position;
+    // 岗位名称，非DB字段
+    private String positionName;
 
     // 所属组织
     private String orgId;
+    //所属组织名称，非DB字段
+    private String orgName;
 
     //所属部门
     private String deptId;
+    //所属部门名称，非DB字段
+    private String deptName;
 
     // 籍贯
     private String nativePlace;
@@ -80,6 +86,4 @@ package com.zt.sys.authority.entity;
     @TableField("updateTime")
     private Date updateTime;
 
-    //是否已被分配用户组 0/1，非DB字段。仅供前台组件使用
-    private String isChoose;
 }

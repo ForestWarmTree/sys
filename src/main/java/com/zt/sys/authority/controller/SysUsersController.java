@@ -303,34 +303,6 @@ public class SysUsersController {
 
 
     /**
-     * 根据角色编码查询用户
-     * @param sysRoleinfo
-     * @return
-     */
-    @PostMapping("/user/selectUserByRoleId")
-    @ResponseBody
-    public Map<String, Object> selectUserByRoleId(@RequestBody SysRoleinfo sysRoleinfo) {
-        Map<String, Object> result = new HashMap<>();
-        try {
-            //开启分页支持
-            PageHelper.startPage(sysRoleinfo.getCurrent(),sysRoleinfo.getPageSize());
-            List<SysUsers> usersList = sysUsersService.selectUserByRoleId(sysRoleinfo.getRoleId());
-            //返回结果集
-            PageInfo<SysUsers> pageInfo = new PageInfo<>(usersList);
-            result.put("size",sysRoleinfo.getPageSize());
-            result.put("current",sysRoleinfo.getCurrent());
-            result.put("total",pageInfo.getTotal());
-            result.put("pages",pageInfo.getPages());
-            result.put("records",usersList);
-        } catch (Exception e) {
-            logger.error(e.toString());
-        }
-        return result;
-    }
-
-
-
-    /**
      * 根据资源编码查询用户
      * @param sysResourceinfo
      * @return

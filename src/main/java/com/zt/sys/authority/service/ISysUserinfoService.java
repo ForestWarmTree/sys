@@ -49,6 +49,13 @@ public interface ISysUserinfoService extends IService<SysUserinfo> {
      */
     List<SysUserinfo> selectUserInfoListByGroupId(String groupId);
 
+    /**
+     * 根据角色编码查询用户
+     * @param roleId
+     * @return
+     */
+    List<SysUserinfo> selectUserInfoListByRoleId(String roleId);
+
 
     /**
      * 删除用户信息
