@@ -110,8 +110,10 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUs
         }
         // 根据用户ID 删除对应关系
         sysUserRoleMapper.deleteUserRoleByUserId(sysUserRole.getUserId());
-        // 保存
-        sysUserRoleMapper.saveUserRole(map);
+        if(sysUserRole.getRoleIds()!=null && sysUserRole.getRoleIds().size()>0) {
+            // 保存
+            sysUserRoleMapper.saveUserRole(map);
+        }
     }
 
     /**

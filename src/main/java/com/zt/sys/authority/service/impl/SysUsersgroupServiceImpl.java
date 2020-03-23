@@ -104,11 +104,9 @@ public class SysUsersgroupServiceImpl extends ServiceImpl<SysUsersgroupMapper, S
         }
         //根据组ID删除对应关系
         sysUsersgroupMapper.delete(sysUsersgroup);
-        //保存
-        sysUsersgroupMapper.saveUsersGroup(map);
+        if (sysUsersgroup.getUserIds() !=null && sysUsersgroup.getUserIds().size()>0) {
+            //保存
+            sysUsersgroupMapper.saveUsersGroup(map);
+        }
     }
-
-
-
-
 }
