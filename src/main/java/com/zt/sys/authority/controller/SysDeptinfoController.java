@@ -62,7 +62,7 @@ public class SysDeptinfoController {
 
                     sysDeptinfoService.saveDeptInfo(deptinfo);
                 } else {
-                    return RetResponse.makeErrRsp("组织编码重复!");
+                    return RetResponse.makeErrRsp("部门编码重复!");
                 }
             } else {
                 return RetResponse.makeErrRsp("登陆时间过期!请重新登陆");
