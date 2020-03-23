@@ -202,8 +202,9 @@ public class SysUserinfoController {
 
                     SysUserinfo userinfo = new SysUserinfo();
                     userinfo.setOrgId(sessionUser.getSysUserinfo().getOrgId());
+                    userinfo.setGroupId(sysGroupinfo.getGroupId());
                     //根据当前登陆人的组织编码，查询该组织下所有用户
-                    List<SysUserinfo> userinfoList = sysUserinfoService.selectUserInfoList(userinfo);
+                    List<SysUserinfo> userinfoList = sysUserinfoService.selectUserInfoListByAuth(userinfo);
                     if(userinfoList!=null && userinfoList.size()>0) {
                         for(SysUserinfo usr:userinfoList) {
                             usr.setIsChoose("0");
@@ -269,7 +270,8 @@ public class SysUserinfoController {
                     //根据当前登陆人的组织编码，查询该组织下所有用户
                     SysUserinfo info = new SysUserinfo();
                     info.setOrgId(sessionUser.getSysUserinfo().getOrgId());
-                    List<SysUserinfo> userinfoList = sysUserinfoService.selectUserInfoList(info);
+                    info.setRoleId(sysRoleinfo.getRoleId());
+                    List<SysUserinfo> userinfoList = sysUserinfoService.selectUserInfoListByAuth(info);
                     if (userinfoList != null && userinfoList.size() > 0) {
                         for (SysUserinfo usr : userinfoList) {
                             usr.setIsChoose("0");

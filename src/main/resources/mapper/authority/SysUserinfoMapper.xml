@@ -58,6 +58,34 @@
         </where>
     </select>
 
+    <!--所有分配页面调用人员列表时使用-->
+    <select id="selectUserInfoListByAuth" parameterType="com.zt.sys.authority.entity.SysUserinfo"
+            resultMap="BaseResultMap">
+        select a.*,b.orgName,c.deptName,d.positionName
+        from sys_userinfo a
+        LEFT JOIN sys_orginfo b
+        on a.org_id = b.orgId
+        LEFT JOIN sys_deptinfo c
+        on a.deptId = c.deptId
+        LEFT JOIN sys_positioninfo d
+        on a.position = d.positionNo
+        <where>
+            a.org_id = #{orgId}
+            <if test="userCardNo!=null and userCardNo!=''">and a.userCardNo = #{userCardNo}</if>
+            <if test="name!=null and name!=''">and a.name = #{name}</if>
+            <if test="groupId!=null and groupId!=''">
+                AND a.userId NOT in (
+                SELECT userId FROM sys_usersgroup WHERE groupId = #{groupId}
+                )
+            </if>
+            <if test="roleId!=null and roleId!=''">
+                AND a.userId NOT in (
+                SELECT userId FROM sys_user_role WHERE roleId = #{roleId}
+                )
+            </if>
+        </where>
+    </select>
+
     <!--删除用户基础信息-->
     <delete id="deleteUserInfo" parameterType="com.zt.sys.authority.entity.SysUserinfo">
         delete from sys_userinfo where userId = #{userId}

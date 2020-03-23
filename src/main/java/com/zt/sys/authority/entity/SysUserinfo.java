@@ -86,4 +86,8 @@ package com.zt.sys.authority.entity;
     @TableField("updateTime")
     private Date updateTime;
 
+    //组ID，非DB字段
+    private String groupId;
+    //角色ID，非DB字段
+    private String roleId;
 }

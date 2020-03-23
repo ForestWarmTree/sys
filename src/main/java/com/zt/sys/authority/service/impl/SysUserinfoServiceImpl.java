@@ -101,6 +101,16 @@ public class SysUserinfoServiceImpl extends ServiceImpl<SysUserinfoMapper, SysUs
     }
 
     /**
+     * 根据当前用户查询该用户可操作的用户权限
+     * @param sysUserinfo
+     * @return
+     */
+    @Override
+    public List<SysUserinfo> selectUserInfoListByAuth(SysUserinfo sysUserinfo) {
+        return sysUserinfoMapper.selectUserInfoListByAuth(sysUserinfo);
+    }
+
+    /**
      * 根据用户组ID查询用户
      * @param groupId
      * @return

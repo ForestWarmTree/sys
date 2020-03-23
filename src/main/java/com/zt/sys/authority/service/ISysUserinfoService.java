@@ -43,6 +43,13 @@ public interface ISysUserinfoService extends IService<SysUserinfo> {
     List<SysUserinfo> selectUserInfoList(SysUserinfo sysUserinfo);
 
     /**
+     * 根据当前用户查询该用户可操作的用户权限
+     * @param sysUserinfo
+     * @return
+     */
+    List<SysUserinfo> selectUserInfoListByAuth(SysUserinfo sysUserinfo);
+
+    /**
      * 根据组ID查询用户
      * @param groupId
      * @return
