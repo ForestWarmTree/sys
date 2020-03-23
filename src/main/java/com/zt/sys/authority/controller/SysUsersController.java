@@ -169,8 +169,10 @@ public class SysUsersController {
     public RetResult<Map> saveUser(@RequestBody SysUsers sysUsers, HttpServletRequest request) {
         if(sysUsers != null) {
             //判断用户名是否重复
-            int flag = sysUsersService.validataUserName(sysUsers.getUsername());
-            if(flag<=0) {
+            String userId = sysUsersService.validataUserName(sysUsers.getUsername());
+            if(userId!=null && !userId.equals("") && !userId.equals(sysUsers.getUserId())) {
+                return  RetResponse.makeErrRsp("用户名重复");
+            } else {
                 try {
                     // 获取当前登陆人信息
                     SysUsers sessionUser = sessionValue.getSessionUser(request);
@@ -193,8 +195,6 @@ public class SysUsersController {
                     logger.error(e.toString());
                     return  RetResponse.makeSysErrRsp();
                 }
-            } else {
-                return  RetResponse.makeErrRsp("用户名重复");
             }
         } else {
             return  RetResponse.makeErrRsp("用户名或密码不可为空");

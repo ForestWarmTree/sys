@@ -17,7 +17,7 @@ public interface ISysUsersService extends IService<SysUsers> {
     // 根据用户名查询密码
     SysUsers selectPassWordByUserName(String userName);
     // 验证用户名是否重复
-    int validataUserName(String userName);
+    String validataUserName(String userName);
 
     // 新增用户
     void saveUser(SysUsers sysUsers);

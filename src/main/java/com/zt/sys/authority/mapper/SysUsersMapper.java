@@ -15,7 +15,7 @@ import java.util.List;
  */
 public interface SysUsersMapper extends BaseMapper<SysUsers> {
     // 验证用户名是否重复
-    int validataUserName(String userName);
+    String validataUserName(String userName);
 
     //删除账号
     void deleteByUserId(String userId);

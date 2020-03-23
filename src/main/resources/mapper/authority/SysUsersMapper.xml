@@ -78,8 +78,8 @@
     </delete>
 
     <!--验证用户名是否重复-->
-    <select id="validataUserName" parameterType="java.lang.String" resultType="java.lang.Integer">
-        select count(0) from sys_users where username = #{userName}
+    <select id="validataUserName" parameterType="java.lang.String" resultType="java.lang.String">
+        select userId from sys_users where username = #{userName}
     </select>
 
     <!--新增用户-->

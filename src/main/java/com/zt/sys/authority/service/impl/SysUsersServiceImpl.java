@@ -53,7 +53,7 @@ public class SysUsersServiceImpl extends ServiceImpl<SysUsersMapper, SysUsers> i
      * @return
      */
     @Override
-    public int validataUserName(String userName) {
+    public String validataUserName(String userName) {
         return sysUsersMapper.validataUserName(userName);
     }
 
