@@ -62,7 +62,7 @@ public class SysPositioninfoController {
 
                     sysPositioninfoService.savePositionInfo(positioninfo);
                 } else {
-                    return RetResponse.makeErrRsp("组织编码重复!");
+                    return RetResponse.makeErrRsp("岗位编码重复!");
                 }
             } else {
                 return RetResponse.makeErrRsp("登陆时间过期!请重新登陆");
