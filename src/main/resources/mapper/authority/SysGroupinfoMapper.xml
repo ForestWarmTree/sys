@@ -55,7 +55,7 @@
                     deptId = #{deptId},
                 </if>
                 <if test="updateUser!=null and updateUser!=''">
-                    native_place = #{nativePlace},
+                    updateUser = #{updateUser},
                 </if>
                 <if test="updateTime!=null">
                     updateTime = #{updateTime},
