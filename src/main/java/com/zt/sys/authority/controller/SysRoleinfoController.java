@@ -213,7 +213,7 @@ public class SysRoleinfoController {
     }
 
     /**
-     * 根据 用户权限 查询可用角色
+     * 用户管理——给用户分配角色，查询已分配与待分配角色
      * @param request
      * @param sysUsers
      * @return
