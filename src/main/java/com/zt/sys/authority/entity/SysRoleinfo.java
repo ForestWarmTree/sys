@@ -56,6 +56,8 @@ package com.zt.sys.authority.entity;
 
     //角色ID集合,非DB字段
     private List<String> roleIds;
+    //资源ID集合,非DB字段
+    private List<String> resourceIds;
     //该角色下已有得全部资源的ID
     private List<String> selectKeys;
     //树结构结果集

@@ -5,11 +5,9 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zt.sys.authority.core.RetResponse;
 import com.zt.sys.authority.core.RetResult;
-import com.zt.sys.authority.entity.SysResourceinfo;
-import com.zt.sys.authority.entity.SysRoleinfo;
-import com.zt.sys.authority.entity.SysUsers;
-import com.zt.sys.authority.entity.TreeModel;
+import com.zt.sys.authority.entity.*;
 import com.zt.sys.authority.service.ISysResourceinfoService;
+import com.zt.sys.authority.service.ISysRoleResourceService;
 import com.zt.sys.authority.service.ISysRoleinfoService;
 import com.zt.sys.authority.utils.*;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +36,9 @@ public class SysRoleinfoController {
 
     @Resource
     private ISysResourceinfoService sysResourceinfoService;
+
+    @Resource
+    private ISysRoleResourceService sysRoleResourceService;
 
     @Resource
     private CommonUtil<SysRoleinfo> commonUtil;
@@ -189,9 +190,17 @@ public class SysRoleinfoController {
                 roleinfo.setUpdateTime(new Date());//修改时间
                 roleinfo.setUpdateUser(sessionUser.getUserId());//修改人
 
+                //保存角色资源对应关系
+                SysRoleResource sysRoleResource = new SysRoleResource();
+                sysRoleResource.setCreateUser(sessionUser.getUserId());// 创建人
+                sysRoleResource.setCreateTime(new Date()); // 创建时间
+                sysRoleResource.setCreateUserName(sessionUser.getName());//创建人姓名
+                sysRoleResource.setResourceIds(roleinfo.getResourceIds());//资源ID集合
+                sysRoleResource.setRoleId(roleinfo.getRoleId());//角色ID
+                sysRoleResourceService.saveRoleResource(sysRoleResource);
+
                 // 设置有效期
                 commonUtil.validate(roleinfo);
-
                 roleinfoService.editRole(roleinfo);
             } else {
                 return RetResponse.makeErrRsp("登陆时间过期!请重新登陆");
@@ -206,12 +215,12 @@ public class SysRoleinfoController {
     /**
      * 根据 用户权限 查询可用角色
      * @param request
-     * @param roleinfo
+     * @param sysUsers
      * @return
      */
     @PostMapping("/selectRoleByUserId")
     @ResponseBody
-    public Map<String, Object> selectRoleByUserId(@RequestBody SysRoleinfo roleinfo,
+    public Map<String, Object> selectRoleByUserId(@RequestBody SysUsers sysUsers,
                                              HttpServletRequest request) {
         Map<String, Object> result = new HashMap<>();
         List<SysRoleinfo> roleinfoList = null;
@@ -221,12 +230,13 @@ public class SysRoleinfoController {
             if(sessionUser!=null && sessionUser.getUserId() != null &&
                     !sessionUser.getUserId().equals("")) {
                 // 根据用户权限 查询角色信息
-                roleinfoList = roleinfoService.selectRoleByUserId(sessionUser);
+                sysUsers.getSysUserinfo().setOrgId(sessionUser.getSysUserinfo().getOrgId());
+                roleinfoList = roleinfoService.selectRoleByUserId(sysUsers);
 
                 //返回结果集
                 PageInfo<SysRoleinfo> pageInfo = new PageInfo<>(roleinfoList);
-                result.put("size",roleinfo.getPageSize());
-                result.put("current",roleinfo.getCurrent());
+                result.put("size",sysUsers.getPageSize());
+                result.put("current",sysUsers.getCurrent());
                 result.put("total",pageInfo.getTotal());
                 result.put("pages",pageInfo.getPages());
                 result.put("records",roleinfoList);

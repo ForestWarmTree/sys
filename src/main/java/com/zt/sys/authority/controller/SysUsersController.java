@@ -9,6 +9,7 @@ import com.zt.sys.authority.entity.*;
 import com.zt.sys.authority.service.ISysUsersService;
 import com.zt.sys.authority.utils.HttpSessionValue;
 import com.zt.sys.authority.utils.MD5Util;
+import com.zt.sys.authority.utils.Tool;
 import com.zt.sys.authority.utils.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -183,7 +184,9 @@ public class SysUsersController {
                         String pwd = MD5Util.getEncryptedPwd(sysUsers.getPassword());
                         sysUsers.setPassword(pwd);
 
-                        //新增用户
+                        if(sysUsers.getIndate() == null) {
+                            sysUsers.setIndate(Tool.parseDateShort("9999-01-01"));
+                        }
                         sysUsers.setCreateUser(sessionUser.getUserId());// 创建人
                         sysUsers.setCreateTime(new Date());// 创建时间
                         sysUsers.setName(sessionUser.getName());// 创建人姓名

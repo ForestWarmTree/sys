@@ -116,6 +116,7 @@ public class SysRoleinfoServiceImpl extends ServiceImpl<SysRoleinfoMapper, SysRo
         sysRolelog.setSysUserName(roleinfo.getCreateUserName());//创建人姓名
         //保存日志
         sysRolelogMapper.saveLog(sysRolelog);
+
         //修改角色
         roleinfoMapper.editRole(roleinfo);
     }

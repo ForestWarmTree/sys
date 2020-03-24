@@ -105,7 +105,10 @@ public class SysRoleResourceServiceImpl extends ServiceImpl<SysRoleResourceMappe
         //删除原有关系
         sysRoleResourceMapper.deleteByResourceId(sysRoleResource.getRoleId());
         //新增
-        sysRoleResourceMapper.saveRoleResource(map);
+        if(sysRoleResource.getResourceIds()!=null && sysRoleResource.getResourceIds().size()>0) {
+            sysRoleResourceMapper.saveRoleResource(map);
+        }
+
     }
 
     /**
@@ -174,6 +177,9 @@ public class SysRoleResourceServiceImpl extends ServiceImpl<SysRoleResourceMappe
         //删除原有记录
         sysRoleResourceMapper.deleteByResourceId(sysRoleResource.getResourceId());
         //新增
-        sysRoleResourceMapper.saveResourceRole(map);
+        if(sysRoleResource.getRoleIds()!=null && sysRoleResource.getRoleIds().size()>0) {
+            sysRoleResourceMapper.saveResourceRole(map);
+        }
+
     }
 }
