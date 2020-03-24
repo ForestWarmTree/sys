@@ -229,15 +229,17 @@ public class SysRoleinfoController {
             SysUsers sessionUser = sessionValue.getSessionUser(request);
             if(sessionUser!=null && sessionUser.getUserId() != null &&
                     !sessionUser.getUserId().equals("")) {
-                // 根据用户权限 查询角色信息
-                SysUserinfo sysUserinfo = new SysUserinfo();
-                sysUserinfo.setOrgId(sessionUser.getSysUserinfo().getOrgId());
-                sysUsers.setSysUserinfo(sysUserinfo);
-                roleinfoList = roleinfoService.selectRoleByUserId(sysUsers);
+
+                //根据当前登陆人查询当前登陆人可操作得角色
+                sessionUser.setParamId(sysUsers.getUserId());
+                roleinfoList = roleinfoService.selectAuthRoleByUser(sessionUser);
+
+                // 根据前台传入用户ID 查询该用户角色信息权限
+                List<SysRoleinfo> chooseList = roleinfoService.selectChooseRoleList(sysUsers);
 
                 // 根据用户ID 查询已分配角色
-                List<SysRoleinfo> chooseList = roleinfoService.selectChooseRoleList(sysUsers);
                 for(SysRoleinfo roleinfo:chooseList) {
+                    roleinfo.setIsChoose("1");
                     roleinfoList.add(roleinfo);
                 }
                 //返回结果集

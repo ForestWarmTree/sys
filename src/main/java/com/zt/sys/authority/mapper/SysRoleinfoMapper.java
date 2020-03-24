@@ -75,4 +75,10 @@ public interface SysRoleinfoMapper extends BaseMapper<SysRoleinfo> {
      * @return
      */
     List<SysRoleinfo> selectChooseRoleList(SysUsers sysUsers);
+    /**
+     * 根据当前登陆人ID获取角色信息，并且与前台传入得用户所拥有的角色进行去重
+     * @param sysUsers
+     * @return
+     */
+    List<SysRoleinfo> selectAuthRoleByUser(SysUsers sysUsers);
 }

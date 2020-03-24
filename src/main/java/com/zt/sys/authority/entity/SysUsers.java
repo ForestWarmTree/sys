@@ -73,4 +73,6 @@ package com.zt.sys.authority.entity;
     private String resourceId;
     // 资源名称 非DB字段
     private String permissionName;
+    // 多变参数ID，非DB字段
+    private String paramId;
 }

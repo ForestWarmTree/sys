@@ -135,7 +135,17 @@ public class SysRoleinfoServiceImpl extends ServiceImpl<SysRoleinfoMapper, SysRo
     }
 
     /**
-     * 根据用户ID查询已分配角色
+     * 根据当前登陆人ID获取角色信息，并且与前台传入得用户所拥有的角色进行去重
+     * @param sysUsers
+     * @return
+     */
+    @Override
+    public List<SysRoleinfo> selectAuthRoleByUser(SysUsers sysUsers) {
+        return roleinfoMapper.selectAuthRoleByUser(sysUsers);
+    }
+
+    /**
+     * 根据前台传入得用户ID ，查询已被分配得角色
      * @param sysUsers
      * @return
      */

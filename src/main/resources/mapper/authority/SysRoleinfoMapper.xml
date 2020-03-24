@@ -15,6 +15,19 @@
         <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
     </resultMap>
 
+    <select id="selectAuthRoleByUser" parameterType="com.zt.sys.authority.entity.SysUsers"
+            resultMap="BaseResultMap">
+        select b.* from sys_user_role a,
+        sys_roleinfo b
+        WHERE a.roleId = b.roleId
+        AND a.userId = #{userId}
+        AND b.orgId = #{orgId}
+        AND b.startDate &lt;= CURDATE() AND b.endDate &gt; CURDATE()
+        and a.roleId not in (
+          select roleId from sys_user_role where userId = #{paramId}
+        )
+        order by createTime desc
+    </select>
 
     <!--根据用户ID查询已分配角色-->
     <select id="selectChooseRoleList" parameterType="com.zt.sys.authority.entity.SysUsers"
@@ -78,9 +91,6 @@
         AND a.userId = #{userId}
         AND b.orgId = #{orgId}
         AND b.startDate &lt;= CURDATE() AND b.endDate &gt; CURDATE()
-        and a.roleId not in (
-          select roleId from sys_user_role where userId = #{userId}
-        )
         order by createTime desc
     </select>
 
