@@ -231,8 +231,8 @@ public class SysRoleinfoController {
                     !sessionUser.getUserId().equals("")) {
 
                 //根据当前登陆人查询当前登陆人可操作得角色
-                sessionUser.setParamId(sysUsers.getUserId());
-                roleinfoList = roleinfoService.selectAuthRoleByUser(sessionUser);
+                sessionUser.getSysUserinfo().setParamId(sysUsers.getUserId());
+                roleinfoList = roleinfoService.selectAuthRoleByUser(sessionUser.getSysUserinfo());
 
                 // 根据前台传入用户ID 查询该用户角色信息权限
                 List<SysRoleinfo> chooseList = roleinfoService.selectChooseRoleList(sysUsers);

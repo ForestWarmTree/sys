@@ -15,7 +15,7 @@
         <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
     </resultMap>
 
-    <select id="selectAuthRoleByUser" parameterType="com.zt.sys.authority.entity.SysUsers"
+    <select id="selectAuthRoleByUser" parameterType="com.zt.sys.authority.entity.SysUserinfo"
             resultMap="BaseResultMap">
         select b.* from sys_user_role a,
         sys_roleinfo b

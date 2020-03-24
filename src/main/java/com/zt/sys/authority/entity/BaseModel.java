@@ -41,6 +41,8 @@ public class BaseModel {
     private boolean editable = false;
 
 	private String totalMappedStatementId;
+	// 多变参数ID，非DB字段
+	private String paramId;
 
 
 	@TableField(exist = false)

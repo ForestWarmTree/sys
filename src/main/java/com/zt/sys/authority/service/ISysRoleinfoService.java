@@ -2,6 +2,7 @@ package com.zt.sys.authority.service;
 
 import com.zt.sys.authority.entity.SysRoleinfo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.zt.sys.authority.entity.SysUserinfo;
 import com.zt.sys.authority.entity.SysUsers;
 
 import java.util.List;
@@ -49,10 +50,10 @@ public interface ISysRoleinfoService extends IService<SysRoleinfo> {
 
     /**
      * 根据当前登陆人ID获取角色信息，并且与前台传入得用户所拥有的角色进行去重
-     * @param sysUsers
+     * @param sysUserinfo
      * @return
      */
-    List<SysRoleinfo> selectAuthRoleByUser(SysUsers sysUsers);
+    List<SysRoleinfo> selectAuthRoleByUser(SysUserinfo sysUserinfo);
     /**
      * 根据用户ID查询已分配角色
      * @param sysUsers
