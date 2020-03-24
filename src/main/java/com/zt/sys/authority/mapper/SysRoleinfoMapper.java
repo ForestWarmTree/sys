@@ -69,5 +69,10 @@ public interface SysRoleinfoMapper extends BaseMapper<SysRoleinfo> {
      * @return
      */
     SysRoleinfo selectRoleInfoByRoleId(SysRoleinfo roleinfo);
-
+    /**
+     * 根据用户ID查询已分配角色
+     * @param sysUsers
+     * @return
+     */
+    List<SysRoleinfo> selectChooseRoleList(SysUsers sysUsers);
 }

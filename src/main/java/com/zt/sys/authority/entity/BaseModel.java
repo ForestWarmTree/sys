@@ -36,7 +36,7 @@ public class BaseModel {
 	private String endDate;
 
 	//是否已被分配用户组 0/1，非DB字段。仅供前台组件使用
-	private String isChoose;
+	private String isChoose = "0";
     //
     private boolean editable = false;
 

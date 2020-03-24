@@ -135,6 +135,16 @@ public class SysRoleinfoServiceImpl extends ServiceImpl<SysRoleinfoMapper, SysRo
     }
 
     /**
+     * 根据用户ID查询已分配角色
+     * @param sysUsers
+     * @return
+     */
+    @Override
+    public List<SysRoleinfo> selectChooseRoleList(SysUsers sysUsers) {
+        return roleinfoMapper.selectChooseRoleList(sysUsers);
+    }
+
+    /**
      * 查询所有角色信息
      * @return
      */

@@ -48,6 +48,13 @@ public interface ISysRoleinfoService extends IService<SysRoleinfo> {
     List<SysRoleinfo> selectRoleByUserId(SysUsers sysUsers);
 
     /**
+     * 根据用户ID查询已分配角色
+     * @param sysUsers
+     * @return
+     */
+    List<SysRoleinfo> selectChooseRoleList(SysUsers sysUsers);
+
+    /**
      * 查询所有角色信息
      * @return
      */

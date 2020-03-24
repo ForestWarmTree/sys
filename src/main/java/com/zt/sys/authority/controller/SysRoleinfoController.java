@@ -235,6 +235,11 @@ public class SysRoleinfoController {
                 sysUsers.setSysUserinfo(sysUserinfo);
                 roleinfoList = roleinfoService.selectRoleByUserId(sysUsers);
 
+                // 根据用户ID 查询已分配角色
+                List<SysRoleinfo> chooseList = roleinfoService.selectChooseRoleList(sysUsers);
+                for(SysRoleinfo roleinfo:chooseList) {
+                    roleinfoList.add(roleinfo);
+                }
                 //返回结果集
                 PageInfo<SysRoleinfo> pageInfo = new PageInfo<>(roleinfoList);
                 result.put("size",sysUsers.getPageSize());

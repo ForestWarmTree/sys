@@ -15,6 +15,16 @@
         <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
     </resultMap>
 
+
+    <!--根据用户ID查询已分配角色-->
+    <select id="selectChooseRoleList" parameterType="com.zt.sys.authority.entity.SysUsers"
+            resultMap="BaseResultMap">
+        select roleId,roleName,'1' as isChoose
+        from sys_roleinfo where roleId in (
+          select roleId from sys_user_role where userId = #{userId}
+        )
+    </select>
+
     <!--根据角色编码查询角色基础信息-->
     <select id="selectRoleInfoByRoleId" parameterType="com.zt.sys.authority.entity.SysRoleinfo"
             resultMap="BaseResultMap">
