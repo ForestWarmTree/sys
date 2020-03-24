@@ -230,7 +230,9 @@ public class SysRoleinfoController {
             if(sessionUser!=null && sessionUser.getUserId() != null &&
                     !sessionUser.getUserId().equals("")) {
                 // 根据用户权限 查询角色信息
-                sysUsers.getSysUserinfo().setOrgId(sessionUser.getSysUserinfo().getOrgId());
+                SysUserinfo sysUserinfo = new SysUserinfo();
+                sysUserinfo.setOrgId(sessionUser.getSysUserinfo().getOrgId());
+                sysUsers.setSysUserinfo(sysUserinfo);
                 roleinfoList = roleinfoService.selectRoleByUserId(sysUsers);
 
                 //返回结果集
