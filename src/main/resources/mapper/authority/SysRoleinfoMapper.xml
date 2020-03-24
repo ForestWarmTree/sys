@@ -78,6 +78,9 @@
         AND a.userId = #{userId}
         AND b.orgId = #{orgId}
         AND b.startDate &lt;= CURDATE() AND b.endDate &gt; CURDATE()
+        and a.roleId not in (
+          select roleId from sys_user_role where userId = #{userId}
+        )
         order by createTime desc
     </select>
 
