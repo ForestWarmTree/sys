@@ -12,6 +12,12 @@
         <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
     </resultMap>
 
+    <insert id="saveOne" parameterType="com.zt.sys.authority.entity.SysUserRole">
+        insert into sys_user_role (
+        userId,roleId,startDate,endDate,createUser,createTime
+        ) values (#{userId},#{roleId},#{startDate},#{endDate},
+            #{createUser},#{createTime})
+    </insert>
 
     <delete id="deleteUserRoleByUserId" parameterType="java.lang.String">
         delete from sys_user_role where userId = #{userId}

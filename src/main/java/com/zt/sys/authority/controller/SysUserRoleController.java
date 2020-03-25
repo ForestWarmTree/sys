@@ -60,6 +60,36 @@ public class SysUserRoleController {
         return RetResponse.makeOKRsp();
     }
 
+
+    /**
+     * 用户管理——复制用户角色功能，数据保存
+     * @param sysUserRole
+     * @param request
+     * @return
+     */
+    @PostMapping("/copyUserRoleSave")
+    @ResponseBody
+    public RetResult<Map> copyUserRoleSave(@RequestBody SysUserRole sysUserRole,
+                                       HttpServletRequest request) {
+        try {
+            // 获取当前登陆人信息
+            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            if(sessionUser!=null && sessionUser.getUserId()!=null && !sessionUser.getUserId().equals("")) {
+                sysUserRole.setCreateUser(sessionUser.getUserId());// 创建人
+                sysUserRole.setCreateTime(new Date()); // 创建时间
+                sysUserRole.setCreateUserName(sessionUser.getName());// 创建人姓名
+                sysUserRoleService.copyUserRoleSave(sysUserRole);
+            } else {
+                return RetResponse.makeErrRsp("登陆已过期!请重新登陆");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RetResponse.makeSysErrRsp();
+        }
+        return RetResponse.makeOKRsp();
+    }
+
+
     /**
      * 新增用户角色关系 -按角色分配
      * @param sysUserRole

@@ -35,12 +35,6 @@ package com.zt.sys.authority.entity;
     //角色ID
     @TableField("roleId")
     private String roleId;
-//    //有效期开始日期
-//    @TableField("startDate")
-//    private Date startDate;
-//    //有效期结束日期
-//    @TableField("endDate")
-//    private Date endDate;
     //创建人
     @TableField("createUser")
     private String createUser;

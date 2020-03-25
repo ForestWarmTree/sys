@@ -1,7 +1,8 @@
 package com.zt.sys.authority.service.impl;
 
-import com.zt.sys.authority.entity.SysRoleResource;
-import com.zt.sys.authority.entity.SysRolelog;
+import com.zt.sys.authority.entity.*;
+import com.zt.sys.authority.mapper.SysColumnscontrollerMapper;
+import com.zt.sys.authority.mapper.SysDatacontrollerMapper;
 import com.zt.sys.authority.mapper.SysRoleResourceMapper;
 import com.zt.sys.authority.mapper.SysRolelogMapper;
 import com.zt.sys.authority.service.ISysRoleResourceService;
@@ -11,10 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>
@@ -33,6 +31,12 @@ public class SysRoleResourceServiceImpl extends ServiceImpl<SysRoleResourceMappe
 
     @Resource
     private SysRolelogMapper logMapper;
+
+    @Resource
+    private SysDatacontrollerMapper datacontrollerMapper;
+
+    @Resource
+    private SysColumnscontrollerMapper sysColumnscontrollerMapper;
 
     /**
      * 新增角色资源关系 - 按角色分配
@@ -179,6 +183,143 @@ public class SysRoleResourceServiceImpl extends ServiceImpl<SysRoleResourceMappe
         //新增
         if(sysRoleResource.getRoleIds()!=null && sysRoleResource.getRoleIds().size()>0) {
             sysRoleResourceMapper.saveResourceRole(map);
+        }
+
+    }
+
+    /**
+     * 复制功能数据保存
+     * @param sysRoleinfo
+     */
+    @Transactional
+    @Override
+    public void copyRoleSave(SysRoleinfo sysRoleinfo) {
+        //查询出要被复制的角色下的资源权限
+        List<String> result1 = sysRoleResourceMapper.selectResourceIdByRoleId(sysRoleinfo.getRoleId());
+        Map<String, Boolean> menuMap = new HashMap<>();
+        //根据被复制的角色，与该角色下的资源ID，查询出数据权限
+        for(String resourceId:result1) {
+            //将被复制的角色下的资源存入map
+            menuMap.put(resourceId,true);
+
+            Map<String, String> map = new HashMap<>();
+            map.put("roleId", sysRoleinfo.getRoleId());
+            map.put("resourceId", resourceId);
+            //数据权限
+            List<SysDataModel> dataResult = datacontrollerMapper.selectByRoleIdAndResourceId(map);
+            //字段权限
+            List<SysColumnsModel> columnResult = sysColumnscontrollerMapper.selectByRoleIdAndResourceId(map);
+
+            //循环要赋值的角色ID集合,将数据权限进行保存
+            for(String param: sysRoleinfo.getRoleIds()) {
+                Map<String, String> map1 = new HashMap<>();
+                map1.put("roleId", param);
+                map1.put("resourceId", resourceId);
+
+                //查询出需要被赋权的角色下的该资源的数据权限
+                List<SysDataModel> dataResult1 = datacontrollerMapper.selectByRoleIdAndResourceId(map1);
+                //查询出需要被赋权的角色下的该资源的字段权限
+                List<SysColumnsModel> columnResult1 = sysColumnscontrollerMapper.selectByRoleIdAndResourceId(map1);
+                //将需要被赋权的角色数据权限，放入map中
+                Map<String, Boolean> dataMap = new HashMap<>();
+                for(SysDataModel dataModel:dataResult1) {
+                    String key = dataModel.getResourceId()+dataModel.getDataType()+
+                            dataModel.getDataValue()+dataModel.getName();
+                    dataMap.put(key,true);
+                }
+                //将需要被赋权的角色字段权限，放入map中
+                Map<String, Boolean> columnMap = new HashMap<>();
+                for(SysColumnsModel columnsModel:columnResult1) {
+                    String key = columnsModel.getSourceId()+ columnsModel.getDataName()+columnsModel.getCloumnName();
+                    columnMap.put(key,true);
+                }
+
+                //循环要被赋值的角色下的资源的数据权限，
+                //如果与此次保存的数据权限相同，说明被赋权的角色的权限中，
+                //已有本次循环的数据权限。如果有则不做操作，否则进行保存
+                for(SysDataModel dataModel:dataResult) {
+                    String key = dataModel.getResourceId()+dataModel.getDataType()+
+                            dataModel.getDataValue()+dataModel.getName();
+                    boolean flag = dataMap.get(key);
+                    if(!flag) {
+                        String sourceName = dataModel.getDataValue()+"&"+dataModel.getDataType()+"&"+dataModel.getName();
+                        SysRolelog sysRolelog = new SysRolelog();
+                        sysRolelog.setRoleId(param);//角色ID
+                        sysRolelog.setSourceName(sourceName);
+                        sysRolelog.setResourceId(dataModel.getResourceId());//资源ID
+                        sysRolelog.setUpdateType(ParamUtil.INSERT);//变更类型描述
+                        sysRolelog.setUpdateTypeTips(ParamUtil.LogData);//变更类型描述
+                        sysRolelog.setSysUser(sysRoleinfo.getCreateUser());//创建人
+                        sysRolelog.setSysTime(sysRoleinfo.getCreateTime());//创建时间
+                        sysRolelog.setSysUserName(sysRoleinfo.getCreateUserName());//创建人姓名
+                        logMapper.saveLog(sysRolelog);// 保存日志
+                        //保存数据权限
+                        dataModel.setRoleId(param);
+                        datacontrollerMapper.saveData(dataModel);
+                    }
+                }
+
+                //循环要被赋值的角色下的资源的字段权限，
+                //如果与此次保存的字段权限相同，说明被赋权的角色的权限中，
+                //已有本次循环的字段权限。如果有则不做操作，否则进行保存
+                for(SysColumnsModel columnsModel: columnResult) {
+                    String key = columnsModel.getSourceId()+ columnsModel.getDataName()+columnsModel.getCloumnName();
+                    boolean flag = columnMap.get(key);
+                    if(!flag) {
+                        SysRolelog sysRolelog = new SysRolelog();
+                        sysRolelog.setSourceName(columnsModel.getDataName()+"&"+columnsModel.getCloumnName());
+                        sysRolelog.setResourceId(columnsModel.getSourceId());//资源ID
+                        sysRolelog.setRoleId(param);//角色ID
+                        sysRolelog.setUpdateType(ParamUtil.INSERT);//变更类型描述
+                        sysRolelog.setUpdateTypeTips(ParamUtil.LogColunm);//变更类型描述
+                        sysRolelog.setSysUser(sysRoleinfo.getCreateUser());//创建人
+                        sysRolelog.setSysTime(sysRoleinfo.getCreateTime());//创建时间
+                        sysRolelog.setSysUserName(sysRoleinfo.getCreateUserName());//创建人姓名
+                        logMapper.saveLog(sysRolelog);// 保存日志
+                        //保存字段权限
+                        columnsModel.setRoleId(param);
+                        sysColumnscontrollerMapper.saveColumn(columnsModel);
+
+                    }
+                }
+
+            }
+        }
+
+        //循环要被赋值的角色ID
+        for(String roleId: sysRoleinfo.getRoleIds()) {
+            //根据要被赋值的角色ID查询出已有的资源
+            List<String> result2 = sysRoleResourceMapper.selectResourceIdByRoleId(sysRoleinfo.getRoleId());
+            Map<String, Object> map = new HashMap<>();
+            List<String> resourceIds = new ArrayList<>();
+            for(String resourceId:result2) {
+                boolean flag = menuMap.get(resourceId);
+                if(!flag) {
+                    resourceIds.add(resourceId);
+                }
+            }
+
+            for(String resourceId: resourceIds) {
+                SysRolelog sysRolelog = new SysRolelog();
+                sysRolelog.setResourceId(resourceId);//资源ID
+                sysRolelog.setRoleId(roleId);//角色ID
+                sysRolelog.setUpdateType(ParamUtil.INSERT);//变更类型
+                sysRolelog.setUpdateTypeTips(ParamUtil.LogSaveRoleResource);//变更类型业务描述
+                sysRolelog.setSysUser(sysRoleinfo.getCreateUser());//创建人
+                sysRolelog.setSysTime(sysRoleinfo.getCreateTime());//创建时间
+                sysRolelog.setSysUserName(sysRoleinfo.getCreateUserName());//创建人姓名
+                logMapper.saveLog(sysRolelog);//保存日志
+            }
+
+            //保存资源权限
+            SysRoleResource sysRoleResource = new SysRoleResource();
+            sysRoleResource.setRoleId(roleId);//角色ID
+            sysRoleResource.setResourceIds(resourceIds);
+            sysRoleResource.setCreateTime(sysRoleinfo.getCreateTime());
+            sysRoleResource.setCreateUser(sysRoleinfo.getCreateUser());
+            map.put("sysRoleResource",sysRoleResource);
+            map.put("resourceIds",resourceIds);
+            sysRoleResourceMapper.saveRoleResource(map);
         }
 
     }

@@ -21,6 +21,12 @@ public interface ISysUserRoleService extends IService<SysUserRole> {
     void saveUserRole(SysUserRole sysUserRole);
 
     /**
+     * 用户管理——复制用户角色功能，数据保存
+     * @param sysUserRole
+     */
+    void copyUserRoleSave(SysUserRole sysUserRole);
+
+    /**
      * 新增用户角色关系-按角色分配
      * @param sysUserRole
      */

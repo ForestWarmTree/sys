@@ -17,6 +17,11 @@ import java.util.Map;
 public interface SysUserRoleMapper extends BaseMapper<SysUserRole> {
 
     /**
+     * 新增一条数据
+     * @param sysUserRole
+     */
+    void saveOne(SysUserRole sysUserRole);
+    /**
      * 根据用户ID 删除用户角色对应关系
      * @param userId
      */

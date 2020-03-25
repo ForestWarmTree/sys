@@ -4,6 +4,7 @@ package com.zt.sys.authority.controller;
 import com.zt.sys.authority.core.RetResponse;
 import com.zt.sys.authority.core.RetResult;
 import com.zt.sys.authority.entity.SysRoleResource;
+import com.zt.sys.authority.entity.SysRoleinfo;
 import com.zt.sys.authority.entity.SysUserRole;
 import com.zt.sys.authority.entity.SysUsers;
 import com.zt.sys.authority.service.ISysRoleResourceService;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -87,5 +89,37 @@ public class SysRoleResourceController {
     }
 
 
+    /**
+     * 复制功能数据保存
+     * @param roleinfo
+     * @param request
+     * @return
+     */
+    @PostMapping("/copyRoleSave")
+    @ResponseBody
+    public RetResult<Map> copyRoleSave(@RequestBody SysRoleinfo roleinfo,
+                                       HttpServletRequest request) {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            // 获取当前登陆人信息
+            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            if(sessionUser!=null && sessionUser.getUserId() != null &&
+                    !sessionUser.getUserId().equals("")) {
+
+                roleinfo.setCreateTime(new Date());//修改时间
+                roleinfo.setCreateUser(sessionUser.getUserId());//修改人
+
+                //保存
+                sysRoleResourceService.copyRoleSave(roleinfo);
+
+            } else {
+                return RetResponse.makeErrRsp("登陆时间过期!请重新登陆");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RetResponse.makeSysErrRsp();
+        }
+        return RetResponse.makeOKRsp(result);
+    }
 
 }

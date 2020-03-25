@@ -2,6 +2,7 @@ package com.zt.sys.authority.service;
 
 import com.zt.sys.authority.entity.SysRoleResource;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.zt.sys.authority.entity.SysRoleinfo;
 
 import java.util.List;
 
@@ -28,5 +29,10 @@ public interface ISysRoleResourceService extends IService<SysRoleResource> {
      */
     void saveResourceRole(SysRoleResource sysRoleResource);
 
+    /**
+     * 复制功能数据保存
+     * @param sysRoleinfo
+     */
+    void copyRoleSave(SysRoleinfo sysRoleinfo);
 
 }

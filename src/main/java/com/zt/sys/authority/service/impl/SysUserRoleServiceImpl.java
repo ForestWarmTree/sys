@@ -117,6 +117,44 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUs
     }
 
     /**
+     * 用户管理——复制用户角色功能，数据保存
+     * @param sysUserRole
+     */
+    @Override
+    public void copyUserRoleSave(SysUserRole sysUserRole) {
+        //根据被复制的人员ID,查询出已有的角色集合
+        List<SysUserRole> result = sysUserRoleMapper.selectAllByUserId(sysUserRole.getUserId());
+
+        //循环要分配的人员ID
+        for(SysUserRole userRole: result) {
+            for(String userId:sysUserRole.getUserIds()) {
+                //根据人员ID,查询出已有的角色集合
+                List<SysUserRole> result1 = sysUserRoleMapper.selectAllByUserId(userId);
+                for(SysUserRole data: result1) {
+                    if(userRole.getRoleId().equals(data.getRoleId())) {
+                        continue;
+                    } else {
+                        //保存日志
+                        SysRolelog sysRolelog = new SysRolelog();
+                        sysRolelog.setUserId(userId);//用户ID
+                        sysRolelog.setRoleId(userRole.getRoleId());//角色ID
+                        sysRolelog.setUpdateType(ParamUtil.INSERT);//变更类型描述
+                        sysRolelog.setUpdateTypeTips(ParamUtil.LogSaveUserRole);//变更类型描述
+                        sysRolelog.setSysUser(sysUserRole.getCreateUser());//创建人
+                        sysRolelog.setSysTime(sysUserRole.getCreateTime());//创建时间
+                        sysRolelog.setSysUserName(sysUserRole.getCreateUserName());//创建人姓名
+                        logMapper.saveLog(sysRolelog);
+
+                        //保存
+                        userRole.setUserId(userId);
+                        sysUserRoleMapper.saveOne(userRole);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * 新增用户角色关系-按角色分配
      * @param sysUserRole
      */

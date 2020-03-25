@@ -300,12 +300,11 @@ public class SysRoleinfoController {
     /**
      * 根据资源编码查询角色
      * @param sysResourceinfo
-     * @param request
      * @return
      */
     @PostMapping("/selectRoleByResourceId")
     @ResponseBody
-    public Map<String, Object> selectRoleByResourceId(@RequestBody SysResourceinfo sysResourceinfo, HttpServletRequest request) {
+    public Map<String, Object> selectRoleByResourceId(@RequestBody SysResourceinfo sysResourceinfo) {
         Map<String, Object> result = new HashMap<>();
         try {
             //开启分页支持
@@ -325,5 +324,39 @@ public class SysRoleinfoController {
         return result;
     }
 
+
+    /**
+     * 初始化角色复制页面数据
+     * @return
+     */
+    @PostMapping("/copyInit")
+    @ResponseBody
+    public Map<String, Object> copyInit(@RequestBody SysRoleinfo sysRoleinfo,HttpServletRequest request) {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            // 获取当前登陆人信息
+            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            if(sessionUser!=null && sessionUser.getSysUserinfo()!=null ) {
+                if(sessionUser.getSysUserinfo().getOrgId()!=null && !"".equals(sessionUser.getSysUserinfo().getOrgId())) {
+                    //开启分页支持
+                    PageHelper.startPage(sysRoleinfo.getCurrent(),sysRoleinfo.getPageSize());
+
+                    sysRoleinfo.setOrgId(sessionUser.getSysUserinfo().getOrgId());//设置组织编码
+                    List<SysRoleinfo> sysRoleinfos = roleinfoService.selectRoleByOrgId(sysRoleinfo);
+
+                    //返回结果集
+                    PageInfo<SysRoleinfo> pageInfo = new PageInfo<>(sysRoleinfos);
+                    result.put("size",sysRoleinfo.getPageSize());
+                    result.put("current",sysRoleinfo.getCurrent());
+                    result.put("total",pageInfo.getTotal());
+                    result.put("pages",pageInfo.getPages());
+                    result.put("records",sysRoleinfos);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 
 }
