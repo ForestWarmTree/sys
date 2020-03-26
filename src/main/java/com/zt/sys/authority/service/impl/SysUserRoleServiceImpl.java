@@ -34,53 +34,46 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUs
 
     /**
      * 新增用户角色关系-按用户分配
-     * @param sysUserRole
+     * @param sysUserRoles
+     * @param sessionUser
      */
     @Transactional
     @Override
-    public void saveUserRole(SysUserRole sysUserRole) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("sysUserRole",sysUserRole);
-        map.put("roleIds",sysUserRole.getRoleIds());
+    public void saveUserRole(List<SysUserRole> sysUserRoles, SysUsers sessionUser) {
         List<SysRolelog> sysRolelogList = new ArrayList<>();//保存日志集合
 
         //从关系表中，根据用户ID获取 该用户ID下的所有角色ID
-        List<SysUserRole> RoleIds = sysUserRoleMapper.selectAllByUserId(sysUserRole.getUserId());
+        List<SysUserRole> RoleIds = sysUserRoleMapper.selectAllByUserId(sysUserRoles.get(0).getUserId());
 
         Map<String, String> logmap = new HashMap<>(); //已有关系Map
         for(SysUserRole userrole:RoleIds) {
             logmap.put(userrole.getRoleId(),userrole.getRoleId());
         }
 
-        Map<String, String> saveMap = new HashMap<>(); //本次需要保存的角色IDMap
-        for(String roleid:sysUserRole.getRoleIds()) {
-            saveMap.put(roleid,roleid);
-        }
-
+        Map<String, String> saveMap = new HashMap<>(); //本次需要保存的角色Map
         //循环本次需要保存的角色ID集合
-        for(String roleid:sysUserRole.getRoleIds()) {
+        for(SysUserRole sysUserRole:sysUserRoles) {
+            saveMap.put(sysUserRole.getRoleId(),sysUserRole.getRoleId());
             /**
              * 用本次需要保存的集合与 已有权限的集合，进行匹配。
              * 找出本次需要保存集合中 与已有权限集合的不同。
              * 进行log记录
              */
-            String flag = logmap.get(roleid);
+            String flag = logmap.get(sysUserRole.getRoleId());
             //如果本次保存的第N个角色ID，不存在已有角色集合中
             //则-->说明是新增权限
             if(flag == null || "".equals(flag)) {
                 SysRolelog sysRolelog = new SysRolelog();
                 sysRolelog.setUserId(sysUserRole.getUserId());//用户ID
-                sysRolelog.setRoleId(roleid);//角色ID
+                sysRolelog.setRoleId(sysUserRole.getRoleId());//角色ID
                 sysRolelog.setUpdateType(ParamUtil.INSERT);//变更类型描述
                 sysRolelog.setUpdateTypeTips(ParamUtil.LogSaveUserRole);//变更类型描述
-                sysRolelog.setSysUser(sysUserRole.getCreateUser());//创建人
-                sysRolelog.setSysTime(sysUserRole.getCreateTime());//创建时间
-                sysRolelog.setSysUserName(sysUserRole.getCreateUserName());//创建人姓名
+                sysRolelog.setSysUser(sessionUser.getCreateUser());//创建人
+                sysRolelog.setSysTime(sessionUser.getCreateTime());//创建时间
+                sysRolelog.setSysUserName(sessionUser.getName());//创建人姓名
                 sysRolelogList.add(sysRolelog);
             }
         }
-
-
         /**
          * 循环已有权限集合，与本次新增权限集合进行匹配
          */
@@ -93,13 +86,13 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUs
              */
             if(flag == null || "".equals(flag)) {
                 SysRolelog sysRolelog = new SysRolelog();
-                sysRolelog.setUserId(sysUserRole.getUserId());//用户ID
+                sysRolelog.setUserId(userrole.getUserId());//用户ID
                 sysRolelog.setRoleId(userrole.getRoleId());//角色ID
                 sysRolelog.setUpdateType(ParamUtil.DELETE);//变更类型描述
                 sysRolelog.setUpdateTypeTips(ParamUtil.LogSaveUserRole);//变更类型描述
-                sysRolelog.setSysUser(sysUserRole.getCreateUser());//创建人
-                sysRolelog.setSysTime(sysUserRole.getCreateTime());//创建时间
-                sysRolelog.setSysUserName(sysUserRole.getCreateUserName());//创建人姓名
+                sysRolelog.setSysUser(sessionUser.getCreateUser());//创建人
+                sysRolelog.setSysTime(sessionUser.getCreateTime());//创建时间
+                sysRolelog.setSysUserName(sessionUser.getName());//创建人姓名
                 sysRolelogList.add(sysRolelog);
             }
         }
@@ -109,10 +102,10 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUs
             logMapper.saveLogList(sysRolelogList);
         }
         // 根据用户ID 删除对应关系
-        sysUserRoleMapper.deleteUserRoleByUserId(sysUserRole.getUserId());
-        if(sysUserRole.getRoleIds()!=null && sysUserRole.getRoleIds().size()>0) {
-            // 保存
-            sysUserRoleMapper.saveUserRole(map);
+        sysUserRoleMapper.deleteUserRoleByUserId(sysUserRoles.get(0).getUserId());
+        // 保存
+        for(SysUserRole sysUserRole:sysUserRoles) {
+            sysUserRoleMapper.saveOne(sysUserRole);
         }
     }
 
@@ -249,22 +242,4 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUs
 
     }
 
-    /**
-     * 把A用户的权限复制B用户
-     * @param sysUserRole
-     */
-    @Override
-    public void saveUserRoleByAB(SysUserRole sysUserRole) {
-        // 获取用户A所有角色ID
-        List<SysUserRole> roleIdList = sysUserRoleMapper.selectAllByUserId(sysUserRole.getUserId());
-
-        //把查询出的结果集中的用户A，替换成用户B
-        for(SysUserRole userRole:roleIdList) {
-            userRole.setUserId(sysUserRole.getUserIdB());//用户B 编码
-            userRole.setCreateUser(sysUserRole.getCreateUser());// 创建人
-            userRole.setCreateTime(sysUserRole.getCreateTime()); //创建时间
-        }
-        // 保存
-        sysUserRoleMapper.saveUserRoleByAB(roleIdList);
-    }
 }

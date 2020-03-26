@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,21 +36,20 @@ public class SysUserRoleController {
     private ISysUserRoleService sysUserRoleService;
     /**
      * 新增用户角色关系 - 按用户分配
-     * @param sysUserRole
+     * @param sysUserRoles
      * @return
      */
     @PostMapping("/saveUserRole")
     @ResponseBody
-    public RetResult<Map> saveUserRole(@RequestBody SysUserRole sysUserRole,
+    public RetResult<Map> saveUserRole(@RequestBody List<SysUserRole> sysUserRoles,
                                HttpServletRequest request) {
         try {
             // 获取当前登陆人信息
             SysUsers sessionUser = sessionValue.getSessionUser(request);
             if(sessionUser!=null && sessionUser.getUserId()!=null && !sessionUser.getUserId().equals("")) {
-                sysUserRole.setCreateUser(sessionUser.getUserId());// 创建人
-                sysUserRole.setCreateTime(new Date()); // 创建时间
-                sysUserRole.setCreateUserName(sessionUser.getName());// 创建人姓名
-                sysUserRoleService.saveUserRole(sysUserRole);
+                if(sysUserRoles!=null && sysUserRoles.size()>0) {
+                    sysUserRoleService.saveUserRole(sysUserRoles, sessionUser);
+                }
             } else {
                 return RetResponse.makeErrRsp("登陆已过期!请重新登陆");
             }
@@ -116,35 +116,6 @@ public class SysUserRoleController {
         }
         return RetResponse.makeOKRsp();
     }
-
-
-    /**
-     * 把A用户的权限复制B用户
-     * @param sysUserRole
-     * @param request
-     * @return
-     */
-    @PostMapping("/saveUserRoleByAB")
-    @ResponseBody
-    public RetResult<Map> saveUserRoleByAB(@RequestBody SysUserRole sysUserRole,
-                                       HttpServletRequest request) {
-        try {
-            // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
-            if(sessionUser!=null && sessionUser.getUserId()!=null && !sessionUser.getUserId().equals("")) {
-                sysUserRole.setCreateUser(sessionUser.getUserId());// 创建人
-                sysUserRole.setCreateTime(new Date()); // 创建时间
-                sysUserRoleService.saveUserRoleByAB(sysUserRole);
-            } else {
-                return RetResponse.makeErrRsp("登陆已过期!请重新登陆");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return RetResponse.makeSysErrRsp();
-        }
-        return RetResponse.makeOKRsp();
-    }
-
 
 
 }
