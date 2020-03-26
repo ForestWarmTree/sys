@@ -135,7 +135,7 @@ public class SysRoleTest {
         calendar1.setTime(new Date());
         calendar1.add(Calendar.DAY_OF_MONTH,7);
         sysUserRole1.setEndDate(calendar1.getTime().toString());
-        sysUserRoleService.saveUserRole(sysUserRole1);
+        //sysUserRoleService.saveUserRole(sysUserRole1);
 
 
     }

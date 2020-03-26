@@ -128,7 +128,7 @@ public class SysApplicationTests {
             roleids.add("roleid" + i);
         }
         sysUserRole.setRoleIds(roleids);
-        sysUserRoleService.saveUserRole(sysUserRole);
+        //sysUserRoleService.saveUserRole(sysUserRole);
 
     }
 
