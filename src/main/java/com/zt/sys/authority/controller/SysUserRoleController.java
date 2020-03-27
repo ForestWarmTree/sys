@@ -92,21 +92,21 @@ public class SysUserRoleController {
 
     /**
      * 新增用户角色关系 -按角色分配
-     * @param sysUserRole
+     * @param sysUserRoles
      * @param request
      * @return
      */
     @PostMapping("/saveRoleUser")
     @ResponseBody
-    public RetResult<Map> saveRoleUser(@RequestBody SysUserRole sysUserRole,
+    public RetResult<Map> saveRoleUser(@RequestBody List<SysUserRole> sysUserRoles,
                                        HttpServletRequest request) {
         try {
             // 获取当前登陆人信息
             SysUsers sessionUser = sessionValue.getSessionUser(request);
             if(sessionUser!=null && sessionUser.getUserId()!=null && !sessionUser.getUserId().equals("")) {
-                sysUserRole.setCreateUser(sessionUser.getUserId());// 创建人
-                sysUserRole.setCreateTime(new Date()); // 创建时间
-                sysUserRoleService.saveRoleUser(sysUserRole);
+                if(sysUserRoles!=null && sysUserRoles.size()>0) {
+                    sysUserRoleService.saveRoleUser(sysUserRoles, sessionUser);
+                }
             } else {
                 return RetResponse.makeErrRsp("登陆已过期!请重新登陆");
             }
