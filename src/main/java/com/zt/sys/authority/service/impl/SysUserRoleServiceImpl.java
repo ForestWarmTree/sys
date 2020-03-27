@@ -106,6 +106,7 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUs
         // 保存
         for(SysUserRole sysUserRole:sysUserRoles) {
             if(sysUserRole.getRoleId()!=null && !sysUserRole.getRoleId().equals("")) {
+
                 sysUserRoleMapper.saveOne(sysUserRole);
             }
         }
