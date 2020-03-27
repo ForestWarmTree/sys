@@ -49,7 +49,7 @@ public class SysPositioninfoController {
         Map<String, Object> result = new HashMap<>();
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             if(sessionUser!=null && sessionUser.getUserId() != null &&
                     !sessionUser.getUserId().equals("")) {
                 // 验证岗位编码是否存在
@@ -86,7 +86,7 @@ public class SysPositioninfoController {
         Map<String, Object> result = new HashMap<>();
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             if(sessionUser!=null && sessionUser.getUserId() != null &&
                     !sessionUser.getUserId().equals("")) {
 
@@ -121,7 +121,7 @@ public class SysPositioninfoController {
         List<SysPositioninfo> positioninfoList = null;
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             if(sessionUser!=null && sessionUser.getUserId() != null &&
                     !sessionUser.getUserId().equals("")) {
 
@@ -154,7 +154,7 @@ public class SysPositioninfoController {
                                      HttpServletRequest request) {
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             if(sessionUser!=null && sessionUser.getUserId()!=null && !sessionUser.getUserId().equals("")) {
                 //删除
                 sysPositioninfoService.deletePosition(positioninfos, sessionUser);

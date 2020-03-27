@@ -46,7 +46,7 @@ public class SysUserinfoController {
     public RetResult<Map> saveUserInfo(@RequestBody SysUserinfo userinfo, HttpServletRequest request) {
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             userinfo.setCreateUser(sessionUser.getUserId());//创建人
             userinfo.setCreateTime(new Date());// 创建时间
             userinfo.setCreateUserName(sessionUser.getName());//创建人姓名
@@ -71,7 +71,7 @@ public class SysUserinfoController {
     public RetResult<Map> updateUserInfo(@RequestBody SysUserinfo userinfo, HttpServletRequest request) {
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             userinfo.setUpdateUser(sessionUser.getUserId());//创建人
             userinfo.setUpdateTime(new Date());// 创建时间
             // 修改
@@ -94,7 +94,7 @@ public class SysUserinfoController {
         Map<String, Object> result = new HashMap<>();
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             if(sessionUser!=null && sessionUser.getUserId() != null &&
                     !sessionUser.getUserId().equals("")) {
                 SysUserinfo sysUserinfo = sysUserinfoService.getUserInfoByUserId(userinfo.getUserId());
@@ -127,7 +127,7 @@ public class SysUserinfoController {
         List<SysUserinfo> sysUserinfoList = null;
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             if(sessionUser!=null && sessionUser.getUserId() != null &&
                     !sessionUser.getUserId().equals("")) {
 
@@ -163,7 +163,7 @@ public class SysUserinfoController {
                                      HttpServletRequest request) {
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             if(sessionUser!=null && sessionUser.getUserId()!=null &&
                     !sessionUser.getUserId().equals("")) {
 
@@ -195,7 +195,7 @@ public class SysUserinfoController {
         List<SysUserinfo> resultUserList = new ArrayList<>();
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             if(sessionUser!=null && sessionUser.getSysUserinfo()!=null ) {
                 if(sessionUser.getSysUserinfo().getOrgId()!=null &&
                         !"".equals(sessionUser.getSysUserinfo().getOrgId())) {
@@ -252,7 +252,7 @@ public class SysUserinfoController {
         List<SysUserinfo> resultUserList = new ArrayList<>();
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             if(sessionUser!=null && sessionUser.getSysUserinfo()!=null ) {
                 if (sessionUser.getSysUserinfo().getOrgId() != null &&
                         !"".equals(sessionUser.getSysUserinfo().getOrgId())) {

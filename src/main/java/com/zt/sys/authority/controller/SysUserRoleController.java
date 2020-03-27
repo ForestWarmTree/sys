@@ -45,7 +45,7 @@ public class SysUserRoleController {
                                HttpServletRequest request) {
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             if(sessionUser!=null && sessionUser.getUserId()!=null && !sessionUser.getUserId().equals("")) {
                 if(sysUserRoles!=null && sysUserRoles.size()>0) {
                     sysUserRoleService.saveUserRole(sysUserRoles, sessionUser);
@@ -73,7 +73,7 @@ public class SysUserRoleController {
                                        HttpServletRequest request) {
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             if(sessionUser!=null && sessionUser.getUserId()!=null && !sessionUser.getUserId().equals("")) {
                 sysUserRole.setCreateUser(sessionUser.getUserId());// 创建人
                 sysUserRole.setCreateTime(new Date()); // 创建时间
@@ -102,7 +102,7 @@ public class SysUserRoleController {
                                        HttpServletRequest request) {
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             if(sessionUser!=null && sessionUser.getUserId()!=null && !sessionUser.getUserId().equals("")) {
                 if(sysUserRoles!=null && sysUserRoles.size()>0) {
                     sysUserRoleService.saveRoleUser(sysUserRoles, sessionUser);

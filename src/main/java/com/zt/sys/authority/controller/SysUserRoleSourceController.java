@@ -49,7 +49,7 @@ public class SysUserRoleSourceController {
         Map<String, Object> result = new HashMap<>();
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             if(sessionUser!=null && sessionUser.getUserId() != null &&
                     !sessionUser.getUserId().equals("")) {
 

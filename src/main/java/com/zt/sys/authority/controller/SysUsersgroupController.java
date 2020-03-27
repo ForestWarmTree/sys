@@ -47,7 +47,7 @@ public class SysUsersgroupController {
                                    HttpServletRequest request) {
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             if(sessionUser!=null && sessionUser.getUserId()!=null && !sessionUser.getUserId().equals("")) {
                 sysUsersgroup.setCreateUser(sessionUser.getUserId());// 创建人
                 sysUsersgroup.setCreateTime(new Date()); // 创建时间

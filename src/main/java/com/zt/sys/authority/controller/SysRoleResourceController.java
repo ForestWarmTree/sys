@@ -45,7 +45,7 @@ public class SysRoleResourceController {
                                        HttpServletRequest request) {
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             if(sessionUser!=null && sessionUser.getUserId()!=null && !sessionUser.getUserId().equals("")) {
                 roleResource.setCreateUser(sessionUser.getUserId());// 创建人
                 roleResource.setCreateTime(new Date()); // 创建时间
@@ -73,7 +73,7 @@ public class SysRoleResourceController {
                                        HttpServletRequest request) {
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             if(sessionUser!=null && sessionUser.getUserId()!=null && !sessionUser.getUserId().equals("")) {
                 roleResource.setCreateUser(sessionUser.getUserId());// 创建人
                 roleResource.setCreateTime(new Date()); // 创建时间
@@ -102,7 +102,7 @@ public class SysRoleResourceController {
         Map<String, Object> result = new HashMap<>();
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             if(sessionUser!=null && sessionUser.getUserId() != null &&
                     !sessionUser.getUserId().equals("")) {
 

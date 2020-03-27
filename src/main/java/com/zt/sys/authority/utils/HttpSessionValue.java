@@ -74,19 +74,7 @@ public class HttpSessionValue {
 //            }
 //        }
 //        return null;
-
-        SysUsers sysUsers = new SysUsers();
-        sysUsers.setUserId("12345");
-        sysUsers.setUsername("supper");
-        sysUsers.setType(1);
-        sysUsers.setIsSupper("1");
-        sysUsers.setName("超级管理");
-        SysUserinfo sysUserinfo = new SysUserinfo();
-        sysUserinfo.setUserId("12345");
-        sysUserinfo.setOrgId("zt1010100");
-        sysUserinfo.setDeptId("dept001");
-        sysUsers.setSysUserinfo(sysUserinfo);
-        return sysUsers;
+        return xnSessionUser();
     }
 
     /**

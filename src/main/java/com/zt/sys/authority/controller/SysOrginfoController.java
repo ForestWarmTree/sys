@@ -48,7 +48,7 @@ public class SysOrginfoController {
         Map<String, Object> result = new HashMap<>();
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             if(sessionUser!=null && sessionUser.getUserId() != null &&
                     !sessionUser.getUserId().equals("")) {
                 // 验证组织编码是否存在
@@ -84,7 +84,7 @@ public class SysOrginfoController {
         Map<String, Object> result = new HashMap<>();
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             if(sessionUser!=null && sessionUser.getUserId() != null &&
                     !sessionUser.getUserId().equals("")) {
 
@@ -116,7 +116,7 @@ public class SysOrginfoController {
         List<SysOrginfo> orginfoList = null;
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             if(sessionUser!=null && sessionUser.getUserId() != null &&
                     !sessionUser.getUserId().equals("")) {
                 // 是超级管理员
@@ -153,7 +153,7 @@ public class SysOrginfoController {
     public RetResult<Map> deleteOrg(@RequestBody List<String> orgIds, HttpServletRequest request) {
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             if(sessionUser!=null && sessionUser.getUserId()!=null &&
                     !sessionUser.getUserId().equals("")) {
                 SysOrginfo sysOrginfo = new SysOrginfo();

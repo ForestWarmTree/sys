@@ -45,7 +45,7 @@ public class SysDatacontrollerController {
                                      HttpServletRequest request) {
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             datacontroller.setCreateUser(sessionUser.getUserId());//创建人
             datacontroller.setCreateTime(new Date());// 创建时间
             datacontroller.setCreateUserName(sessionUser.getName());

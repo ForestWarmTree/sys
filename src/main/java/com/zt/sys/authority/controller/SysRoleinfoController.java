@@ -77,7 +77,7 @@ public class SysRoleinfoController {
         Map<String, Object> result = new HashMap<>();
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             SysResourceinfo sysResourceinfo = new SysResourceinfo();
             sysResourceinfo.setUserId(sessionUser.getUserId());
             //根据用户ID获取当前用户可操作的权限树
@@ -113,7 +113,7 @@ public class SysRoleinfoController {
     public RetResult<Map> deleteRoles(@RequestBody List<String> roleIds, HttpServletRequest request) {
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             if(sessionUser!=null && sessionUser.getUserId()!=null && !sessionUser.getUserId().equals("")) {
                 SysRoleinfo sysRoleinfo = new SysRoleinfo();
                 sysRoleinfo.setCreateUser(sessionUser.getUserId());//操作人
@@ -142,7 +142,7 @@ public class SysRoleinfoController {
     public RetResult<Map> saveRoleInfo(@RequestBody SysRoleinfo roleinfo, HttpServletRequest request) {
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             if(sessionUser!=null && sessionUser.getUserId()!=null && !sessionUser.getUserId().equals("")) {
                 //判断用户名是否重复
                 roleinfo.setRoleId(ParamUtil.ROLE + roleinfo.getRoleId());
@@ -183,7 +183,7 @@ public class SysRoleinfoController {
         Map<String, Object> result = new HashMap<>();
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             if(sessionUser!=null && sessionUser.getUserId() != null &&
                     !sessionUser.getUserId().equals("")) {
 
@@ -226,7 +226,7 @@ public class SysRoleinfoController {
         List<SysRoleinfo> roleinfoList = null;
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             if(sessionUser!=null && sessionUser.getUserId() != null &&
                     !sessionUser.getUserId().equals("")) {
 
@@ -271,7 +271,7 @@ public class SysRoleinfoController {
         Map<String, Object> result = new HashMap<>();
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             if(sessionUser!=null && sessionUser.getSysUserinfo()!=null ) {
                 if(sessionUser.getSysUserinfo().getOrgId()!=null && !"".equals(sessionUser.getSysUserinfo().getOrgId())) {
                     //开启分页支持
@@ -335,7 +335,7 @@ public class SysRoleinfoController {
         Map<String, Object> result = new HashMap<>();
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             if(sessionUser!=null && sessionUser.getSysUserinfo()!=null ) {
                 if(sessionUser.getSysUserinfo().getOrgId()!=null && !"".equals(sessionUser.getSysUserinfo().getOrgId())) {
                     //开启分页支持

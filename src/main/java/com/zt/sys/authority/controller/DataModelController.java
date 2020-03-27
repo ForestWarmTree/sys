@@ -77,7 +77,7 @@ public class DataModelController {
                                HttpServletRequest request) {
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             dataCommonModel.setCreateUser(sessionUser.getUserId());//创建人
             dataCommonModel.setCreateTime(new Date());// 创建时间
             dataCommonModel.setCreateUserName(sessionUser.getName());

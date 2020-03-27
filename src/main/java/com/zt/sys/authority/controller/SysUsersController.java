@@ -176,7 +176,7 @@ public class SysUsersController {
             } else {
                 try {
                     // 获取当前登陆人信息
-                    SysUsers sessionUser = sessionValue.getSessionUser(request);
+                    SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
 
                     if(sessionUser!=null && sessionUser.getUserId()!=null &&
                             !sessionUser.getUserId().equals("")) {
@@ -218,7 +218,7 @@ public class SysUsersController {
         Map<String, Object> result = new HashMap<>();
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             if(sessionUser!=null && sessionUser.getUserId() != null &&
                     !sessionUser.getUserId().equals("")) {
                 SysUsers user = sysUsersService.selectUserNameAndPassword(sysUsers);
@@ -248,7 +248,7 @@ public class SysUsersController {
         Map<String, Object> result = new HashMap<>();
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             if(sessionUser!=null && sessionUser.getSysUserinfo()!=null ) {
                 if(sessionUser.getSysUserinfo().getOrgId()!=null && !"".equals(sessionUser.getSysUserinfo().getOrgId())) {
                     //开启分页支持
@@ -283,7 +283,7 @@ public class SysUsersController {
         Map<String, Object> result = new HashMap<>();
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             if(sessionUser!=null && sessionUser.getSysUserinfo()!=null ) {
                 if(sessionUser.getSysUserinfo().getDeptId()!=null && !"".equals(sessionUser.getSysUserinfo().getDeptId())) {
                     //开启分页支持

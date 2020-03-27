@@ -46,7 +46,7 @@ public class SysGroupinfoController {
     public RetResult<Map> saveGroupInfo(@RequestBody SysGroupinfo sysGroupinfo, HttpServletRequest request) {
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             if(sessionUser!=null && sessionUser.getUserId() != null &&
                     !sessionUser.getUserId().equals("")) {
 
@@ -81,7 +81,7 @@ public class SysGroupinfoController {
     public RetResult<Map> updateGroupInfo(@RequestBody SysGroupinfo sysGroupinfo, HttpServletRequest request) {
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             if(sessionUser!=null && sessionUser.getUserId() != null &&
                     !sessionUser.getUserId().equals("")) {
 
@@ -115,7 +115,7 @@ public class SysGroupinfoController {
         List<SysGroupinfo> groupinfoList = null;
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             if(sessionUser!=null && sessionUser.getUserId() != null &&
                     !sessionUser.getUserId().equals("")) {
 
@@ -151,7 +151,7 @@ public class SysGroupinfoController {
                                      HttpServletRequest request) {
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             if(sessionUser!=null && sessionUser.getUserId()!=null &&
                     !sessionUser.getUserId().equals("")) {
                 //删除

@@ -46,7 +46,7 @@ public class SysColumnscontrollerController {
     public RetResult<Map> saveColumn(@RequestBody SysColumnsModel sysColumnscontroller, HttpServletRequest request) {
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             sysColumnscontroller.setCreateUser(sessionUser.getUserId());//创建人
             sysColumnscontroller.setCreateTime(new Date());// 创建时间
             sysColumnscontroller.setCreateUserName(sessionUser.getName());

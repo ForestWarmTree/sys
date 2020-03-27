@@ -76,7 +76,7 @@ public class SysResourceinfoController {
         Map<String, Object> result = new HashMap<>();
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             if(sessionUser!=null && sessionUser.getUserId() != null &&
                     !sessionUser.getUserId().equals("")) {
                 resourceinfoService.deleteResources(resourceinfos,sessionUser);
@@ -102,7 +102,7 @@ public class SysResourceinfoController {
         Map<String, Object> result = new HashMap<>();
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             if(sessionUser!=null && sessionUser.getUserId() != null &&
                     !sessionUser.getUserId().equals("")) {
                 resourceinfo.setResourceId(ParamUtil.RESOURCE+resourceinfo.getResourceId());
@@ -142,7 +142,7 @@ public class SysResourceinfoController {
         Map<String, Object> result = new HashMap<>();
         try {
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             if(sessionUser!=null && sessionUser.getUserId() != null &&
                     !sessionUser.getUserId().equals("")) {
 
@@ -211,7 +211,7 @@ public class SysResourceinfoController {
         try {
 
             // 获取当前登陆人信息
-            SysUsers sessionUser = sessionValue.getSessionUser(request);
+            SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             //开启分页支持
             PageHelper.startPage(sysResourceinfo.getCurrent(),sysResourceinfo.getPageSize());
             sessionUser.setResourceId(sysResourceinfo.getResourceId());
