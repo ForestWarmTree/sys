@@ -35,9 +35,16 @@
     <!--根据角色编码查询用户信息-->
     <select id="selectUserInfoListByRoleId" parameterType="java.lang.String"
             resultMap="BaseResultMap">
-        SELECT userId,userCardNo,`name`,org_id FROM sys_userinfo WHERE userId in (
-            SELECT userId FROM sys_user_role WHERE roleId = #{roleId}
-        )
+        select
+            a.startDate,
+            a.endDate,
+            b.userId,
+            b.userCardNo,
+            b.`name`,
+            b.org_id
+        from sys_user_role a,sys_userinfo b
+        WHERE a.roleId = #{roleId}
+        AND a.userId = b.userId
     </select>
 
     <!--用户列表查询-->

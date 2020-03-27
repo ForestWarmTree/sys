@@ -170,44 +170,34 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUs
 
     /**
      * 新增用户角色关系-按角色分配
-     * @param sysUserRole
+     * @param sysUserRoles
+     * @param sessionUser
      */
     @Transactional
     @Override
-    public void saveRoleUser(SysUserRole sysUserRole) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("sysUserRole",sysUserRole);
-        map.put("userIds",sysUserRole.getUserIds());
+    public void saveRoleUser(List<SysUserRole> sysUserRoles, SysUsers sessionUser) {
         List<SysRolelog> sysRolelogList = new ArrayList<>();//log记录集合
-
         //从关系表中，根据角色ID查询所有用户ID集合。
-        List<SysUserRole> userRoleList = sysUserRoleMapper.selectAllByRoleId(sysUserRole.getRoleId());
+        List<SysUserRole> userRoleList = sysUserRoleMapper.selectAllByRoleId(sysUserRoles.get(0).getRoleId());
         Map<String, String> logmap = new HashMap<>(); //该角色已有用户集合
         for(SysUserRole userRole:userRoleList) {
             logmap.put(userRole.getUserId(), userRole.getUserId());
         }
 
         Map<String, String> savemap = new HashMap<>(); //本次需要保存的用户集合
-        for(String userid:sysUserRole.getUserIds()) {
-            savemap.put(userid, userid);
-        }
 
-        /**
-         * 循环这次要保存的用户ID，与已拥有的用户ID进行匹配
-         * 如果未匹配上，则说明本次循环的用户是新增用户，
-         * 生成log记录
-         */
-        for(String userid:sysUserRole.getUserIds()) {
-            String flag = logmap.get(userid);
+        for(SysUserRole sysUserRole:sysUserRoles) {
+            savemap.put(sysUserRole.getUserId(), sysUserRole.getUserId());
+            String flag = logmap.get(sysUserRole.getUserId());
             if(flag == null || flag.equals("")) {
                 SysRolelog sysRolelog = new SysRolelog();
-                sysRolelog.setUserId(userid);//用户ID
+                sysRolelog.setUserId(sysUserRole.getUserId());//用户ID
                 sysRolelog.setRoleId(sysUserRole.getRoleId());//角色ID
                 sysRolelog.setUpdateType(ParamUtil.INSERT);//变更类型
                 sysRolelog.setUpdateTypeTips(ParamUtil.LogSaveUserRole);//变更类型业务描述
-                sysRolelog.setSysUser(sysUserRole.getCreateUser());//创建人
-                sysRolelog.setSysTime(sysUserRole.getCreateTime());//创建时间
-                sysRolelog.setSysUserName(sysUserRole.getCreateUserName());//创建人姓名
+                sysRolelog.setSysUser(sessionUser.getCreateUser());//创建人
+                sysRolelog.setSysTime(sessionUser.getCreateTime());//创建时间
+                sysRolelog.setSysUserName(sessionUser.getName());//创建人姓名
                 sysRolelogList.add(sysRolelog);
             }
         }
@@ -222,12 +212,12 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUs
             if(flag == null || flag.equals("")) {
                 SysRolelog sysRolelog = new SysRolelog();
                 sysRolelog.setUserId(userRole.getUserId());//用户ID
-                sysRolelog.setRoleId(sysUserRole.getRoleId());//角色ID
+                sysRolelog.setRoleId(sysUserRoles.get(0).getRoleId());//角色ID
                 sysRolelog.setUpdateType(ParamUtil.DELETE);//变更类型
                 sysRolelog.setUpdateTypeTips(ParamUtil.LogSaveUserRole);//变更类型业务描述
-                sysRolelog.setSysUser(sysUserRole.getCreateUser());//创建人
-                sysRolelog.setSysTime(sysUserRole.getCreateTime());//创建时间
-                sysRolelog.setSysUserName(sysUserRole.getCreateUserName());//创建人姓名
+                sysRolelog.setSysUser(sessionUser.getCreateUser());//创建人
+                sysRolelog.setSysTime(sessionUser.getCreateTime());//创建时间
+                sysRolelog.setSysUserName(sessionUser.getName());//创建人姓名
                 sysRolelogList.add(sysRolelog);
             }
         }
@@ -237,10 +227,13 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUs
             logMapper.saveLogList(sysRolelogList);
         }
         // 根据角色ID 删除对应关系
-        sysUserRoleMapper.deleteUserRoleByRoleId(sysUserRole.getRoleId());
-        if(sysUserRole.getUserIds()!=null && sysUserRole.getUserIds().size()>0) {
-            // 保存
-            sysUserRoleMapper.saveRoleUser(map);
+        sysUserRoleMapper.deleteUserRoleByRoleId(sysUserRoles.get(0).getRoleId());
+
+        // 保存
+        for(SysUserRole userRole:sysUserRoles) {
+            if(userRole.getUserId()!=null && !userRole.getUserId().equals("")) {
+                sysUserRoleMapper.saveOne(userRole);
+            }
         }
 
     }

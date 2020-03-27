@@ -31,7 +31,8 @@ public interface ISysUserRoleService extends IService<SysUserRole> {
 
     /**
      * 新增用户角色关系-按角色分配
-     * @param sysUserRole
+     * @param sysUserRoles
+     * @param sessionUser
      */
-    void saveRoleUser(SysUserRole sysUserRole);
+    void saveRoleUser(List<SysUserRole> sysUserRoles, SysUsers sessionUser);
 }
