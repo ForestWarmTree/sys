@@ -89,7 +89,7 @@ public class SysRoleResourceServiceImpl extends ServiceImpl<SysRoleResourceMappe
          * 增加log记录-->delete
          */
         for(String resourceId:logresourecList) {
-            String flag = logmap.get(resourceId);
+            String flag = savemap.get(resourceId);
             if(flag == null || flag.equals("")) {
                 SysRolelog sysRolelog = new SysRolelog();
                 sysRolelog.setResourceId(resourceId);//资源ID
@@ -107,7 +107,7 @@ public class SysRoleResourceServiceImpl extends ServiceImpl<SysRoleResourceMappe
             logMapper.saveLogList(sysResourcelogList);
         }
         //删除原有关系
-        sysRoleResourceMapper.deleteByResourceId(sysRoleResource.getRoleId());
+        sysRoleResourceMapper.deleteByRoleId(sysRoleResource.getRoleId());
         //新增
         if(sysRoleResource.getResourceIds()!=null && sysRoleResource.getResourceIds().size()>0) {
             sysRoleResourceMapper.saveRoleResource(map);

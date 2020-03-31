@@ -65,7 +65,7 @@ public class SysUsersController {
      * @param sysUsers
      * @return
      */
-    @PostMapping("/auth/login")
+    @PostMapping("/user/login")
     @ResponseBody
     public Map<String, Object> userLogin(@RequestBody SysUsers sysUsers, HttpServletRequest request) {
         Map<String, Object> result = new HashMap<>();
@@ -117,7 +117,7 @@ public class SysUsersController {
      * @param request
      * @return
      */
-    @RequestMapping("/auth/logout")
+    @RequestMapping("/user/logout")
     @ResponseBody
     public RetResult<Map> logout(HttpServletRequest request){
         Map<String, Object> result = new HashMap<String, Object>();

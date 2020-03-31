@@ -57,11 +57,11 @@
 
     <select id="selectRoleIdByResourceId" parameterType="java.lang.String"
             resultType="java.lang.String">
-        select roleId from sys_role_resource WHERE resourceId = #{resourceId}
+        select roleId from sys_role_resource WHERE resourceId = #{resourceId} group by roleId
     </select>
 
     <select id="selectResourceIdByRoleId" parameterType="java.lang.String"
             resultType="java.lang.String">
-        select resourceId from sys_role_resource WHERE roleId = #{roleId}
+        select resourceId from sys_role_resource WHERE roleId = #{roleId} group by resourceId
     </select>
 </mapper>

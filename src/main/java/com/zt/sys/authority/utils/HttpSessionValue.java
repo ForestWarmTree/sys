@@ -56,6 +56,7 @@ public class HttpSessionValue {
             }
         }
         return users;
+//        return xnSessionUser();
     }
 
 
