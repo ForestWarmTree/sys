@@ -49,6 +49,7 @@ public class HttpSessionValue {
                 Object obj = redisUtil.get(token);
                 JSONObject jsonObject = (JSONObject)JSONObject.toJSON(obj);
                 users = JSONObject.parseObject(String.valueOf(jsonObject),SysUsers.class);
+                users.setToken(token);
                 if (users.getRole()==null || users.getRole().size()==0){
                     users = sysUsersService.selectUsersResource(users);
                 }

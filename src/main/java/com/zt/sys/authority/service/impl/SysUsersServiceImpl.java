@@ -129,6 +129,7 @@ public class SysUsersServiceImpl extends ServiceImpl<SysUsersMapper, SysUsers> i
         users.setName(users.getSysUserinfo().getName());
 
         Map<String, Object> role = new HashMap<String, Object>();
+        //role.put("id", "user");
         role.put("id", "user");
         role.put("name", "用户");
         role.put("describe", "拥有所有权限");
@@ -144,20 +145,22 @@ public class SysUsersServiceImpl extends ServiceImpl<SysUsersMapper, SysUsers> i
         for(SysResourceinfo resourceinfo:menus) {
             menuIds.add(resourceinfo.getResourceId());
         }
-        // 根据菜单ID查询所有按钮
-        List<SysResourceinfo> btnList = resourceinfoMapper.selectBtn(menuIds);
-        /**
-         * 循环菜单与按钮，将当前循环的菜单下的按钮找出来。
-         * 放进actions集合中
-         */
-        for(SysResourceinfo menu:menus) {
-            List<SysResourceinfo> actions = new ArrayList<>();
-            for(SysResourceinfo btn:btnList) {
-                if(btn.getParentId().equals(menu.getResourceId())) {
-                    actions.add(btn);
+        if(menuIds!=null && menuIds.size()>0) {
+            // 根据菜单ID查询所有按钮
+            List<SysResourceinfo> btnList = resourceinfoMapper.selectBtn(menuIds);
+            /**
+             * 循环菜单与按钮，将当前循环的菜单下的按钮找出来。
+             * 放进actions集合中
+             */
+            for(SysResourceinfo menu:menus) {
+                List<SysResourceinfo> actions = new ArrayList<>();
+                for(SysResourceinfo btn:btnList) {
+                    if(btn.getParentId().equals(menu.getResourceId())) {
+                        actions.add(btn);
+                    }
                 }
+                menu.setActions(actions);
             }
-            menu.setActions(actions);
         }
 
         role.put("permissions", menus);
