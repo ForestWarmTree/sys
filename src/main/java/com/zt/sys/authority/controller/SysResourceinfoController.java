@@ -150,6 +150,12 @@ public class SysResourceinfoController {
                     return RetResponse.makeErrRsp("父级资源不能是当前资源");
                 }
 
+                if(resourceinfo.getResourceType().equals("1")) {
+                    resourceinfo.setResourceType("menu");
+                } else {
+                    resourceinfo.setResourceType("btn");
+                }
+
                 resourceinfo.setUpdateTime(new Date());//修改时间
                 resourceinfo.setUpdateUser(sessionUser.getUserId());//修改人
 

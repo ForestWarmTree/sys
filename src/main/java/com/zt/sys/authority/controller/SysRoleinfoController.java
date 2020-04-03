@@ -80,6 +80,7 @@ public class SysRoleinfoController {
             SysUsers sessionUser = sessionValue.getSessionUserAuth(request);
             SysResourceinfo sysResourceinfo = new SysResourceinfo();
             sysResourceinfo.setUserId(sessionUser.getUserId());
+            sysResourceinfo.setIsSupper(sessionUser.getIsSupper());
             //根据用户ID获取当前用户可操作的权限树
             List<TreeModel> treeModelList = commonUtil.editInitTree(sysResourceinfo);
             //根据当前编辑的角色编码，查询出该角色已有的资源信息

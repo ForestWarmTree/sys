@@ -80,7 +80,10 @@
                     resourceType = #{resourceType},
                 </if>
                 <if test="resourceUrl!=null and resourceUrl!=''">
-                    resourceUrl = #{resourceUrl}
+                    resourceUrl = #{resourceUrl},
+                </if>
+                <if test="permissionId!=null and permissionId!=''">
+                    btnType = #{permissionId},
                 </if>
             </trim>
         </set>

@@ -355,7 +355,7 @@ public class SysRoleResourceServiceImpl extends ServiceImpl<SysRoleResourceMappe
             sysRoleResource.setCreateUser(sysRoleinfo.getCreateUser());
             map.put("sysRoleResource",sysRoleResource);
             map.put("resourceIds",resourceIds);
-            if(map!=null && map.size()>0) {
+            if(resourceIds!=null && resourceIds.size()>0) {
                 sysRoleResourceMapper.saveRoleResource(map);
             }
         }

@@ -77,6 +77,8 @@ package com.zt.sys.authority.entity;
     private String roleId;
     //用户ID 非DB字段
     private String userId;
+    //是否超级管理员
+    private String isSupper;
     //已分配角色集合
     private List<SysRoleinfo> roleinfos;
 }

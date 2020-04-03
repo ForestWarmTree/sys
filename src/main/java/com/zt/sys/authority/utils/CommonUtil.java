@@ -40,9 +40,12 @@ public class CommonUtil<T extends BaseModel> {
      * @return
      */
     public List<TreeModel> editInitTree(SysResourceinfo sysResourceinfo) {
-        //根据用户ID获取当前用户可操作的权限数据
-        treeMenus = sysResourceinfoMapper.selectResourceList(sysResourceinfo);
-
+        if(sysResourceinfo.getIsSupper().equals("1")) {
+            treeMenus = sysResourceinfoMapper.selectAll(null);
+        } else {
+            //根据用户ID获取当前用户可操作的权限数据
+            treeMenus = sysResourceinfoMapper.selectResourceList(sysResourceinfo);
+        }
         List<TreeModel> list = new ArrayList<TreeModel>();
         if (treeMenus!=null && treeMenus.size()>0){
             for(SysResourceinfo resource : treeMenus){
