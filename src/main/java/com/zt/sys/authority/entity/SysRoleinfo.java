@@ -25,9 +25,6 @@ package com.zt.sys.authority.entity;
     public class SysRoleinfo extends BaseModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    //主键
-    private int id;
     //角色ID
     @TableField("roleId")
     private String roleId;

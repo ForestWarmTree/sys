@@ -28,10 +28,6 @@ package com.zt.sys.authority.entity;
     public class SysResourceinfo extends BaseModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    //主键
-    @TableId("ID")
-    private Integer id;
     //资源ID
     @TableField("resourceId")
     private String resourceId;

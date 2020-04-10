@@ -23,8 +23,7 @@ package com.zt.sys.authority.entity;
 public class SysGroupinfo extends BaseModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // 主键
-    private int id;
+
     // 组号
     @TableField("groupId")
     private String groupId;

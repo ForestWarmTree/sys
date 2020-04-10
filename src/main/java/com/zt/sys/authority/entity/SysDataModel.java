@@ -24,9 +24,6 @@ package com.zt.sys.authority.entity;
 
     private static final long serialVersionUID = 1L;
 
-    //主键
-    private int id;
-
     //角色
     @TableField("roleId")
     private String roleId;

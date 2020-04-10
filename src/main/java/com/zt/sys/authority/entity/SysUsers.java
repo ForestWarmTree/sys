@@ -30,8 +30,6 @@ package com.zt.sys.authority.entity;
     //用户授权密钥
     private String token;
 
-    // 主键
-    private int id;
     // 用户ID
     @TableField("userId")
     private String userId;

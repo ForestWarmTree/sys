@@ -17,6 +17,9 @@ public class BaseModel{
 	@TableField(exist = false)
 	private long shardValue = 1L; //0L 外部库；1L 内部库
 
+	//主键
+	@TableField(exist = false)
+	private Integer id;
 	/**
 	 * 排序方式
 	 */

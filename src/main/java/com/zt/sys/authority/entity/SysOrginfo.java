@@ -25,8 +25,6 @@ package com.zt.sys.authority.entity;
 
     private static final long serialVersionUID = 1L;
 
-    //主键
-    private int id;
     //组织编码
     @TableField("orgId")
     private String orgId;

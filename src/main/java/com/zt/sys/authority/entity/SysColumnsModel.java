@@ -24,10 +24,6 @@ package com.zt.sys.authority.entity;
 
     private static final long serialVersionUID = 1L;
 
-    //主键
-    @TableField("id")
-    private int id;
-
     //数据名称
     @TableField("dataName")
     private String dataName;

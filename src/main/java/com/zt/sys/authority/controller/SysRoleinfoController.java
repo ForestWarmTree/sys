@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.zt.sys.authority.core.RetResponse;
 import com.zt.sys.authority.core.RetResult;
 import com.zt.sys.authority.entity.*;
+import com.zt.sys.authority.logutil.BaseLogger;
 import com.zt.sys.authority.service.ISysResourceinfoService;
 import com.zt.sys.authority.service.ISysRoleResourceService;
 import com.zt.sys.authority.service.ISysRoleinfoService;
@@ -26,7 +27,7 @@ import java.util.*;
  */
 @RestController
 @RequestMapping("/role")
-public class SysRoleinfoController {
+public class SysRoleinfoController extends BaseLogger {
 
     @Resource
     private HttpSessionValue sessionValue;
@@ -58,7 +59,7 @@ public class SysRoleinfoController {
             result.put("timestemp", "");
             result.put("result",roleinfo);
         } catch (Exception e) {
-            e.printStackTrace();
+            logerror("异常原因："+ e.toString() +"参数是:{},{},{}",1,2,3);
             result.put("code",400);
             return result;
         }
