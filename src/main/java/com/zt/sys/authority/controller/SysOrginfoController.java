@@ -8,6 +8,7 @@ import com.zt.sys.authority.entity.SysGroupinfo;
 import com.zt.sys.authority.entity.SysOrginfo;
 import com.zt.sys.authority.entity.SysRoleinfo;
 import com.zt.sys.authority.entity.SysUsers;
+import com.zt.sys.authority.logutil.BaseLogger;
 import com.zt.sys.authority.service.ISysGroupinfoService;
 import com.zt.sys.authority.service.ISysOrginfoService;
 import com.zt.sys.authority.utils.HttpSessionValue;
@@ -16,10 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>
@@ -31,7 +29,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/orgInfo")
-public class SysOrginfoController {
+public class SysOrginfoController extends BaseLogger {
 
     @Resource
     private HttpSessionValue sessionValue;
@@ -66,7 +64,7 @@ public class SysOrginfoController {
                 return RetResponse.makeErrRsp("登陆时间过期!请重新登陆");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logerror("错误信息："+e.toString());
             return RetResponse.makeSysErrRsp();
         }
         return RetResponse.makeOKRsp(result);
@@ -96,7 +94,7 @@ public class SysOrginfoController {
                 return RetResponse.makeErrRsp("登陆时间过期!请重新登陆");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logerror("错误信息："+e.toString());
             return RetResponse.makeSysErrRsp();
         }
         return RetResponse.makeOKRsp(result);
@@ -135,7 +133,7 @@ public class SysOrginfoController {
                 result.put("records",orginfoList);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logerror("错误信息："+e.toString());
         }
         return result;
     }
@@ -166,7 +164,7 @@ public class SysOrginfoController {
                 return RetResponse.makeErrRsp("登陆已过期!请重新登陆");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logerror("错误信息："+e.toString());
             return  RetResponse.makeSysErrRsp();
         }
         return RetResponse.makeRsp(200,"操作成功!");

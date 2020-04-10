@@ -59,7 +59,7 @@ public class SysRoleinfoController extends BaseLogger {
             result.put("timestemp", "");
             result.put("result",roleinfo);
         } catch (Exception e) {
-            logerror("异常原因："+ e.toString() +"参数是:{},{},{}",1,2,3);
+            logerror("错误信息："+e.toString());
             result.put("code",400);
             return result;
         }
@@ -98,7 +98,7 @@ public class SysRoleinfoController extends BaseLogger {
             result.put("timestemp", "");
             result.put("result",roleinfo);
         } catch (Exception e) {
-            e.printStackTrace();
+            logerror("错误信息："+e.toString());
         }
         return result;
     }
@@ -127,7 +127,7 @@ public class SysRoleinfoController extends BaseLogger {
                 return RetResponse.makeErrRsp("登陆已过期!请重新登陆");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logerror("错误信息："+e.toString());
             return  RetResponse.makeSysErrRsp();
         }
         return RetResponse.makeRsp(200,"操作成功!");
@@ -166,7 +166,7 @@ public class SysRoleinfoController extends BaseLogger {
                 return RetResponse.makeErrRsp("登陆已过期!请重新登陆");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logerror("错误信息："+e.toString());
             return  RetResponse.makeSysErrRsp();
         }
         return RetResponse.makeRsp(200,"操作成功!");
@@ -208,7 +208,7 @@ public class SysRoleinfoController extends BaseLogger {
                 return RetResponse.makeErrRsp("登陆时间过期!请重新登陆");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logerror("错误信息："+e.toString());
             return RetResponse.makeSysErrRsp();
         }
         return RetResponse.makeOKRsp(result);
@@ -253,7 +253,7 @@ public class SysRoleinfoController extends BaseLogger {
                 result.put("records",roleinfoList);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logerror("错误信息："+e.toString());
         }
         return result;
     }
@@ -293,7 +293,7 @@ public class SysRoleinfoController extends BaseLogger {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logerror("错误信息："+e.toString());
         }
         return result;
     }
@@ -321,7 +321,7 @@ public class SysRoleinfoController extends BaseLogger {
             result.put("pages",pageInfo.getPages());
             result.put("records",sysRoleinfos);
         } catch (Exception e) {
-            e.printStackTrace();
+            logerror("错误信息："+e.toString());
         }
         return result;
     }
@@ -356,7 +356,7 @@ public class SysRoleinfoController extends BaseLogger {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logerror("错误信息："+e.toString());
         }
         return result;
     }

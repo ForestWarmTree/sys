@@ -66,6 +66,7 @@ public abstract class BaseServiceLogger<M extends BaseMapper<T>, T> extends Serv
      * @return
      */
     public static String formatMessageTemplate(String messageTemplate) {
+        messageTemplate = getMethodName()+"方法:"+messageTemplate;
         if(messageTemplate.length() > 5000) {
             messageTemplate = messageTemplate.substring(0,messageTemplate.length()-2001);
         }
@@ -79,5 +80,10 @@ public abstract class BaseServiceLogger<M extends BaseMapper<T>, T> extends Serv
                 return getClassContext()[3].getName();
             }
         }.getClassName();
+    }
+
+    // 获取上级调用方法名
+    public static String getMethodName() {
+        return Thread.currentThread().getStackTrace()[4].getMethodName();
     }
 }

@@ -7,6 +7,7 @@ import com.zt.sys.authority.entity.SysRoleResource;
 import com.zt.sys.authority.entity.SysRoleinfo;
 import com.zt.sys.authority.entity.SysUserRole;
 import com.zt.sys.authority.entity.SysUsers;
+import com.zt.sys.authority.logutil.BaseLogger;
 import com.zt.sys.authority.service.ISysRoleResourceService;
 import com.zt.sys.authority.utils.HttpSessionValue;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/authority/sys-role-resource")
-public class SysRoleResourceController {
+public class SysRoleResourceController extends BaseLogger {
 
     @Resource
     private HttpSessionValue sessionValue;
@@ -55,7 +56,7 @@ public class SysRoleResourceController {
                 return RetResponse.makeErrRsp("登陆已过期!请重新登陆");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logerror("错误信息："+e.toString());
             return RetResponse.makeSysErrRsp();
         }
         return RetResponse.makeOKRsp();
@@ -82,7 +83,7 @@ public class SysRoleResourceController {
                 return RetResponse.makeErrRsp("登陆已过期!请重新登陆");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logerror("错误信息："+e.toString());
             return RetResponse.makeSysErrRsp();
         }
         return RetResponse.makeOKRsp();
@@ -116,7 +117,7 @@ public class SysRoleResourceController {
                 return RetResponse.makeErrRsp("登陆时间过期!请重新登陆");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logerror("错误信息："+e.toString());
             return RetResponse.makeSysErrRsp();
         }
         return RetResponse.makeOKRsp(result);

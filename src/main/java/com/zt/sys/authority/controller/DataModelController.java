@@ -37,6 +37,13 @@ public class DataModelController extends BaseLogger {
     @Resource
     private HttpSessionValue sessionValue;
 
+    @GetMapping("/testlog")
+    @ResponseBody
+    public void testlog() {
+        loginfo("info信息描述");
+        logerror("错误信息：123");
+    }
+
 
     /**
      * 根据角色ID、资源ID查询数据权限与字段权限
@@ -61,7 +68,7 @@ public class DataModelController extends BaseLogger {
             result.put("timestemp", "");
             result.put("result",sysRoleinfo);
         } catch (Exception e) {
-            e.printStackTrace();
+            logerror("错误信息：" + e.toString());
             result.put("code",400);
             return result;
         }
@@ -91,7 +98,7 @@ public class DataModelController extends BaseLogger {
             sysColumnscontrollerService.saveColumn(dataCommonModel);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logerror("错误信息：" + e.toString());
         }
         return RetResponse.makeOKRsp();
     }

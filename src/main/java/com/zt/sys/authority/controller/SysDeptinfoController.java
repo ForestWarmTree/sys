@@ -68,7 +68,7 @@ public class SysDeptinfoController extends BaseLogger {
                 return RetResponse.makeErrRsp("登陆时间过期!请重新登陆");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logerror("错误信息："+e.toString());
             return RetResponse.makeSysErrRsp();
         }
         return RetResponse.makeOKRsp(result);
@@ -99,7 +99,7 @@ public class SysDeptinfoController extends BaseLogger {
                 return RetResponse.makeErrRsp("登陆时间过期!请重新登陆");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logerror("错误信息："+e.toString());
             return RetResponse.makeSysErrRsp();
         }
         return RetResponse.makeOKRsp(result);
@@ -141,7 +141,7 @@ public class SysDeptinfoController extends BaseLogger {
                 result.put("records",deptinfoList);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logerror("错误信息："+e.toString());
         }
         return result;
     }
@@ -168,7 +168,7 @@ public class SysDeptinfoController extends BaseLogger {
                 return RetResponse.makeErrRsp("登陆已过期!请重新登陆");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logerror("错误信息："+e.toString());
             return  RetResponse.makeSysErrRsp();
         }
         return RetResponse.makeRsp(200,"操作成功!");

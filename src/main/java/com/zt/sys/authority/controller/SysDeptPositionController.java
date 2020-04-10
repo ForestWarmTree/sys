@@ -6,6 +6,7 @@ import com.zt.sys.authority.core.RetResult;
 import com.zt.sys.authority.entity.SysDeptPosition;
 import com.zt.sys.authority.entity.SysGroupinfo;
 import com.zt.sys.authority.entity.SysUsers;
+import com.zt.sys.authority.logutil.BaseLogger;
 import com.zt.sys.authority.service.ISysDeptPositionService;
 import com.zt.sys.authority.utils.HttpSessionValue;
 import com.zt.sys.authority.utils.ParamUtil;
@@ -26,7 +27,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/authority/sys-dept-position")
-public class SysDeptPositionController {
+public class SysDeptPositionController extends BaseLogger {
 
     @Resource
     private HttpSessionValue sessionValue;
@@ -60,7 +61,7 @@ public class SysDeptPositionController {
                 return RetResponse.makeErrRsp("登陆时间过期!请重新登陆");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logerror("错误信息："+e.toString());
             return RetResponse.makeSysErrRsp();
         }
         return RetResponse.makeOKRsp();

@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.zt.sys.authority.core.RetResponse;
 import com.zt.sys.authority.core.RetResult;
 import com.zt.sys.authority.entity.*;
+import com.zt.sys.authority.logutil.BaseLogger;
 import com.zt.sys.authority.service.ISysUserinfoService;
 import com.zt.sys.authority.utils.HttpSessionValue;
 import com.zt.sys.authority.utils.UUID;
@@ -27,8 +28,7 @@ import java.util.*;
  */
 @RestController
 @RequestMapping("/userInfo")
-public class SysUserinfoController {
-    private final Logger logger=LoggerFactory.getLogger(SysUserinfoController.class);
+public class SysUserinfoController extends BaseLogger {
 
     @Resource
     private HttpSessionValue sessionValue;
@@ -54,7 +54,7 @@ public class SysUserinfoController {
             // 保存
             sysUserinfoService.saveUserInfo(userinfo);
         } catch (Exception e) {
-            logger.error(e.toString());
+            logerror("错误信息："+e.toString());
             return RetResponse.makeSysErrRsp();
         }
         return RetResponse.makeOKRsp();
@@ -77,7 +77,7 @@ public class SysUserinfoController {
             // 修改
             sysUserinfoService.updateUserInfo(userinfo);
         } catch (Exception e) {
-            logger.error(e.toString());
+            logerror("错误信息："+e.toString());
             return RetResponse.makeSysErrRsp();
         }
         return RetResponse.makeOKRsp();
@@ -104,7 +104,7 @@ public class SysUserinfoController {
                 return RetResponse.makeErrRsp("登陆时间过期!请重新登陆");
             }
         } catch (Exception e) {
-            logger.error(e.toString());
+            logerror("错误信息："+e.toString());
             return RetResponse.makeSysErrRsp();
         }
         return RetResponse.makeOKRsp(result);
@@ -145,7 +145,7 @@ public class SysUserinfoController {
                 result.put("records",sysUserinfoList);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logerror("错误信息："+e.toString());
         }
         return result;
     }
@@ -173,7 +173,7 @@ public class SysUserinfoController {
                 return RetResponse.makeErrRsp("登陆已过期!请重新登陆");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logerror("错误信息："+e.toString());
             return  RetResponse.makeSysErrRsp();
         }
         return RetResponse.makeRsp(200,"操作成功!");
@@ -231,7 +231,7 @@ public class SysUserinfoController {
                 }
             }
         } catch (Exception e) {
-            logger.error(e.toString());
+            logerror("错误信息："+e.toString());
         }
         return result;
     }
@@ -289,7 +289,7 @@ public class SysUserinfoController {
             result.put("pages",pageInfo.getPages());
             result.put("records",resultUserList);
         } catch (Exception e) {
-            logger.error(e.toString());
+            logerror("错误信息："+e.toString());
         }
         return result;
     }

@@ -8,6 +8,7 @@ import com.zt.sys.authority.entity.SysDeptinfo;
 import com.zt.sys.authority.entity.SysOrginfo;
 import com.zt.sys.authority.entity.SysPositioninfo;
 import com.zt.sys.authority.entity.SysUsers;
+import com.zt.sys.authority.logutil.BaseLogger;
 import com.zt.sys.authority.service.ISysOrginfoService;
 import com.zt.sys.authority.service.ISysPositioninfoService;
 import com.zt.sys.authority.utils.HttpSessionValue;
@@ -31,7 +32,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/position")
-public class SysPositioninfoController {
+public class SysPositioninfoController extends BaseLogger {
 
     @Resource
     private HttpSessionValue sessionValue;
@@ -68,7 +69,7 @@ public class SysPositioninfoController {
                 return RetResponse.makeErrRsp("登陆时间过期!请重新登陆");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logerror("错误信息："+e.toString());
             return RetResponse.makeSysErrRsp();
         }
         return RetResponse.makeOKRsp(result);
@@ -99,7 +100,7 @@ public class SysPositioninfoController {
                 return RetResponse.makeErrRsp("登陆时间过期!请重新登陆");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logerror("错误信息："+e.toString());
             return RetResponse.makeSysErrRsp();
         }
         return RetResponse.makeOKRsp(result);
@@ -137,7 +138,7 @@ public class SysPositioninfoController {
                 result.put("records",positioninfoList);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logerror("错误信息："+e.toString());
         }
         return result;
     }
@@ -162,7 +163,7 @@ public class SysPositioninfoController {
                 return RetResponse.makeErrRsp("登陆已过期!请重新登陆");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logerror("错误信息："+e.toString());
             return  RetResponse.makeSysErrRsp();
         }
         return RetResponse.makeRsp(200,"操作成功!");

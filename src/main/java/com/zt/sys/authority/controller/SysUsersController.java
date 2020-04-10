@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.zt.sys.authority.core.RetResponse;
 import com.zt.sys.authority.core.RetResult;
 import com.zt.sys.authority.entity.*;
+import com.zt.sys.authority.logutil.BaseLogger;
 import com.zt.sys.authority.service.ISysUsersService;
 import com.zt.sys.authority.utils.HttpSessionValue;
 import com.zt.sys.authority.utils.MD5Util;
@@ -32,8 +33,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/")
-public class SysUsersController {
-    private final Logger logger=LoggerFactory.getLogger(SysUsersController.class);
+public class SysUsersController extends BaseLogger {
 
     @Resource
     private HttpSessionValue sessionValue;
@@ -106,7 +106,7 @@ public class SysUsersController {
                result.put("result",user);
            }
         } catch (Exception e) {
-            logger.error(e.toString());
+            logerror("错误信息："+e.toString());
             e.printStackTrace();
         }
         return result;
@@ -129,7 +129,7 @@ public class SysUsersController {
             result.put("result", new SysUsers());
             result.put("timestemp", "");
         } catch (Exception e) {
-            logger.error(e.toString());
+            logerror("错误信息："+e.toString());
         }
 
         return RetResponse.makeOKRsp(result);
@@ -153,7 +153,7 @@ public class SysUsersController {
             result.put("result", user);
             result.put("timestemp", "");
         } catch (Exception e) {
-            logger.error(e.toString());
+            logerror("错误信息："+e.toString());
             e.printStackTrace();
         }
         return result;
@@ -195,7 +195,7 @@ public class SysUsersController {
                         return RetResponse.makeErrRsp("登陆已过期!请重新登陆");
                     }
                 } catch (Exception e) {
-                    logger.error(e.toString());
+                    logerror("错误信息："+e.toString());
                     return  RetResponse.makeSysErrRsp();
                 }
             }
@@ -228,7 +228,7 @@ public class SysUsersController {
                 return RetResponse.makeErrRsp("登陆时间过期!请重新登陆");
             }
         } catch (Exception e) {
-            logger.error(e.toString());
+            logerror("错误信息："+e.toString());
             return RetResponse.makeSysErrRsp();
         }
         return RetResponse.makeOKRsp(result);
@@ -264,7 +264,7 @@ public class SysUsersController {
                 }
             }
         } catch (Exception e) {
-            logger.error(e.toString());
+            logerror("错误信息："+e.toString());
         }
         return result;
     }
@@ -299,7 +299,7 @@ public class SysUsersController {
                 }
             }
         } catch (Exception e) {
-            logger.error(e.toString());
+            logerror("错误信息："+e.toString());
         }
         return result;
     }
@@ -327,7 +327,7 @@ public class SysUsersController {
             result.put("pages",pageInfo.getPages());
             result.put("records",usersList);
         } catch (Exception e) {
-            logger.error(e.toString());
+            logerror("错误信息："+e.toString());
         }
         return result;
     }

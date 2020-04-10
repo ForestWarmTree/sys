@@ -6,6 +6,7 @@ import com.zt.sys.authority.core.RetResult;
 import com.zt.sys.authority.entity.SysOrginfo;
 import com.zt.sys.authority.entity.SysUserRoleSource;
 import com.zt.sys.authority.entity.SysUsers;
+import com.zt.sys.authority.logutil.BaseLogger;
 import com.zt.sys.authority.service.ISysUserRoleSourceService;
 import com.zt.sys.authority.utils.HttpSessionValue;
 import com.zt.sys.authority.utils.ParamUtil;
@@ -28,7 +29,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/authority/sys-user-role-source")
-public class SysUserRoleSourceController {
+public class SysUserRoleSourceController extends BaseLogger {
 
     @Resource
     private ISysUserRoleSourceService sysUserRoleSourceService;
@@ -61,7 +62,7 @@ public class SysUserRoleSourceController {
                 return RetResponse.makeErrRsp("登陆时间过期!请重新登陆");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logerror("错误信息："+e.toString());
             return RetResponse.makeSysErrRsp();
         }
         return RetResponse.makeOKRsp(result);

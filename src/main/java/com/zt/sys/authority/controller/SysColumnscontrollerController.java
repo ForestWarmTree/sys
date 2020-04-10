@@ -6,6 +6,7 @@ import com.zt.sys.authority.core.RetResult;
 import com.zt.sys.authority.entity.DataCommonModel;
 import com.zt.sys.authority.entity.SysColumnsModel;
 import com.zt.sys.authority.entity.SysUsers;
+import com.zt.sys.authority.logutil.BaseLogger;
 import com.zt.sys.authority.service.ISysColumnscontrollerService;
 
 import com.zt.sys.authority.utils.HttpSessionValue;
@@ -28,8 +29,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/auth")
-public class SysColumnscontrollerController {
-    private final Logger logger=LoggerFactory.getLogger(SysColumnscontrollerController.class);
+public class SysColumnscontrollerController extends BaseLogger {
     @Resource
     private HttpSessionValue sessionValue;
 
@@ -53,7 +53,7 @@ public class SysColumnscontrollerController {
             // 保存
             sysColumnscontrollerService.saveColumn(new DataCommonModel());
         } catch (Exception e) {
-            logger.error(e.toString());
+            logerror("错误信息："+e.toString());
             return RetResponse.makeSysErrRsp();
         }
         return RetResponse.makeOKRsp();

@@ -7,6 +7,7 @@ import com.zt.sys.authority.core.RetResult;
 import com.zt.sys.authority.entity.SysGroupinfo;
 import com.zt.sys.authority.entity.SysUserinfo;
 import com.zt.sys.authority.entity.SysUsers;
+import com.zt.sys.authority.logutil.BaseLogger;
 import com.zt.sys.authority.service.ISysGroupinfoService;
 import com.zt.sys.authority.service.ISysUsersgroupService;
 import com.zt.sys.authority.utils.HttpSessionValue;
@@ -30,7 +31,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/authority/sys-groupinfo")
-public class SysGroupinfoController {
+public class SysGroupinfoController extends BaseLogger {
 
     @Resource
     private HttpSessionValue sessionValue;
@@ -65,7 +66,7 @@ public class SysGroupinfoController {
                 return RetResponse.makeErrRsp("登陆时间过期!请重新登陆");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logerror(Thread.currentThread() .getStackTrace()[1].getMethodName()+"方法：错误信息："+e.toString());
             return RetResponse.makeSysErrRsp();
         }
         return RetResponse.makeOKRsp();
@@ -93,7 +94,7 @@ public class SysGroupinfoController {
                 return RetResponse.makeErrRsp("登陆时间过期!请重新登陆");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logerror(Thread.currentThread() .getStackTrace()[1].getMethodName()+"方法：错误信息："+e.toString());
             return RetResponse.makeSysErrRsp();
         }
         return RetResponse.makeOKRsp();
@@ -133,7 +134,7 @@ public class SysGroupinfoController {
                 result.put("records",groupinfoList);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logerror(Thread.currentThread() .getStackTrace()[1].getMethodName()+"方法：错误信息："+e.toString());
         }
         return result;
     }
@@ -160,7 +161,7 @@ public class SysGroupinfoController {
                 return RetResponse.makeErrRsp("登陆已过期!请重新登陆");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logerror("错误信息："+e.toString());
             return  RetResponse.makeSysErrRsp();
         }
         return RetResponse.makeRsp(200,"操作成功!");
