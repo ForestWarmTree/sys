@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- 属性文件:在properties文件中找到对应的配置项 -->
+    <springProperty scope="context" name="logging.path"  source="logging.path"/>
+    <springProperty scope="context" name="logging.level" source="logging.level.com.zt.sys.authority"/>
+
+    <!-- 默认的控制台日志输出，一般生产环境都是后台启动，这个没太大作用 -->
+    <!--<appender name="STDOUT"-->
+              <!--class="ch.qos.logback.core.ConsoleAppender">-->
+        <!--<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">-->
+            <!--<Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{80} - %msg%n</Pattern>-->
+        <!--</encoder>-->
+    <!--</appender>-->
+
+    <!-- 设置一个表示颜色的变量 -->
+    <property name="CONSOLE_LOG_PATTERN"
+              value="%yellow(%date{yyyy-MM-dd HH:mm:ss}) |%highlight(%-5level) |%blue(%thread) |%blue(%file:%line) |%green(%logger) |%cyan(%msg%n)"/>
+
+
+    <!-- 打印到控制台 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>CONSOLE -- ${CONSOLE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- appender-class：ConsoleAppender：把日志添加到控制台
+    FileAppender：把日志添加到文件
+    RollingFileAppender：滚动记录文件，先将日志记录到指定文件，当符合某个条件时，将日志记录到其他文件。
+    它是FileAppender的子类-->
+    <appender name="SQL-LOGGERONE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--append标签：如果是 true，日志被追加到文件结尾，如果是false，清空现存文件，默认是true。-->
+        <append>true</append>
+        <!--filter子标签： 可以为appender 添加一个或多个过滤器，可以用任意条件对日志进行过滤。
+        appender 有多个过滤器时，按照配置顺序执行-->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <!--DENY：日志将立即被抛弃不再经过其他过滤器-->
+            <!--NEUTRAL：有序列表里的下个过滤器过接着处理日志-->
+            <!--ACCEPT：日志会被立即处理，不再经过剩余过滤器-->
+            <!--不加onMatch、onMismatch标签，info日志会打印info及以上级别日志-->
+            <level>debug</level>
+            <!-- 如果命中就禁止这条日志 -->
+            <onMatch>ACCEPT</onMatch>
+            <!-- 如果没有命中就使用这条规则 -->
+            <onMismatch>DENY</onMismatch>
+        </filter>
+
+        <file>
+            ${logging.path}/ztLog/sql.log
+        </file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--日志文件输出的文件名:按天回滚 daily -->
+            <FileNamePattern>${logging.path}/ztLog/sql.log.%d{yyyy-MM-dd}</FileNamePattern>
+            <!--日志文件保留天数-->
+            <MaxHistory>30</MaxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+
+    <appender name="DEBUG-LOGGERONE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--append标签：如果是 true，日志被追加到文件结尾，如果是false，清空现存文件，默认是true。-->
+        <append>true</append>
+        <!--filter子标签： 可以为appender 添加一个或多个过滤器，可以用任意条件对日志进行过滤。
+        appender 有多个过滤器时，按照配置顺序执行-->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <!--DENY：日志将立即被抛弃不再经过其他过滤器-->
+            <!--NEUTRAL：有序列表里的下个过滤器过接着处理日志-->
+            <!--ACCEPT：日志会被立即处理，不再经过剩余过滤器-->
+            <!--不加onMatch、onMismatch标签，info日志会打印info及以上级别日志-->
+            <level>debug</level>
+            <!-- 如果命中就禁止这条日志 -->
+            <onMatch>ACCEPT</onMatch>
+            <!-- 如果没有命中就使用这条规则 -->
+            <onMismatch>DENY</onMismatch>
+        </filter>
+
+        <file>
+            ${logging.path}/ztLog/debug.log
+        </file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--日志文件输出的文件名:按天回滚 daily -->
+            <FileNamePattern>${logging.path}/ztLog/debug.log.%d{yyyy-MM-dd}</FileNamePattern>
+            <!--日志文件保留天数-->
+            <MaxHistory>30</MaxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!--info-->
+    <appender name="INFO-LOGGERONE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--append标签：如果是 true，日志被追加到文件结尾，如果是false，清空现存文件，默认是true。-->
+        <append>true</append>
+        <!--filter子标签： 可以为appender 添加一个或多个过滤器，可以用任意条件对日志进行过滤。
+        appender 有多个过滤器时，按照配置顺序执行-->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <!--DENY：日志将立即被抛弃不再经过其他过滤器-->
+            <!--NEUTRAL：有序列表里的下个过滤器过接着处理日志-->
+            <!--ACCEPT：日志会被立即处理，不再经过剩余过滤器-->
+            <!--不加onMatch、onMismatch标签，日志会打印level及以上级别日志-->
+            <level>INFO</level>
+            <!-- 如果命中就禁止这条日志 -->
+            <onMatch>ACCEPT</onMatch>
+            <!-- 如果没有命中就使用这条规则 -->
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <file>
+            ${logging.path}/ztLog/info.log
+        </file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--日志文件输出的文件名:按天回滚 daily -->
+            <FileNamePattern>${logging.path}/ztLog/info.log.%d{yyyy-MM-dd}</FileNamePattern>
+            <!--日志文件保留天数-->
+            <MaxHistory>30</MaxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+
+    <!--warn-->
+    <appender name="WARN-LOGGERONE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--append标签：如果是 true，日志被追加到文件结尾，如果是false，清空现存文件，默认是true。-->
+        <append>true</append>
+        <!--filter子标签： 可以为appender 添加一个或多个过滤器，可以用任意条件对日志进行过滤。
+        appender 有多个过滤器时，按照配置顺序执行-->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <!--DENY：日志将立即被抛弃不再经过其他过滤器-->
+            <!--NEUTRAL：有序列表里的下个过滤器过接着处理日志-->
+            <!--ACCEPT：日志会被立即处理，不再经过剩余过滤器-->
+            <!--不加onMatch、onMismatch标签，日志会打印level及以上级别日志-->
+            <level>WARN</level>
+            <!-- 如果命中就禁止这条日志 -->
+            <onMatch>ACCEPT</onMatch>
+            <!-- 如果没有命中就使用这条规则 -->
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <file>
+            ${logging.path}/ztLog/warn.log
+        </file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--日志文件输出的文件名:按天回滚 daily -->
+            <FileNamePattern>${logging.path}/ztLog/warn.log.%d{yyyy-MM-dd}</FileNamePattern>
+            <!--日志文件保留天数-->
+            <MaxHistory>30</MaxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+
+    <!--error-->
+    <appender name="ERROR-LOGGERONE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--append标签：如果是 true，日志被追加到文件结尾，如果是false，清空现存文件，默认是true。-->
+        <append>true</append>
+        <!--filter子标签： 可以为appender 添加一个或多个过滤器，可以用任意条件对日志进行过滤。
+        appender 有多个过滤器时，按照配置顺序执行-->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>error</level>
+            <!--&lt;!&ndash; 如果命中就禁止这条日志 &ndash;&gt;-->
+            <!--<onMatch>DENY</onMatch>-->
+            <!--&lt;!&ndash; 如果没有命中就使用这条规则 &ndash;&gt;-->
+            <!--<onMismatch>ACCEPT</onMismatch>-->
+        </filter>
+        <file>
+            ${logging.path}/ztLog/error.log
+        </file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--日志文件输出的文件名:按天回滚 daily -->
+            <FileNamePattern>${logging.path}/ztLog/error.log.%d{yyyy-MM-dd}</FileNamePattern>
+            <!--日志文件保留天数-->
+            <MaxHistory>30</MaxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!--日志异步到数据库 ,logback原生地址：ch.qos.logback.classic.db.DBAppender-->
+    <!--这里将DB存储配置文件改成自己的文件,方便扩展-->
+    <appender name="mysqlLog" class="com.zt.sys.authority.logutil.MyDBLogAppender">
+        <!--过滤器：LevelFilter,ThresholdFilter-->
+        <!--ThresholdFilter：记录 <level> 级别及以上级别的日志。-->
+        <!--LevelFilter：只记录 <level> 级别的日志 必须与 onMatch、onMismatch标签一起使用。-->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <!--DENY：日志将立即被抛弃不再经过其他过滤器-->
+            <!--NEUTRAL：有序列表里的下个过滤器过接着处理日志-->
+            <!--ACCEPT：日志会被立即处理，不再经过剩余过滤器-->
+            <!--不加onMatch、onMismatch标签，日志会打印level及以上级别日志-->
+            <level>info</level>
+            <!--<onMatch>ACCEPT</onMatch>-->
+            <!--<onMismatch>DENY</onMismatch>-->
+        </filter>
+        <connectionSource class="ch.qos.logback.core.db.DataSourceConnectionSource">
+            <dataSource class="com.alibaba.druid.pool.DruidDataSource">
+                <driverClassName>com.mysql.cj.jdbc.Driver</driverClassName>
+                <url>jdbc:mysql://localhost:3306/authoritymanagement?useUnicode=true&amp;characterEncoding=utf-8&amp;serverTimezone=Asia/Shanghai&amp;useSSL=false</url>
+                <username>root</username>
+                <password>root</password>
+            </dataSource>
+        </connectionSource>
+    </appender>
+
+    <logger name="com.zt.sys.authority" level="${logging.level}"
+            additivity="false">
+        <appender-ref ref="mysqlLog" />
+    </logger>
+
+    <!--<logger name="com.zt.sys.authority.service" level="${logging.level}"-->
+            <!--additivity="false">-->
+        <!--<appender-ref ref="mysqlLog" />-->
+    <!--</logger>-->
+
+    <logger name="com.ibatis" level="INFO"/>
+    <logger name="org.springframework" level="INFO"/>
+
+    <root level="${logging.level}">
+        <appender-ref ref="CONSOLE"/>
+        <!--<appender-ref ref="mysqlLog"/>-->
+    </root>
+
+</configuration>

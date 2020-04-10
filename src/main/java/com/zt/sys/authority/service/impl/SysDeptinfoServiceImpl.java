@@ -1,8 +1,10 @@
 package com.zt.sys.authority.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.zt.sys.authority.entity.SysDeptinfo;
 import com.zt.sys.authority.entity.SysRolelog;
 import com.zt.sys.authority.entity.SysUsers;
+import com.zt.sys.authority.logutil.BaseServiceLogger;
 import com.zt.sys.authority.mapper.SysDeptPositionMapper;
 import com.zt.sys.authority.mapper.SysDeptinfoMapper;
 import com.zt.sys.authority.mapper.SysRolelogMapper;
@@ -25,7 +27,7 @@ import java.util.List;
  * @since 2020-02-17
  */
 @Service
-public class SysDeptinfoServiceImpl extends ServiceImpl<SysDeptinfoMapper, SysDeptinfo> implements ISysDeptinfoService {
+public class SysDeptinfoServiceImpl extends BaseServiceLogger<SysDeptinfoMapper, SysDeptinfo> implements ISysDeptinfoService {
 
     @Resource
     private SysDeptinfoMapper deptinfoMapper;

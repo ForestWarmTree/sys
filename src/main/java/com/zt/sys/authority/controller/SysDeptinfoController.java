@@ -1,13 +1,12 @@
 package com.zt.sys.authority.controller;
 
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageInfo;
 import com.zt.sys.authority.core.RetResponse;
 import com.zt.sys.authority.core.RetResult;
-import com.zt.sys.authority.entity.SysDeptinfo;
-import com.zt.sys.authority.entity.SysOrginfo;
-import com.zt.sys.authority.entity.SysRoleinfo;
-import com.zt.sys.authority.entity.SysUsers;
+import com.zt.sys.authority.entity.*;
+import com.zt.sys.authority.logutil.BaseLogger;
 import com.zt.sys.authority.service.ISysDeptinfoService;
 import com.zt.sys.authority.service.ISysOrginfoService;
 import com.zt.sys.authority.utils.HttpSessionValue;
@@ -31,13 +30,14 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/dept")
-public class SysDeptinfoController {
+public class SysDeptinfoController extends BaseLogger {
 
     @Resource
     private HttpSessionValue sessionValue;
 
     @Resource
     private ISysDeptinfoService sysDeptinfoService;
+
     /**
      * 新增部门信息
      * @return

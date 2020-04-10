@@ -51,6 +51,7 @@ package com.zt.sys.authority.entity;
     private Date createTime;
 
     //创建/修改人，非DB字段
+    @TableField(exist = false)
     private String createUserName;
 
     //修改人

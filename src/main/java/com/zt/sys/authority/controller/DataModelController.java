@@ -1,8 +1,11 @@
 package com.zt.sys.authority.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.zt.sys.authority.core.RetResponse;
 import com.zt.sys.authority.core.RetResult;
 import com.zt.sys.authority.entity.*;
+import com.zt.sys.authority.logutil.BaseLogger;
 import com.zt.sys.authority.service.ISysColumnscontrollerService;
 import com.zt.sys.authority.service.ISysDatacontrollerService;
 import com.zt.sys.authority.utils.HttpSessionValue;
@@ -23,7 +26,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/dataModel")
-public class DataModelController {
+public class DataModelController extends BaseLogger {
 
     @Resource
     private ISysColumnscontrollerService sysColumnscontrollerService;
@@ -33,6 +36,7 @@ public class DataModelController {
 
     @Resource
     private HttpSessionValue sessionValue;
+
 
     /**
      * 根据角色ID、资源ID查询数据权限与字段权限

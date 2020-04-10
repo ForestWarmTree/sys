@@ -18,7 +18,7 @@ package com.zt.sys.authority.entity;
 * @since 2020-02-17
 */
     @Data
-        @EqualsAndHashCode(callSuper = false)
+    @EqualsAndHashCode(callSuper = false)
     @Accessors(chain = true)
     public class SysDataModel extends BaseModel implements Serializable {
 

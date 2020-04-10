@@ -15,7 +15,6 @@ import java.util.List;
  * @since 2020-02-17
  */
 public interface ISysDeptinfoService extends IService<SysDeptinfo> {
-
     /**
      * 验证部门编码是否存在
      * @param deptId
