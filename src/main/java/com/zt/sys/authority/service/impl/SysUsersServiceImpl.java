@@ -145,9 +145,12 @@ public class SysUsersServiceImpl extends ServiceImpl<SysUsersMapper, SysUsers> i
         for(SysResourceinfo resourceinfo:menus) {
             menuIds.add(resourceinfo.getResourceId());
         }
+        Map<String, Object> map = new HashMap<>();
         if(menuIds!=null && menuIds.size()>0) {
+            map.put("userId",users.getUserId());
+            map.put("menuIds",menuIds);
             // 根据菜单ID查询所有按钮
-            List<SysResourceinfo> btnList = resourceinfoMapper.selectBtn(menuIds);
+            List<SysResourceinfo> btnList = resourceinfoMapper.selectBtn(map);
             /**
              * 循环菜单与按钮，将当前循环的菜单下的按钮找出来。
              * 放进actions集合中

@@ -202,7 +202,7 @@ public class SysRoleinfoServiceImpl extends ServiceImpl<SysRoleinfoMapper, SysRo
                 menusIds.add(resourceinfo.getResourceId());
             }
             //根据菜单ID查询按钮信息
-            List<SysResourceinfo> btns = sysResourceinfoMapper.selectBtn(menusIds);
+            List<SysResourceinfo> btns = sysResourceinfoMapper.selectBtnByMenus(menusIds);
 
             for(SysResourceinfo resourceinfo:resourceinfos) {
                 List<SysResourceinfo> btnInfos = new ArrayList<>();

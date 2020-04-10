@@ -7,6 +7,7 @@ import com.zt.sys.authority.entity.SysUserRole;
 import com.zt.sys.authority.entity.SysUsers;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -47,10 +48,12 @@ public interface SysResourceinfoMapper extends BaseMapper<SysResourceinfo> {
     /**
      * 集合传参
      * 根据菜单ID获取按钮信息
-     * @param menuIds
+     * @param map
      * @return
      */
-    List<SysResourceinfo> selectBtn(List<String> menuIds);
+    List<SysResourceinfo> selectBtn(Map<String, Object> map);
+
+    List<SysResourceinfo> selectBtnByMenus(List<String> menus);
 
     /**
      *  单个传参

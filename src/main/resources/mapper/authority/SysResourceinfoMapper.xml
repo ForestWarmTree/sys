@@ -161,9 +161,43 @@
     </select>
 
     <!--根据资源ID获取按钮信息-->
-    <select id="selectBtn" parameterType="java.util.List"
+    <select id="selectBtn" parameterType="java.util.Map"
             resultType="com.zt.sys.authority.entity.SysResourceinfo">
         select
+            a.resourceId,
+            a.resourceName as `describe`,
+            a.parentId,
+            a.`level`,
+            a.resourceType,
+            a.resourceUrl,
+            a.btnType as `action`
+        FROM sys_resourceinfo a,
+        (SELECT resourceId,roleId FROM sys_role_resource WHERE roleId in (
+        select ur.roleId FROM sys_user_role ur,sys_roleinfo r WHERE ur.userId = #{userId}
+        and ur.roleId=r.roleId
+        and ur.startDate &lt;= CURDATE() AND ur.endDate &gt; CURDATE()
+        and r.startDate &lt;= CURDATE() AND r.endDate &gt; CURDATE()
+        ))b
+        WHERE a.resourceId = b.resourceId
+        and a.parentId in  (
+            <foreach collection="menuIds" item="item" index="index" separator=",">
+                #{item}
+            </foreach>
+        )
+        and resourceType = 'btn'
+        GROUP BY a.resourceId,
+        a.resourceName,
+        a.parentId,
+        a.`level`,
+        a.resourceType,
+        a.resourceUrl,
+        a.btnType
+
+    </select>
+
+
+    <select id="selectBtnByMenus" parameterType="java.util.List" resultType="com.zt.sys.authority.entity.SysResourceinfo">
+         select
             resourceId,
             resourceName as `describe`,
             parentId,
@@ -171,11 +205,14 @@
             resourceType,
             resourceUrl,
             btnType as `action`
-        from sys_resourceinfo WHERE parentId in  (
-        <foreach collection="list" item="item" index="index" separator=",">
-           #{item}
-        </foreach>
-        ) and resourceType = 'btn'
+        from sys_resourceinfo
+        WHERE parentId in  (
+            <foreach collection="list" item="item" index="index" separator=",">
+                #{item}
+            </foreach>
+        )
+        and resourceType = 'btn';
+
     </select>
 
     <!--根据角色ID返回资源信息-->
