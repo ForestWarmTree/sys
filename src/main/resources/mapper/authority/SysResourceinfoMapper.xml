@@ -37,6 +37,7 @@
             resultMap="BaseResultMap">
         select * from sys_resourceinfo
         <where>
+            resourceType = 'menu'
             <if test="resourceId != null and resourceId!=''">
                 and resourceId = #{resourceId}
             </if>
@@ -192,7 +193,28 @@
         a.resourceType,
         a.resourceUrl,
         a.btnType
+    </select>
 
+
+    <select id="selectAllBtn" resultType="com.zt.sys.authority.entity.SysResourceinfo">
+        select
+            resourceId,
+            resourceName as `describe`,
+            parentId,
+            `level`,
+            resourceType,
+            resourceUrl,
+            btnType as `action`
+        FROM sys_resourceinfo
+        where resourceType = 'btn'
+        GROUP BY
+            resourceId,
+            resourceName,
+            parentId,
+            `level`,
+            resourceType,
+            resourceUrl,
+            btnType
     </select>
 
 

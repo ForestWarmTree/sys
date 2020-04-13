@@ -53,6 +53,8 @@ public interface SysResourceinfoMapper extends BaseMapper<SysResourceinfo> {
      */
     List<SysResourceinfo> selectBtn(Map<String, Object> map);
 
+    List<SysResourceinfo> selectAllBtn();
+
     List<SysResourceinfo> selectBtnByMenus(List<String> menus);
 
     /**

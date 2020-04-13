@@ -12,9 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * <p>
@@ -125,7 +123,29 @@ public class SysResourceinfoServiceImpl extends ServiceImpl<SysResourceinfoMappe
      */
     @Override
     public List<SysResourceinfo> selectAll(SysResourceinfo sysResourceinfo) {
-        return sysResourceinfoMapper.selectAll(sysResourceinfo);
+
+        //获取用户可用资源菜单
+        List<SysResourceinfo> menus = sysResourceinfoMapper.selectAll(sysResourceinfo);
+
+        if(menus!=null && menus.size()>0) {
+            // 根据菜单ID查询所有按钮
+            List<SysResourceinfo> btnList = sysResourceinfoMapper.selectAllBtn();
+            /**
+             * 循环菜单与按钮，将当前循环的菜单下的按钮找出来。
+             * 放进actions集合中
+             */
+            for(SysResourceinfo menu:menus) {
+                List<SysResourceinfo> actions = new ArrayList<>();
+                for(SysResourceinfo btn:btnList) {
+                    if(btn.getParentId().equals(menu.getResourceId())) {
+                        actions.add(btn);
+                    }
+                }
+                menu.setActions(actions);
+            }
+        }
+
+        return menus;
     }
 
     @Override
