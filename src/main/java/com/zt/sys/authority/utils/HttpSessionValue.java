@@ -85,7 +85,9 @@ public class HttpSessionValue {
      */
     public void logout(HttpServletRequest request) {
         String token = request.getHeader("Access-Token");
-        redisUtil.del(token);
+        if(token!=null && !"".equals(token)) {
+            redisUtil.del(token);
+        }
     }
 
 
